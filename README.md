@@ -1,6 +1,6 @@
 # better_sitt
 
-A new Flutter project.
+BettErgo Flutter App updated from Flutter Flow
 
 ## Getting Started
 
