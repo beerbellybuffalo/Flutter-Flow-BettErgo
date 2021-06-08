@@ -1,6 +1,6 @@
-# better_sitt
+# Better_Sitt_App
 
-A new Flutter project.
+E07 BettErgo Flutter App for our project, the BetterSitt.
 
 ## Getting Started
 
