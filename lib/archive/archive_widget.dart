@@ -17,6 +17,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.primaryColor,
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
+import 'archive/archive_widget.dart';
 import 'today/today_widget.dart';
+import 'settings/settings_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +32,7 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPage = 'Today';
+  String _currentPage = 'Archive';
 
   @override
   void initState() {
@@ -41,7 +43,9 @@ class _NavBarPageState extends State<NavBarPage> {
   @override
   Widget build(BuildContext context) {
     final tabs = {
+      'Archive': ArchiveWidget(),
       'Today': TodayWidget(),
+      'Settings': SettingsWidget(),
     };
     return Scaffold(
       body: tabs[_currentPage],
@@ -49,7 +53,33 @@ class _NavBarPageState extends State<NavBarPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.home_outlined,
+              Icons.date_range,
+              size: 24,
+            ),
+            activeIcon: Icon(
+              Icons.date_range_outlined,
+              size: 24,
+            ),
+            label: 'Archive',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.data_usage,
+              size: 24,
+            ),
+            activeIcon: Icon(
+              Icons.data_usage_outlined,
+              size: 24,
+            ),
+            label: 'Today',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              size: 24,
+            ),
+            activeIcon: Icon(
+              Icons.settings_outlined,
               size: 24,
             ),
             label: 'Home',

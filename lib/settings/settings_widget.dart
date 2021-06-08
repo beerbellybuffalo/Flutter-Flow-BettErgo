@@ -18,6 +18,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.primaryColor,
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,

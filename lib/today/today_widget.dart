@@ -17,6 +17,7 @@ class _TodayWidgetState extends State<TodayWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.primaryColor,
     );
   }
 }
