@@ -72,7 +72,8 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                 borderRadius: BorderRadius.circular(25),
               ),
               child: FlutterFlowCalendar(
-                color: FlutterFlowTheme.primaryColor,
+                color: FlutterFlowTheme.secondaryColor,
+                iconColor: FlutterFlowTheme.tertiaryColor,
                 weekFormat: false,
                 weekStartsMonday: false,
                 onChange: (DateTimeRange newSelectedDate) {
@@ -81,9 +82,15 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                 titleStyle: FlutterFlowTheme.title3.override(
                   fontFamily: 'Poppins',
                 ),
-                dayOfWeekStyle: TextStyle(),
-                dateStyle: TextStyle(),
-                selectedDateStyle: TextStyle(),
+                dayOfWeekStyle: TextStyle(
+                  color: FlutterFlowTheme.tertiaryColor,
+                ),
+                dateStyle: TextStyle(
+                  color: FlutterFlowTheme.tertiaryColor,
+                ),
+                selectedDateStyle: TextStyle(
+                  color: FlutterFlowTheme.primaryColor,
+                ),
                 inactiveDateStyle: TextStyle(),
               ),
             ),
