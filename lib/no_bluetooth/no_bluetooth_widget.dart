@@ -42,14 +42,11 @@ class _NoBluetoothWidgetState extends State<NoBluetoothWidget> {
               decoration: BoxDecoration(
                 color: FlutterFlowTheme.primaryColor,
               ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
-                child: Text(
-                  'Not connected to BetterSitt.\nCheck that the device is switched on before initiating connection.',
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.subtitle1.override(
-                    fontFamily: 'Poppins',
-                  ),
+              child: Text(
+                'Not connected to BetterSitt.\nCheck that the device is switched on before initiating connection.',
+                textAlign: TextAlign.center,
+                style: FlutterFlowTheme.subtitle1.override(
+                  fontFamily: 'Poppins',
                 ),
               ),
             )

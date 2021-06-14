@@ -25,10 +25,18 @@ dependencies:
     sdk: flutter
   auto_size_text:
   cached_network_image: 2.5.1
+  firebase_auth: ^0.20.0+1
+  firebase_core: ^0.7.0
   font_awesome_flutter:
   google_fonts:
+  google_sign_in: ^4.0.16
   intl:
+  latlong:
   page_transition:
+  rxdart: ^0.25.0
+  sign_in_with_apple: ^2.5.4
+  smooth_page_indicator:
+  table_calendar: ^2.3.3
   timeago:
   url_launcher:
 
