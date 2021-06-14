@@ -5,6 +5,7 @@ import 'package:better_sitt/login_v1/login_v1_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
 import 'today/today_widget.dart';
+import 'settings/settings_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,7 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'Archive': ArchiveWidget(),
       'Today': TodayWidget(),
+      'Settings': SettingsWidget(),
     };
     return Scaffold(
       body: tabs[_currentPage],
@@ -97,6 +99,17 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24,
             ),
             label: 'Today',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              size: 24,
+            ),
+            activeIcon: Icon(
+              Icons.settings_outlined,
+              size: 24,
+            ),
+            label: 'Settings',
           )
         ],
         backgroundColor: FlutterFlowTheme.primaryColor,

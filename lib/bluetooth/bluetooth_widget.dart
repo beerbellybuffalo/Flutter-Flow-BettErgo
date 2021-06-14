@@ -118,67 +118,32 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/user_4@2x.png',
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Text(
-                                          'Ben Dover\'s BetterSitt',
-                                          style: FlutterFlowTheme.subtitle1
-                                              .override(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFF15212B),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 4, 4, 0),
-                                            child: Text(
-                                              '[userEmail]',
-                                              style: FlutterFlowTheme.bodyText2
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: FlutterFlowTheme
-                                                    .primaryColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Ben Dover\'s BetterSitt',
+                                            style: FlutterFlowTheme.subtitle1
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              color: Color(0xFF15212B),
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -215,26 +180,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/user_4@2x.png',
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Expanded(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -242,6 +187,8 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                   children: [
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Hugh Janus\'s BetterSitt',
@@ -252,27 +199,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                           ),
                                         )
                                       ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 4, 4, 0),
-                                            child: Text(
-                                              '[userEmail]',
-                                              style: FlutterFlowTheme.bodyText2
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFFADADAD),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
                                     )
                                   ],
                                 ),
@@ -311,26 +237,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/user_4@2x.png',
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Expanded(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -338,6 +244,8 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                   children: [
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Koochieman\'s BetterSitt',
@@ -345,27 +253,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                               .override(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFFADADAD),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 4, 4, 0),
-                                            child: Text(
-                                              '[userEmail]',
-                                              style: FlutterFlowTheme.bodyText2
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFFADADAD),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
                                           ),
                                         )
                                       ],
@@ -425,26 +312,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/user_4@2x.png',
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Expanded(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -452,6 +319,8 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                   children: [
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'John Doe',
@@ -459,27 +328,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                               .override(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFFADADAD),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 4, 4, 0),
-                                            child: Text(
-                                              '[userEmail]',
-                                              style: FlutterFlowTheme.bodyText2
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFFADADAD),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
                                           ),
                                         )
                                       ],
@@ -521,26 +369,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/user_4@2x.png',
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
                               Expanded(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -548,6 +376,8 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                   children: [
                                     Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Don Joe',
@@ -555,27 +385,6 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                               .override(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFFADADAD),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 4, 4, 0),
-                                            child: Text(
-                                              '[userEmail]',
-                                              style: FlutterFlowTheme.bodyText2
-                                                  .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color(0xFFADADAD),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
                                           ),
                                         )
                                       ],

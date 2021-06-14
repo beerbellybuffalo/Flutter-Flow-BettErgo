@@ -183,18 +183,24 @@ class _TodayWidgetState extends State<TodayWidget> {
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               color: Color(0xFFF5F5F5),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(25),
                               ),
-                              child: Image.asset(
-                                'assets/images/Daily Posture Card.png',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                  'assets/images/Daily Posture Card.png',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             Card(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               color: Color(0xFFF5F5F5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
                               child: Image.network(
                                 'https://picsum.photos/seed/302/600',
                                 width: 100,
@@ -205,11 +211,17 @@ class _TodayWidgetState extends State<TodayWidget> {
                             Card(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               color: Color(0xFFF5F5F5),
-                              child: Image.asset(
-                                'assets/images/Total Sitting Minutes.png',
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                  'assets/images/Total Sitting Minutes.png',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             )
                           ],
@@ -249,7 +261,6 @@ class _TodayWidgetState extends State<TodayWidget> {
               ),
               Container(
                 width: double.infinity,
-                height: 150,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.darkGrey,
                 ),
