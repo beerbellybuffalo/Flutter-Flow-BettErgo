@@ -50,13 +50,18 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                AutoSizeText(
-                  'Archive',
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.title3.override(
-                    fontFamily: 'Poppins',
-                    fontSize: 40,
-                    fontWeight: FontWeight.normal,
+                Expanded(
+                  child: Align(
+                    alignment: Alignment(0, 0.5),
+                    child: AutoSizeText(
+                      'Archive',
+                      textAlign: TextAlign.center,
+                      style: FlutterFlowTheme.title3.override(
+                        fontFamily: 'Poppins',
+                        fontSize: 40,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
                   ),
                 )
               ],

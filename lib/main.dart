@@ -1,49 +1,22 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'auth/firebase_user_provider.dart';
-import 'package:better_sitt/login_v1/login_v1_widget.dart';
+import 'package:better_sitt/today/today_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
 import 'today/today_widget.dart';
 import 'settings/settings_widget.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Stream<BetterSittFirebaseUser> userStream;
-  BetterSittFirebaseUser initialUser;
-
-  @override
-  void initState() {
-    super.initState();
-    userStream = betterSittFirebaseUserStream()
-      ..listen((user) => initialUser ?? setState(() => initialUser = user));
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BetterSitt',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: initialUser == null
-          ? const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xff4b39ef)),
-              ),
-            )
-          : currentUser.loggedIn
-              ? NavBarPage()
-              : LoginV1Widget(),
+      home: NavBarPage(),
     );
   }
 }
@@ -59,7 +32,7 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPage = 'Today';
+  String _currentPage = 'Archive';
 
   @override
   void initState() {

@@ -1,8 +1,6 @@
-import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -499,20 +497,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                 Align(
                                   alignment: Alignment(0, 0),
                                   child: FFButtonWidget(
-                                    onPressed: () async {
-                                      final user =
-                                          await signInWithFacebook(context);
-                                      if (user == null) {
-                                        return;
-                                      }
-                                      await Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NavBarPage(initialPage: 'Today'),
-                                        ),
-                                        (r) => false,
-                                      );
+                                    onPressed: () {
+                                      print('Facebook pressed ...');
                                     },
                                     text: '',
                                     icon: Icon(
@@ -565,20 +551,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                   Align(
                                     alignment: Alignment(0, 0),
                                     child: FFButtonWidget(
-                                      onPressed: () async {
-                                        final user =
-                                            await signInWithGoogle(context);
-                                        if (user == null) {
-                                          return;
-                                        }
-                                        await Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => NavBarPage(
-                                                initialPage: 'Today'),
-                                          ),
-                                          (r) => false,
-                                        );
+                                      onPressed: () {
+                                        print('Google pressed ...');
                                       },
                                       text: '',
                                       icon: Icon(
