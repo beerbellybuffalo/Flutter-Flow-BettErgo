@@ -37,9 +37,11 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
               height: double.infinity,
               decoration: BoxDecoration(
                 color: FlutterFlowTheme.tertiaryColor,
-                image: Image.asset(
-                  'assets/images/Registration Empty.png',
+                image: DecorationImage(
                   fit: BoxFit.cover,
+                  image: Image.asset(
+                    'assets/images/Registration Empty.png',
+                  ).image,
                 ),
               ),
             ),

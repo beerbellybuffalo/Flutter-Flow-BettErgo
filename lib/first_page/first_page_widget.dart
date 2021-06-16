@@ -33,9 +33,11 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   color: Color(0xFFEEEEEE),
-                  image: Image.asset(
-                    'assets/images/First Page BG.png',
+                  image: DecorationImage(
                     fit: BoxFit.cover,
+                    image: Image.asset(
+                      'assets/images/First Page BG.png',
+                    ).image,
                   ),
                 ),
               ),

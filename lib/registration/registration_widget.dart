@@ -48,9 +48,11 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
               height: double.infinity,
               decoration: BoxDecoration(
                 color: FlutterFlowTheme.tertiaryColor,
-                image: Image.asset(
-                  'assets/images/Registration Empty.png',
+                image: DecorationImage(
                   fit: BoxFit.cover,
+                  image: Image.asset(
+                    'assets/images/Registration Empty.png',
+                  ).image,
                 ),
               ),
             ),
