@@ -3,6 +3,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../login_v1/login_v1_widget.dart';
+import '../personal_particulars/personal_particulars_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -188,10 +189,21 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 Expanded(
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PersonalParticularsWidget(),
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xFF95A1AC),
+                                        size: 18,
+                                      ),
                                     ),
                                   ),
                                 )
