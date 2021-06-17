@@ -34,7 +34,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: Image.asset(
-                    'assets/images/BG no logo.png',
+                    'assets/images/MovingBG.gif',
                   ).image,
                 ),
               ),

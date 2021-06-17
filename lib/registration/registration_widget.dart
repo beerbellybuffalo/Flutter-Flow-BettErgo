@@ -1,3 +1,5 @@
+import 'package:better_sitt/login_v1/login_v1_widget.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -49,7 +51,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: Image.asset(
-                    'assets/images/Registration Empty.png',
+                    'assets/images/MovingBG.gif',
                   ).image,
                 ),
               ),
@@ -441,8 +443,14 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                         child: Align(
                           alignment: Alignment(0, 0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginV1Widget(),
+                                ),
+                              );
+                              // print('Button pressed ...');
                             },
                             text: 'Register',
                             options: FFButtonOptions(
