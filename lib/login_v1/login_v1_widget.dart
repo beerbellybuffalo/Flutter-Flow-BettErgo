@@ -1,3 +1,5 @@
+import 'package:better_sitt/main.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -268,8 +270,14 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                             padding: EdgeInsets.fromLTRB(
                                                 0, 0, 0, 20),
                                             child: FFButtonWidget(
-                                              onPressed: () {
-                                                print('Button pressed ...');
+                                              onPressed: () async {
+                                                await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => NavBarPage(),
+                                                  ),
+                                                );
+                                                // print('Button pressed ...');
                                               },
                                               text: 'Log In',
                                               options: FFButtonOptions(

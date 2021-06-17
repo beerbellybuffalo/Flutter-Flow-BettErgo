@@ -1,3 +1,5 @@
+import 'package:better_sitt/first_page/first_page_widget.dart';
+import 'package:better_sitt/registration/registration_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BetterSitt',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: NavBarPage(),
+      home: FirstPageWidget(),
     );
   }
 }

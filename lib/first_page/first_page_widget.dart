@@ -36,7 +36,7 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: Image.asset(
-                      'assets/images/First Page BG.png',
+                      'assets/images/MovingBG.gif',
                     ).image,
                   ),
                 ),

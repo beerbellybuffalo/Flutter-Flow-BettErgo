@@ -31,8 +31,8 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.primaryColor,
       body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             width: double.infinity,
@@ -67,36 +67,38 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: MediaQuery.of(context).size.height * 0.4,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.darkGrey,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: FlutterFlowCalendar(
-                color: FlutterFlowTheme.secondaryColor,
-                iconColor: FlutterFlowTheme.tertiaryColor,
-                weekFormat: false,
-                weekStartsMonday: false,
-                onChange: (DateTimeRange newSelectedDate) {
-                  setState(() => calendarSelectedDay = newSelectedDate);
-                },
-                titleStyle: FlutterFlowTheme.title3.override(
-                  fontFamily: 'Poppins',
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.4,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.darkGrey,
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                dayOfWeekStyle: TextStyle(
-                  color: FlutterFlowTheme.tertiaryColor,
+                child: FlutterFlowCalendar(
+                  color: FlutterFlowTheme.secondaryColor,
+                  iconColor: FlutterFlowTheme.tertiaryColor,
+                  weekFormat: false,
+                  weekStartsMonday: false,
+                  onChange: (DateTimeRange newSelectedDate) {
+                    setState(() => calendarSelectedDay = newSelectedDate);
+                  },
+                  titleStyle: FlutterFlowTheme.title3.override(
+                    fontFamily: 'Poppins',
+                  ),
+                  dayOfWeekStyle: TextStyle(
+                    color: FlutterFlowTheme.tertiaryColor,
+                  ),
+                  dateStyle: TextStyle(
+                    color: FlutterFlowTheme.tertiaryColor,
+                  ),
+                  selectedDateStyle: TextStyle(
+                    color: FlutterFlowTheme.primaryColor,
+                  ),
+                  inactiveDateStyle: TextStyle(),
                 ),
-                dateStyle: TextStyle(
-                  color: FlutterFlowTheme.tertiaryColor,
-                ),
-                selectedDateStyle: TextStyle(
-                  color: FlutterFlowTheme.primaryColor,
-                ),
-                inactiveDateStyle: TextStyle(),
               ),
             ),
           )
