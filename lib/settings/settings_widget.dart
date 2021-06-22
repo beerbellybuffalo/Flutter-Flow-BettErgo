@@ -1,3 +1,5 @@
+import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
+
 import '../change_p_w/change_p_w_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -88,7 +90,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                                 child: Text(
-                                  '[User Name Here]',
+                                  'Friendo',
                                   style: FlutterFlowTheme.title1.override(
                                     fontFamily: 'Poppins',
                                   ),
@@ -302,6 +304,57 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                  child: Text(
+                                    'Bluetooth Pairing',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment(0.9, 0),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BluetoothWidget(),
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xFF95A1AC),
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: Row(

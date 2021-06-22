@@ -55,7 +55,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                       ),
                     ),
                     AutoSizeText(
-                      'Hello, Friend',
+                      'Hello, Friendo',
                       textAlign: TextAlign.center,
                       style: FlutterFlowTheme.title3.override(
                         fontFamily: 'Poppins',

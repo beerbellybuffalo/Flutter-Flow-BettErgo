@@ -4,6 +4,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalParticularsWidget extends StatefulWidget {
   PersonalParticularsWidget({Key key}) : super(key: key);
@@ -20,22 +21,81 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
   TextEditingController weightController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String initContactNo;
+  String initEmail;
+  String initHeight;
+  String initWeight;
 
   @override
   void initState() {
     super.initState();
-    contactnoController = TextEditingController(text: '87654321');
-    emailController = TextEditingController(text: 'user_name@email.com');
-    heightController = TextEditingController(text: '180');
-    weightController = TextEditingController(text: '70');
+    //get stored Personal Particulars from sharedpreferences
+    getParticulars();
+
+    contactnoController = TextEditingController(text:initContactNo);
+    emailController = TextEditingController(text:initEmail);
+    heightController = TextEditingController(text:initHeight);
+    weightController = TextEditingController(text:initWeight);
+
+    //add Listeners to store the new input values
+    contactnoController.addListener(updateContactNo);
+    emailController.addListener(updateEmail);
+    heightController.addListener(updateHeight);
+    weightController.addListener(updateWeight);
+
   }
 
+  void getParticulars() async {
+    final prefs = await SharedPreferences.getInstance();
+     setState(() {
+      initContactNo = (prefs.getString('ContactNo') ?? "-");
+      initEmail = (prefs.getString('Email') ?? "-");
+      initHeight = (prefs.getString('Height') ?? "-");
+      initWeight = (prefs.getString('Weight') ?? "-");
+      setState(() {});
+     });
+  }
+
+  void setParticulars() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('ContactNo', initContactNo);
+    print("updated contactno: $initContactNo");
+    prefs.setString('Email', initEmail);
+    print("updated email: $initEmail");
+    prefs.setString('Height', initHeight);
+    print("updated height: $initHeight");
+    prefs.setString('Weight', initWeight);
+    print("updated weight: $initWeight");
+    setState(() {});
+  }
+
+  void updateContactNo() {
+    initContactNo = '${contactnoController.text}';
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setString('ContactNo', initContactNo);
+  }
+  void updateEmail() {
+    initEmail = '${emailController.text}';
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setString('Email', initEmail);
+  }
+  void updateHeight() {
+    initHeight = '${heightController.text}';
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setInt('Height', int.parse(initHeight));
+  }
+  void updateWeight() {
+    initWeight = '${weightController.text}';
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setInt('Weight', int.parse(initWeight));
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
       child: Scaffold(
         key: scaffoldKey,
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
             Align(
@@ -98,7 +158,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                       color: FlutterFlowTheme.secondaryColor,
                                       fontSize: 16,
                                     ),
-                                    hintText: '[Some hint text...]',
+                                    hintText: 'user_name@email.com',
                                     hintStyle:
                                         FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -170,7 +230,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                       color: FlutterFlowTheme.secondaryColor,
                                       fontSize: 16,
                                     ),
-                                    hintText: '[Some hint text...]',
+                                    hintText: '87654321',
                                     hintStyle:
                                         FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -242,7 +302,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                       color: FlutterFlowTheme.secondaryColor,
                                       fontSize: 16,
                                     ),
-                                    hintText: '[Some hint text...]',
+                                    hintText: '180',
                                     hintStyle:
                                         FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -305,6 +365,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                               Expanded(
                                 child: TextFormField(
                                   controller: weightController,
+
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'weight in kg',
@@ -314,7 +375,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                       color: FlutterFlowTheme.secondaryColor,
                                       fontSize: 16,
                                     ),
-                                    hintText: '[Some hint text...]',
+                                    hintText: '70',
                                     hintStyle:
                                         FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -379,6 +440,13 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                           alignment: Alignment(0, 0),
                           child: FFButtonWidget(
                             onPressed: () async {
+                              //STORE KEY VALUE PAIRS WHEN THE CONFIRM BUTTON IS PRESSED
+                              setParticulars();
+
+                              //These are in case we wanna use it for ML in future
+                              //prefs.setInt('HeightInt', int.parse(initContactNo));
+                              //prefs.setInt('WeightInt', int.parse(initContactNo));
+
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(

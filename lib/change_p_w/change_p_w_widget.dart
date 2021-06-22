@@ -28,6 +28,7 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Align(
