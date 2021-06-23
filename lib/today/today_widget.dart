@@ -5,6 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:async';
+import 'dart:math';
+
 class TodayWidget extends StatefulWidget {
   TodayWidget({Key key}) : super(key: key);
 
@@ -16,8 +22,32 @@ class _TodayWidgetState extends State<TodayWidget> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  //Graph Stuff
+  List<SittData> chartData;
+  int _count =0;
+  String totalSittingTime;
+  String goodSittingTime;
+
+  Timer timer;
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    chartData = getChartData();
+
+    timer = Timer(const Duration(seconds: 3), () {
+      if (mounted)
+        setState(() {
+          chartData = getChartData();
+          // text file update text to another time
+          updateString();
+        });
+    });
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.primaryColor,
@@ -88,14 +118,42 @@ class _TodayWidgetState extends State<TodayWidget> {
                               fontFamily: 'Poppins',
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Container(
-                              decoration: BoxDecoration(),
-                              child: Image.asset(
-                                'assets/images/Score 69.png',
-                                fit: BoxFit.cover,
-                              ),
+                          // Padding(
+                          //   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          // ),
+                          Container(
+                            height: MediaQuery.of(context).size.width * 0.35,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: SfCircularChart(
+                              annotations: <CircularChartAnnotation>[
+                                CircularChartAnnotation(
+                                    widget: Container(
+                                      child: const Text("Graph",
+                                          style: TextStyle(
+                                              color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 16)),
+                                    ))
+                              ],
+
+                              // legend: Legend(
+                              //     isVisible: true,
+                              //     overflowMode: LegendItemOverflowMode.wrap,
+                              //     toggleSeriesVisibility: true,
+                              //     borderColor: Colors.white,
+                              //     borderWidth: 0),
+
+                              series: <CircularSeries>[
+                                RadialBarSeries<SittData, String>(
+                                  dataSource: chartData,
+                                  xValueMapper: (SittData data, _) => data.name,
+                                  yValueMapper: (SittData data, _) => data.data,
+                                  pointColorMapper: (SittData data, _) => data.pointColour,
+                                  maximumValue: 100,
+                                  innerRadius: '60%',
+                                  cornerStyle: CornerStyle.bothCurve,
+                                  trackColor: Color(0xFF181819)
+                                  //dataLabelSettings: DataLabelSettings(isVisible: true)
+                                )
+                              ],
                             ),
                           )
                         ],
@@ -116,7 +174,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                             ),
                             Text(
-                              '5h 35m',
+                              '$totalSittingTime',
                               style: FlutterFlowTheme.title1.override(
                                 fontFamily: 'Poppins',
                                 color: FlutterFlowTheme.tertiaryColor,
@@ -136,7 +194,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                             ),
                             Text(
-                              '3h 57m',
+                              '$goodSittingTime;',
                               style: FlutterFlowTheme.bodyText1.override(
                                 fontFamily: 'Poppins',
                                 color: FlutterFlowTheme.secondaryColor,
@@ -427,4 +485,67 @@ class _TodayWidgetState extends State<TodayWidget> {
       ),
     );
   }
+
+  String updateString(){
+    if (_count == 0){
+      totalSittingTime = '5hr 41min';
+      goodSittingTime = '3hr 25min';
+    } else if (_count == 1){
+      totalSittingTime = '5hr 42min';
+      goodSittingTime = '3hr 26min';
+    } else if (_count == 2){
+      totalSittingTime = '5hr 43min';
+      goodSittingTime = '3hr 27min';
+    } else if (_count == 3){
+      totalSittingTime = '5hr 44min';
+      goodSittingTime = '3hr 28min';
+    }
+    return totalSittingTime;
+  }
+
+  List<SittData> getChartData() {
+    if (_count == 0) {
+      chartData = <SittData>[
+        SittData('My Ass', 35, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 40, Color(0xFF00DBA3)),// 1
+      ];
+      _count++;
+    } else if (_count == 1) {
+      chartData = <SittData>[
+        SittData('My Ass', 50, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 70, Color(0xFF00DBA3)),// 4
+      ];
+      _count++;
+    } else if (_count == 2) {
+      chartData = <SittData>[
+        SittData('My Ass', 40, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 50, Color(0xFF00DBA3)),// 2
+      ];//2413
+      _count++;
+    } else if (_count == 3) {
+      chartData = <SittData>[
+        SittData('My Ass', 55, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 80, Color(0xFF00DBA3)),// 5
+      ];
+      _count++;
+    } else if (_count == 4) {
+      chartData = <SittData>[
+        SittData('My Ass', 45, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 60, Color(0xFF00DBA3)),// 3
+      ];
+      _count = 0;
+    }
+    // if (timer != null) {
+    //   timer!.cancel();
+    // }
+    return chartData;
+  }
+
+}
+
+class SittData {
+  SittData(this.name, this.data,this.pointColour);
+  final String name;
+  final int data;
+  final Color pointColour;
 }

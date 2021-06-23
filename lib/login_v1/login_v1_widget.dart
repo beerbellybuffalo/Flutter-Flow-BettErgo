@@ -70,7 +70,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                           child: Align(
                             alignment: Alignment(0, 0.85),
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
+                              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                               child: Container(
                                 width: double.infinity,
                                 height: double.infinity,
