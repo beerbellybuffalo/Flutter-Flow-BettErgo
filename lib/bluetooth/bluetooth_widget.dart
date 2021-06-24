@@ -133,7 +133,7 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Ben Dover\'s BetterSitt',
+                                            'Student 1\'s BetterSitt',
                                             style: FlutterFlowTheme.subtitle1
                                                 .override(
                                               fontFamily: 'Poppins',
@@ -191,7 +191,7 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'Hugh Janus\'s BetterSitt',
+                                          'Student 2\'s BetterSitt',
                                           style: FlutterFlowTheme.subtitle1
                                               .override(
                                             fontFamily: 'Poppins',
@@ -248,7 +248,7 @@ class _BluetoothWidgetState extends State<BluetoothWidget> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          'Koochieman\'s BetterSitt',
+                                          'Student 3\'s BetterSitt',
                                           style: FlutterFlowTheme.subtitle1
                                               .override(
                                             fontFamily: 'Poppins',

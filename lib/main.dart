@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'BetterSitt',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: FirstPageWidget(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -34,7 +35,7 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPage = 'Archive';
+  String _currentPage = 'Today';
 
   @override
   void initState() {

@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import '../today/logic_page.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/rendering.dart';
@@ -24,6 +24,7 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   //Graph Stuff
   List<SittData> chartData;
+  List<PositionBarData> barChartData;
   int _count =0;
   String totalSittingTime;
   String goodSittingTime;
@@ -38,11 +39,13 @@ class _TodayWidgetState extends State<TodayWidget> {
   Widget build(BuildContext context) {
 
     chartData = getChartData();
+    barChartData = getBarChartData();
 
     timer = Timer(const Duration(seconds: 3), () {
       if (mounted)
         setState(() {
           chartData = getChartData();
+          barChartData = getBarChartData();
           // text file update text to another time
           updateString();
         });
@@ -125,14 +128,15 @@ class _TodayWidgetState extends State<TodayWidget> {
                             height: MediaQuery.of(context).size.width * 0.35,
                             width: MediaQuery.of(context).size.width * 0.35,
                             child: SfCircularChart(
-                              annotations: <CircularChartAnnotation>[
-                                CircularChartAnnotation(
-                                    widget: Container(
-                                      child: const Text("Graph",
-                                          style: TextStyle(
-                                              color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 16)),
-                                    ))
-                              ],
+
+                              // annotations: <CircularChartAnnotation>[
+                              //   CircularChartAnnotation(
+                              //       widget: Container(
+                              //         child: const Text("Graph",
+                              //             style: TextStyle(
+                              //                 color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 16)),
+                              //       ))
+                              // ],
 
                               // legend: Legend(
                               //     isVisible: true,
@@ -265,11 +269,60 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  'assets/images/Total Sitting Minutes.png',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                                child: SfCartesianChart(
+                                  title: ChartTitle(
+                                      text: 'Posture Timing\n in Mins',
+                                      textStyle: TextStyle(
+                                        color: Color(0xFFFFE66D),
+                                        fontSize: 12,
+                                      )
+                                  ),
+                                  backgroundColor: Color(0xFF545454),
+                                  legend: Legend(isVisible: false),
+                                  series: <ChartSeries>[
+                                    StackedColumnSeries<PositionBarData, String>(
+                                      dataSource: barChartData,
+                                      //animationDuration: 1000,
+                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
+                                      yValueMapper: (PositionBarData data, _) => data.green,
+                                      name: 'p1',
+                                      color: Color(0xFFFF6B6B),
+                                    ),
+                                    StackedColumnSeries<PositionBarData, String>(
+                                      dataSource: barChartData,
+                                      //animationDuration: 1000,
+                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
+                                      yValueMapper: (PositionBarData data, _) => data.yellow,
+                                      name: 'p2',
+                                      color: Color(0xFFFFE66D),
+                                    ),
+                                    StackedColumnSeries<PositionBarData, String>(
+                                      dataSource: barChartData,
+                                      //animationDuration: 1000,
+                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
+                                      yValueMapper: (PositionBarData data, _) => data.red,
+                                      color: Color(0xFF00DBA3),
+                                      name: 'p3',
+                                    ),
+                                  ],
+                                  primaryXAxis: CategoryAxis(
+                                      labelStyle: TextStyle(
+                                          color: Colors.white70,
+                                          fontFamily: 'Poppins',
+                                          fontSize: 12,
+                                          //fontStyle: FontStyle.italic,
+                                          //fontWeight: FontWeight.w500
+                                      )
+                                  ),
+                                  primaryYAxis: CategoryAxis(
+                                      labelStyle: TextStyle(
+                                        color: Colors.white38,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 10,
+                                        //fontStyle: FontStyle.italic,
+                                        //fontWeight: FontWeight.w500
+                                      )
+                                  ),
                                 ),
                               ),
                             ),
@@ -488,57 +541,105 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   String updateString(){
     if (_count == 0){
-      totalSittingTime = '5hr 41min';
+      totalSittingTime = '6hr 45min';
       goodSittingTime = '3hr 25min';
     } else if (_count == 1){
-      totalSittingTime = '5hr 42min';
-      goodSittingTime = '3hr 26min';
+      totalSittingTime = '7hr 03min';
+      goodSittingTime = '3hr 43min';
     } else if (_count == 2){
-      totalSittingTime = '5hr 43min';
-      goodSittingTime = '3hr 27min';
-    } else if (_count == 3){
-      totalSittingTime = '5hr 44min';
-      goodSittingTime = '3hr 28min';
+      totalSittingTime = '7hr 15min';
+      goodSittingTime = '3hr 55min';
+    // } else if (_count == 3){
+    //   totalSittingTime = '5hr 44min';
+    //   goodSittingTime = '3hr 28min';
     }
     return totalSittingTime;
   }
 
   List<SittData> getChartData() {
+
+    // chartData = <SittData>[
+    //   SittData('Secondary Ring', 45, Color(0xFF1A535C)),
+    //   SittData('Primary Ring', 60, Color(0xFF00DBA3)), // import Ring Data
+    // ];
+
+
     if (_count == 0) {
       chartData = <SittData>[
         SittData('My Ass', 35, Color(0xFF1A535C)),
         SittData('Second Ass', 40, Color(0xFF00DBA3)),// 1
       ];
       _count++;
-    } else if (_count == 1) {
+    // } else if (_count == 1) {
+    //   chartData = <SittData>[
+    //     SittData('My Ass', 38, Color(0xFF1A535C)),
+    //     SittData('Second Ass', 43, Color(0xFF00DBA3)),// 4
+    //   ];
+    //   _count++;
+    // } else if (_count == 2) {
+    //   chartData = <SittData>[
+    //     SittData('My Ass', 36, Color(0xFF1A535C)),
+    //     SittData('Second Ass', 41, Color(0xFF00DBA3)),// 2
+    //   ];//2413
+    //   _count++;
+     } else if (_count == 1) {
       chartData = <SittData>[
-        SittData('My Ass', 50, Color(0xFF1A535C)),
-        SittData('Second Ass', 70, Color(0xFF00DBA3)),// 4
+        SittData('My Ass', 40, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 45, Color(0xFF00DBA3)),// 5
       ];
       _count++;
     } else if (_count == 2) {
       chartData = <SittData>[
-        SittData('My Ass', 40, Color(0xFF1A535C)),
-        SittData('Second Ass', 50, Color(0xFF00DBA3)),// 2
-      ];//2413
-      _count++;
-    } else if (_count == 3) {
-      chartData = <SittData>[
-        SittData('My Ass', 55, Color(0xFF1A535C)),
-        SittData('Second Ass', 80, Color(0xFF00DBA3)),// 5
-      ];
-      _count++;
-    } else if (_count == 4) {
-      chartData = <SittData>[
-        SittData('My Ass', 45, Color(0xFF1A535C)),
-        SittData('Second Ass', 60, Color(0xFF00DBA3)),// 3
+        SittData('My Ass', 45, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 50, Color(0xFF00DBA3)),// 3
       ];
       _count = 0;
     }
-    // if (timer != null) {
-    //   timer!.cancel();
-    // }
+
     return chartData;
+
+  }
+
+  List<PositionBarData> getBarChartData() {
+    if (_count == 0) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 55, 40, 45),
+        PositionBarData('P2', 33, 45, 54),
+        PositionBarData('P3', 43, 23, 20),
+        PositionBarData('P4', 32, 54, 23),
+        PositionBarData('P5', 56, 18, 43),
+        PositionBarData('P6', 23, 54, 33),
+        PositionBarData('P7', 55, 40, 45),
+        PositionBarData('P8', 56, 18, 43),
+
+      ];
+      _count++;
+    } else if (_count == 1) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 23, 34, 54),
+        PositionBarData('P2', 12, 54, 34),
+        PositionBarData('P3', 43, 83, 56),
+        PositionBarData('P4', 23, 65, 23),
+        PositionBarData('P5', 34, 23, 54),
+        PositionBarData('P6', 83, 12, 20),
+        PositionBarData('P7', 23, 34, 54),
+        PositionBarData('P8', 43, 83, 56),
+      ];
+      _count++;
+    } else if (_count == 2) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 23, 14, 42),
+        PositionBarData('P2', 33, 34, 32),
+        PositionBarData('P3', 43, 23, 20),
+        PositionBarData('P4', 32, 54, 23),
+        PositionBarData('P5', 23, 18, 43),
+        PositionBarData('P6', 23, 54, 33),
+        PositionBarData('P7', 33, 34, 32),
+        PositionBarData('P8', 43, 23, 20),
+      ];
+      _count = 0;
+    }
+    return barChartData;
   }
 
 }
@@ -548,4 +649,13 @@ class SittData {
   final String name;
   final int data;
   final Color pointColour;
+}
+
+class PositionBarData {
+  PositionBarData( this.expenseCategory, this.green, this.yellow, this.red);
+  final String expenseCategory;
+  final num green;
+  final num yellow;
+  final num red;
+
 }
