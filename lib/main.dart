@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'BetterSitt',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: FirstPageWidget(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

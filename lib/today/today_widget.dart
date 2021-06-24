@@ -44,7 +44,7 @@ class _TodayWidgetState extends State<TodayWidget> {
         setState(() {
           chartData = getChartData();
           // text file update text to another time
-          updateString();
+          //updateString();
         });
     });
 
@@ -177,7 +177,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               '$totalSittingTime',
                               style: FlutterFlowTheme.title1.override(
                                 fontFamily: 'Poppins',
-                                color: FlutterFlowTheme.bittersweetRed,
+                                color: FlutterFlowTheme.tertiaryColor,
                                 fontSize: 22,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -486,57 +486,66 @@ class _TodayWidgetState extends State<TodayWidget> {
     );
   }
 
-  String updateString(){
-    if (_count == 0){
-      totalSittingTime = '7hr 41min';
-      goodSittingTime = '3hr 25min';
-    } else if (_count == 1){
-      totalSittingTime = '7hr 42min';
-      goodSittingTime = '3hr 26min';
-    } else if (_count == 2){
-      totalSittingTime = '7hr 43min';
-      goodSittingTime = '3hr 27min';
-    } else if (_count == 3){
-      totalSittingTime = '7hr 44min';
-      goodSittingTime = '3hr 28min';
-    }
-    return totalSittingTime;
-  }
+  // String updateString(){
+  //   if (_count == 0){
+  //     totalSittingTime = '6hr 41min';
+  //     goodSittingTime = '3hr 25min';
+  //   } else if (_count == 1){
+  //     totalSittingTime = '6hr 45min';
+  //     goodSittingTime = '3hr 29min';
+  //   } else if (_count == 2){
+  //     totalSittingTime = '6hr 50min';
+  //     goodSittingTime = '3hr 32min';
+  //   } else if (_count == 3){
+  //     totalSittingTime = '7hr 05min';
+  //     goodSittingTime = '3hr 44min';
+  //   }
+  //   return totalSittingTime;
+  // }
 
   List<SittData> getChartData() {
     if (_count == 0) {
       chartData = <SittData>[
-        SittData('My Ass', 35, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 40, Color(0xFF00DBA3)),// 1
+        SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 40, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '6hr 41min';
+      goodSittingTime = '3hr 25min';
       _count++;
     } else if (_count == 1) {
       chartData = <SittData>[
-        SittData('My Ass', 50, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 70, Color(0xFF00DBA3)),// 4
+        SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 45, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '6hr 45min';
+      goodSittingTime = '3hr 29min';
       _count++;
     } else if (_count == 2) {
       chartData = <SittData>[
-        SittData('My Ass', 40, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 50, Color(0xFF00DBA3)),// 2
+        SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 50, Color(0xFF00DBA3)),
       ];//2413
+      totalSittingTime = '6hr 50min';
+      goodSittingTime = '3hr 32min';
       _count++;
     } else if (_count == 3) {
       chartData = <SittData>[
-        SittData('My Ass', 55, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 80, Color(0xFF00DBA3)),// 5
+        SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
+        SittData('Second Ass', 55, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '7hr 05min';
+      goodSittingTime = '3hr 44min';
       _count++;
-    } else if (_count == 4) {
-      chartData = <SittData>[
-        SittData('My Ass', 45, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 60, Color(0xFF00DBA3)),// 3
-      ];
+    }
+     else if (_count == 4) {
+      // chartData = <SittData>[
+      //   SittData('My Ass', 50, Color(0xFFFF6B6B)),
+      //   SittData('Second Ass', 60, Color(0xFF00DBA3)),
+      // ];
       _count = 0;
     }
     // if (timer != null) {
-    //   timer!.cancel();
+    //   timer.cancel();
     // }
     return chartData;
   }
