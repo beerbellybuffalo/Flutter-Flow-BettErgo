@@ -177,7 +177,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               '$totalSittingTime',
                               style: FlutterFlowTheme.title1.override(
                                 fontFamily: 'Poppins',
-                                color: FlutterFlowTheme.tertiaryColor,
+                                color: FlutterFlowTheme.bittersweetRed,
                                 fontSize: 22,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -194,7 +194,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                             ),
                             Text(
-                              '$goodSittingTime;',
+                              '$goodSittingTime',
                               style: FlutterFlowTheme.bodyText1.override(
                                 fontFamily: 'Poppins',
                                 color: FlutterFlowTheme.secondaryColor,
@@ -488,16 +488,16 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   String updateString(){
     if (_count == 0){
-      totalSittingTime = '5hr 41min';
+      totalSittingTime = '7hr 41min';
       goodSittingTime = '3hr 25min';
     } else if (_count == 1){
-      totalSittingTime = '5hr 42min';
+      totalSittingTime = '7hr 42min';
       goodSittingTime = '3hr 26min';
     } else if (_count == 2){
-      totalSittingTime = '5hr 43min';
+      totalSittingTime = '7hr 43min';
       goodSittingTime = '3hr 27min';
     } else if (_count == 3){
-      totalSittingTime = '5hr 44min';
+      totalSittingTime = '7hr 44min';
       goodSittingTime = '3hr 28min';
     }
     return totalSittingTime;
