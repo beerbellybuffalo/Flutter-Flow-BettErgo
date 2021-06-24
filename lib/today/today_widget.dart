@@ -194,7 +194,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                             ),
                             Text(
-                              '$goodSittingTime;',
+                              '$goodSittingTime',
                               style: FlutterFlowTheme.bodyText1.override(
                                 fontFamily: 'Poppins',
                                 color: FlutterFlowTheme.secondaryColor,
@@ -506,31 +506,31 @@ class _TodayWidgetState extends State<TodayWidget> {
   List<SittData> getChartData() {
     if (_count == 0) {
       chartData = <SittData>[
-        SittData('My Ass', 35, Color(0xFFFF6B6B)),
+        SittData('My Ass', 35, Color(0xFF1A535C)),
         SittData('Second Ass', 40, Color(0xFF00DBA3)),// 1
       ];
       _count++;
     } else if (_count == 1) {
       chartData = <SittData>[
-        SittData('My Ass', 50, Color(0xFFFF6B6B)),
+        SittData('My Ass', 50, Color(0xFF1A535C)),
         SittData('Second Ass', 70, Color(0xFF00DBA3)),// 4
       ];
       _count++;
     } else if (_count == 2) {
       chartData = <SittData>[
-        SittData('My Ass', 40, Color(0xFFFF6B6B)),
+        SittData('My Ass', 40, Color(0xFF1A535C)),
         SittData('Second Ass', 50, Color(0xFF00DBA3)),// 2
       ];//2413
       _count++;
     } else if (_count == 3) {
       chartData = <SittData>[
-        SittData('My Ass', 55, Color(0xFFFF6B6B)),
+        SittData('My Ass', 55, Color(0xFF1A535C)),
         SittData('Second Ass', 80, Color(0xFF00DBA3)),// 5
       ];
       _count++;
     } else if (_count == 4) {
       chartData = <SittData>[
-        SittData('My Ass', 45, Color(0xFFFF6B6B)),
+        SittData('My Ass', 45, Color(0xFF1A535C)),
         SittData('Second Ass', 60, Color(0xFF00DBA3)),// 3
       ];
       _count = 0;
