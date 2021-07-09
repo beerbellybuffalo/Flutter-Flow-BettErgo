@@ -120,8 +120,6 @@ class GoodSittingTime{
 // }
 
 //
-//
-//
 // // Position Change Frequency
 //
 // int numberOfNull = 0;
@@ -147,32 +145,3 @@ class GoodSittingTime{
 // }
 //
 //
-// // Archive
-//
-// // find the difference between 2 null
-// var diffList = new List();
-// for (int i = 0; i < ls.length() - 1; i++) {
-// int diff = ls[i] - ls[i + 1];
-// diffList.add(diff);
-// }
-// // go through difference list and find <20min intervals
-// var goodIndices = new List();
-// for (int i=0; i<diffList.length(); i++){
-// if ( diffList[i] <= 20){
-// goodIndices.add(diffList[i]);
-// }
-// }
-// // Get list of null
-// List<int> getNullLs() {
-//   var nullList = new list();
-//   int startingPoint = 0;
-//
-//   for (int i = startingPoint; i < box.length(); i++) {
-//     if (box.getAt(i)[0] == null) {
-//       nullList.add(i);
-//     }
-//   }
-//   startingPoint = startingPoint + box.length();
-//
-//   return nullList;
-// }

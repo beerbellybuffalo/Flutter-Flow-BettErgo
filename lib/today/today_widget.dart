@@ -541,12 +541,6 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   List<SittData> getChartData() {
 
-    // chartData = <SittData>[
-    //   SittData('Secondary Ring', 45, Color(0xFF1A535C)),
-    //   SittData('Primary Ring', 60, Color(0xFF00DBA3)), // import Ring Data
-    // ];
-
-
     if (_count == 0) {
       chartData = <SittData>[
         SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
@@ -555,18 +549,6 @@ class _TodayWidgetState extends State<TodayWidget> {
       totalSittingTime = '6hr 41min';
       goodSittingTime = '3hr 25min';
       _count++;
-    // } else if (_count == 1) {
-    //   chartData = <SittData>[
-    //     SittData('My Ass', 38, Color(0xFF1A535C)),
-    //     SittData('Second Ass', 43, Color(0xFF00DBA3)),// 4
-    //   ];
-    //   _count++;
-    // } else if (_count == 2) {
-    //   chartData = <SittData>[
-    //     SittData('My Ass', 36, Color(0xFF1A535C)),
-    //     SittData('Second Ass', 41, Color(0xFF00DBA3)),// 2
-    //   ];//2413
-    //   _count++;
      } else if (_count == 1) {
       chartData = <SittData>[
         SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
@@ -593,10 +575,12 @@ class _TodayWidgetState extends State<TodayWidget> {
       _count++;
     }
      else if (_count == 4) {
-      // chartData = <SittData>[
-      //   SittData('My Ass', 50, Color(0xFFFF6B6B)),
-      //   SittData('Second Ass', 60, Color(0xFF00DBA3)),
-      // ];
+      chartData = <SittData>[
+        SittData('My Ass', 50, Color(0xFFFF6B6B)),
+        SittData('Second Ass', 60, Color(0xFF00DBA3)),
+      ];
+      totalSittingTime = '7hr 20min';
+      goodSittingTime = '3hr 53min';
       _count = 0;
     }
     // if (timer != null) {
