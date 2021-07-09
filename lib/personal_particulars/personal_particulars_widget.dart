@@ -15,12 +15,18 @@ class PersonalParticularsWidget extends StatefulWidget {
 }
 
 class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
-  TextEditingController contactnoController;
-  TextEditingController emailController;
-  TextEditingController heightController;
-  TextEditingController weightController;
+  // TextEditingController contactnoController;
+  // TextEditingController emailController;
+  // TextEditingController heightController;
+  // TextEditingController weightController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  //initialise controllers
+  final contactnoController = TextEditingController();
+  final emailController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+
   String initContactNo;
   String initEmail;
   String initHeight;
@@ -32,17 +38,17 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
     //get stored Personal Particulars from sharedpreferences
     getParticulars();
 
-    contactnoController = TextEditingController(text:initContactNo);
-    emailController = TextEditingController(text:initEmail);
-    heightController = TextEditingController(text:initHeight);
-    weightController = TextEditingController(text:initWeight);
+    //initialise controller textfields
+    contactnoController.text = initContactNo;
+    emailController.text = initEmail;
+    heightController.text = initHeight;
+    weightController.text = initWeight;
 
     //add Listeners to store the new input values
     contactnoController.addListener(updateContactNo);
     emailController.addListener(updateEmail);
     heightController.addListener(updateHeight);
     weightController.addListener(updateWeight);
-
   }
 
   void getParticulars() async {
@@ -52,7 +58,6 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
       initEmail = (prefs.getString('Email') ?? "-");
       initHeight = (prefs.getString('Height') ?? "-");
       initWeight = (prefs.getString('Weight') ?? "-");
-      setState(() {});
      });
   }
 
@@ -365,7 +370,6 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                               Expanded(
                                 child: TextFormField(
                                   controller: weightController,
-
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'weight in kg',

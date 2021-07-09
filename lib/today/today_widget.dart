@@ -47,7 +47,7 @@ class _TodayWidgetState extends State<TodayWidget> {
           chartData = getChartData();
           barChartData = getBarChartData();
           // text file update text to another time
-          updateString();
+          //updateString();
         });
     });
 
@@ -128,23 +128,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                             height: MediaQuery.of(context).size.width * 0.35,
                             width: MediaQuery.of(context).size.width * 0.35,
                             child: SfCircularChart(
-
-                              // annotations: <CircularChartAnnotation>[
-                              //   CircularChartAnnotation(
-                              //       widget: Container(
-                              //         child: const Text("Graph",
-                              //             style: TextStyle(
-                              //                 color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 16)),
-                              //       ))
-                              // ],
-
-                              // legend: Legend(
-                              //     isVisible: true,
-                              //     overflowMode: LegendItemOverflowMode.wrap,
-                              //     toggleSeriesVisibility: true,
-                              //     borderColor: Colors.white,
-                              //     borderWidth: 0),
-
                               series: <CircularSeries>[
                                 RadialBarSeries<SittData, String>(
                                   dataSource: chartData,
@@ -566,9 +549,11 @@ class _TodayWidgetState extends State<TodayWidget> {
 
     if (_count == 0) {
       chartData = <SittData>[
-        SittData('My Ass', 35, Color(0xFF1A535C)),
-        SittData('Second Ass', 40, Color(0xFF00DBA3)),// 1
+        SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 40, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '6hr 41min';
+      goodSittingTime = '3hr 25min';
       _count++;
     // } else if (_count == 1) {
     //   chartData = <SittData>[
@@ -584,62 +569,40 @@ class _TodayWidgetState extends State<TodayWidget> {
     //   _count++;
      } else if (_count == 1) {
       chartData = <SittData>[
-        SittData('My Ass', 40, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 45, Color(0xFF00DBA3)),// 5
+        SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 45, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '6hr 45min';
+      goodSittingTime = '3hr 29min';
       _count++;
     } else if (_count == 2) {
       chartData = <SittData>[
-        SittData('My Ass', 45, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 50, Color(0xFF00DBA3)),// 3
+        SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
+        SittData('Second Ass', 50, Color(0xFF00DBA3)),
+      ];//2413
+      totalSittingTime = '6hr 50min';
+      goodSittingTime = '3hr 32min';
+      _count++;
+    } else if (_count == 3) {
+      chartData = <SittData>[
+        SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
+        SittData('Second Ass', 55, Color(0xFF00DBA3)),
       ];
+      totalSittingTime = '7hr 05min';
+      goodSittingTime = '3hr 44min';
+      _count++;
+    }
+     else if (_count == 4) {
+      // chartData = <SittData>[
+      //   SittData('My Ass', 50, Color(0xFFFF6B6B)),
+      //   SittData('Second Ass', 60, Color(0xFF00DBA3)),
+      // ];
       _count = 0;
     }
-
+    // if (timer != null) {
+    //   timer.cancel();
+    // }
     return chartData;
-
-  }
-
-  List<PositionBarData> getBarChartData() {
-    if (_count == 0) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 55, 40, 45),
-        PositionBarData('P2', 33, 45, 54),
-        PositionBarData('P3', 43, 23, 20),
-        PositionBarData('P4', 32, 54, 23),
-        PositionBarData('P5', 56, 18, 43),
-        PositionBarData('P6', 23, 54, 33),
-        PositionBarData('P7', 55, 40, 45),
-        PositionBarData('P8', 56, 18, 43),
-
-      ];
-      _count++;
-    } else if (_count == 1) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 23, 34, 54),
-        PositionBarData('P2', 12, 54, 34),
-        PositionBarData('P3', 43, 83, 56),
-        PositionBarData('P4', 23, 65, 23),
-        PositionBarData('P5', 34, 23, 54),
-        PositionBarData('P6', 83, 12, 20),
-        PositionBarData('P7', 23, 34, 54),
-        PositionBarData('P8', 43, 83, 56),
-      ];
-      _count++;
-    } else if (_count == 2) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 23, 14, 42),
-        PositionBarData('P2', 33, 34, 32),
-        PositionBarData('P3', 43, 23, 20),
-        PositionBarData('P4', 32, 54, 23),
-        PositionBarData('P5', 23, 18, 43),
-        PositionBarData('P6', 23, 54, 33),
-        PositionBarData('P7', 33, 34, 32),
-        PositionBarData('P8', 43, 23, 20),
-      ];
-      _count = 0;
-    }
-    return barChartData;
   }
 
 }
