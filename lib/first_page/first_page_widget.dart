@@ -59,6 +59,14 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(),
+                              child: Image.asset(
+                                'assets/images/Logo (Login).png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(),
                               child: Align(
                                 alignment: Alignment(0, 1),
                                 child: Text(
@@ -76,7 +84,9 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                                 child: Text(
-                                  'The BettErgo app  pairs with our smart furniture to bring you the most accurate data  for managing your ergonomics',
+                                  'The BettErgo app  pairs with our smart furniture to '
+                                  'bring you the most accurate data  for managing your '
+                                  'ergonomics',
                                   textAlign: TextAlign.center,
                                   style: FlutterFlowTheme.bodyText2.override(
                                     fontFamily: 'Poppins',

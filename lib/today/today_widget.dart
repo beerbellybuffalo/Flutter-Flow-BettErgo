@@ -25,7 +25,7 @@ class _TodayWidgetState extends State<TodayWidget> {
   //Graph Stuff
   List<SittData> chartData;
   List<PositionBarData> barChartData;
-  int _count =0;
+  int timer_count =0;
   String totalSittingTime;
   String goodSittingTime;
 
@@ -88,7 +88,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                       ),
                     ),
                     AutoSizeText(
-                      'Hello, Friendo',
+                      'Hello, Bob',
                       textAlign: TextAlign.center,
                       style: FlutterFlowTheme.title3.override(
                         fontFamily: 'Poppins',
@@ -254,10 +254,13 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 borderRadius: BorderRadius.circular(15),
                                 child: SfCartesianChart(
                                   title: ChartTitle(
-                                      text: 'Posture Timing\n in Mins',
+                                      borderWidth: 20,
+                                      alignment: ChartAlignment.near,
+                                      text: 'Posture Timing in Mins',
                                       textStyle: TextStyle(
-                                        color: Color(0xFFFFE66D),
-                                        fontSize: 12,
+                                        color: Color(0xFFdfdfdf),
+                                        fontSize: 10,
+                                        fontFamily: 'Poppins',
                                       )
                                   ),
                                   backgroundColor: Color(0xFF545454),
@@ -286,11 +289,14 @@ class _TodayWidgetState extends State<TodayWidget> {
                                       yValueMapper: (PositionBarData data, _) => data.red,
                                       color: Color(0xFF00DBA3),
                                       name: 'p3',
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(3),
+                                          topRight: Radius.circular(3)),
                                     ),
                                   ],
                                   primaryXAxis: CategoryAxis(
                                       labelStyle: TextStyle(
-                                          color: Colors.white70,
+                                          color: Colors.white38,
                                           fontFamily: 'Poppins',
                                           fontSize: 12,
                                           //fontStyle: FontStyle.italic,
@@ -309,13 +315,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 ),
                               ),
                             ),
-                            Card(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              color: FlutterFlowTheme.darkGrey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -323,7 +322,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                         alignment: Alignment(0, 0.9),
                         child: SmoothPageIndicator(
                           controller: pageViewController,
-                          count: 3,
+                          count: 2,
                           axisDirection: Axis.horizontal,
                           onDotClicked: (i) {
                             pageViewController.animateToPage(
@@ -402,7 +401,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               height: 100,
                               decoration: BoxDecoration(),
                               child: Image.asset(
-                                'assets/images/upright.png',
+                                'assets/images/posture-yyy.png',
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -411,7 +410,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               height: 100,
                               decoration: BoxDecoration(),
                               child: Image.asset(
-                                'assets/images/leanback.png',
+                                'assets/images/posture-nny.png',
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -420,7 +419,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               height: 100,
                               decoration: BoxDecoration(),
                               child: Image.asset(
-                                'assets/images/leanforward.png',
+                                'assets/images/posture-nyn.png',
                                 fit: BoxFit.contain,
                               ),
                             )
@@ -523,16 +522,16 @@ class _TodayWidgetState extends State<TodayWidget> {
   }
 
   String updateString(){
-    if (_count == 0){
+    if (timer_count == 0){
       totalSittingTime = '6hr 45min';
       goodSittingTime = '3hr 25min';
-    } else if (_count == 1){
+    } else if (timer_count == 1){
       totalSittingTime = '7hr 03min';
       goodSittingTime = '3hr 43min';
-    } else if (_count == 2){
+    } else if (timer_count == 2){
       totalSittingTime = '7hr 15min';
       goodSittingTime = '3hr 55min';
-    // } else if (_count == 3){
+    // } else if (timer_count == 3){
     //   totalSittingTime = '5hr 44min';
     //   goodSittingTime = '3hr 28min';
     }
@@ -540,48 +539,47 @@ class _TodayWidgetState extends State<TodayWidget> {
   }
 
   List<SittData> getChartData() {
-
-    if (_count == 0) {
+    if (timer_count == 0) {
       chartData = <SittData>[
         SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 40, Color(0xFF00DBA3)),
       ];
       totalSittingTime = '6hr 41min';
       goodSittingTime = '3hr 25min';
-      _count++;
-     } else if (_count == 1) {
+      timer_count++;
+     } else if (timer_count == 1) {
       chartData = <SittData>[
         SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 45, Color(0xFF00DBA3)),
       ];
       totalSittingTime = '6hr 45min';
       goodSittingTime = '3hr 29min';
-      _count++;
-    } else if (_count == 2) {
+      timer_count++;
+    } else if (timer_count == 2) {
       chartData = <SittData>[
         SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 50, Color(0xFF00DBA3)),
       ];//2413
       totalSittingTime = '6hr 50min';
       goodSittingTime = '3hr 32min';
-      _count++;
-    } else if (_count == 3) {
+      timer_count++;
+    } else if (timer_count == 3) {
       chartData = <SittData>[
         SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
         SittData('Second Ass', 55, Color(0xFF00DBA3)),
       ];
       totalSittingTime = '7hr 05min';
       goodSittingTime = '3hr 44min';
-      _count++;
+      timer_count++;
     }
-     else if (_count == 4) {
+     else if (timer_count == 4) {
       chartData = <SittData>[
         SittData('My Ass', 50, Color(0xFFFF6B6B)),
         SittData('Second Ass', 60, Color(0xFF00DBA3)),
       ];
       totalSittingTime = '7hr 20min';
       goodSittingTime = '3hr 53min';
-      _count = 0;
+      timer_count = 0;
     }
     // if (timer != null) {
     //   timer.cancel();
@@ -589,7 +587,39 @@ class _TodayWidgetState extends State<TodayWidget> {
     return chartData;
   }
 
+  List<PositionBarData> getBarChartData() {
+    if (timer_count == 0) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 55, 40, 45),
+        PositionBarData('P2', 33, 45, 54),
+        PositionBarData('P7', 33, 45, 54),
+        PositionBarData('P8', 56, 18, 43),
+
+      ];
+      timer_count++;
+    } else if (timer_count == 1) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 23, 34, 54),
+        PositionBarData('P2', 12, 54, 34),
+        PositionBarData('P7', 23, 34, 54),
+        PositionBarData('P8', 43, 83, 56),
+      ];
+      timer_count++;
+    } else if (timer_count == 2) {
+      barChartData = <PositionBarData>[
+        PositionBarData('P1', 23, 14, 42),
+        PositionBarData('P2', 33, 34, 32),
+        PositionBarData('P7', 33, 34, 32),
+        PositionBarData('P8', 43, 23, 20),
+      ];
+      timer_count = 0;
+    }
+    return barChartData;
+  }
+
 }
+
+
 
 class SittData {
   SittData(this.name, this.data,this.pointColour);
