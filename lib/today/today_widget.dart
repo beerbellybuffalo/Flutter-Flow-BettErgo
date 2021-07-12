@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../today/logic_page.dart';
+import 'package:better_sitt/today/today_classes.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/rendering.dart';

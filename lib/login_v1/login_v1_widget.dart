@@ -49,7 +49,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(0),
                       child: Image.asset(
-                        'assets/images/Logo (Login).png',
+                        'assets/images/Logo_Login.png',
                         width: double.infinity,
                         height: 250,
                         fit: BoxFit.contain,
