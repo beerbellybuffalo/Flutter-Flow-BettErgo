@@ -49,53 +49,67 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                     flex: 5,
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(),
-                              child: Image.asset(
-                                'assets/images/Logo (Login).png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(),
-                              child: Align(
-                                alignment: Alignment(0, 1),
-                                child: Text(
-                                  'Creating Better Ergonomic Habits',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.subtitle1.override(
-                                    fontFamily: 'Poppins',
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment(0, 0.86),
+                                  child: Image.asset(
+                                    'assets/images/Logo (Login).png',
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(),
+                                child: Align(
+                                  alignment: Alignment(0, 1),
+                                  child: Text(
+                                    'Creating Better Ergonomic Habits',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.subtitle1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(),
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                                child: Text(
-                                  'The BettErgo app  pairs with our smart furniture to '
-                                  'bring you the most accurate data  for managing your '
-                                  'ergonomics',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.bodyText2.override(
-                                    fontFamily: 'Poppins',
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                                  child: Text(
+                                    'The BettErgo app  pairs with our smart furniture to '
+                                    'bring you the most accurate data  for managing your '
+                                    'ergonomics',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.bodyText2.override(
+                                      fontFamily: 'Poppins',
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        )
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

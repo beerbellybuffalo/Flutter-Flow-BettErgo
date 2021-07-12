@@ -590,27 +590,39 @@ class _TodayWidgetState extends State<TodayWidget> {
   List<PositionBarData> getBarChartData() {
     if (timer_count == 0) {
       barChartData = <PositionBarData>[
-        PositionBarData('P1', 55, 40, 45),
-        PositionBarData('P2', 33, 45, 54),
-        PositionBarData('P7', 33, 45, 54),
-        PositionBarData('P8', 56, 18, 43),
+        PositionBarData('P1', 15, 0, 13),
+        PositionBarData('P2', 3, 0, 4),
+        PositionBarData('P3', 0, 0, 0),
+        PositionBarData('P4', 0, 0, 0),
+        PositionBarData('P5', 13, 2, 0),
+        PositionBarData('P6', 0, 0, 0),
+        PositionBarData('P7', 0, 5, 0),
+        PositionBarData('P8', 0, 1, 0),
 
       ];
       timer_count++;
     } else if (timer_count == 1) {
       barChartData = <PositionBarData>[
-        PositionBarData('P1', 23, 34, 54),
-        PositionBarData('P2', 12, 54, 34),
-        PositionBarData('P7', 23, 34, 54),
-        PositionBarData('P8', 43, 83, 56),
+        PositionBarData('P1', 15, 4, 6),
+        PositionBarData('P2', 3, 0, 4),
+        PositionBarData('P3', 0, 0, 0),
+        PositionBarData('P4', 0, 0, 0),
+        PositionBarData('P5', 13, 2, 5),
+        PositionBarData('P6', 0, 0, 0),
+        PositionBarData('P7', 0, 8, 0),
+        PositionBarData('P8', 0, 5, 0),
       ];
       timer_count++;
     } else if (timer_count == 2) {
       barChartData = <PositionBarData>[
-        PositionBarData('P1', 23, 14, 42),
-        PositionBarData('P2', 33, 34, 32),
-        PositionBarData('P7', 33, 34, 32),
-        PositionBarData('P8', 43, 23, 20),
+        PositionBarData('P1', 21, 4, 6),
+        PositionBarData('P2', 3, 0, 4),
+        PositionBarData('P3', 2, 0, 0),
+        PositionBarData('P4', 0, 0, 0),
+        PositionBarData('P5', 13, 10, 5),
+        PositionBarData('P6', 0, 0, 0),
+        PositionBarData('P7', 0, 12, 0),
+        PositionBarData('P8', 0, 5, 3),
       ];
       timer_count = 0;
     }
