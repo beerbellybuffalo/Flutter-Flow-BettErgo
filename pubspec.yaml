@@ -31,13 +31,11 @@ dependencies:
   latlong2:
   page_transition:
   smooth_page_indicator:
-  table_calendar: ^2.3.3 #^3.0.1
+  table_calendar: ^2.3.3
   timeago:
   url_launcher:
   syncfusion_flutter_charts: ^19.1.54
   # hive database
-#  hive: ^2.0.3
-#  hive_flutter: ^1.0.0
   hive: ^2.0.4
   hive_flutter: ^1.1.0
 
@@ -53,12 +51,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_blue: ^0.8.0
-#  build_runner: ^1.12.2
-#  hive_generator: ^1.0.1
   hive_generator: ^1.1.0
   build_runner: ^2.0.6
 
-#dependency_overrides:
+dependency_overrides:
+  table_calendar: ^2.3.3 #cannot upgrade to ^3.0.0 because then need to redo the calendar widget
 
 flutter_icons:
   android: true
