@@ -24,32 +24,41 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text:
-  cached_network_image: 2.5.1
+  cached_network_image: ^3.0.0
   font_awesome_flutter:
   google_fonts:
   intl:
-  latlong:
+  latlong2:
   page_transition:
   smooth_page_indicator:
-  table_calendar: ^2.3.3
+  table_calendar: ^2.3.3 #^3.0.1
   timeago:
   url_launcher:
   syncfusion_flutter_charts: ^19.1.54
+  # hive database
+#  hive: ^2.0.3
+#  hive_flutter: ^1.0.0
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   shared_preferences: ^2.0.6
-  image: ^2.1.18
+  image: ^3.0.2  #^3.0.0-nullsafety.0
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_icons: ^0.9.0
 
   flutter_test:
     sdk: flutter
-  flutter_blue: ^0.7.3
+  flutter_blue: ^0.8.0
+#  build_runner: ^1.12.2
+#  hive_generator: ^1.0.1
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
 
-
+#dependency_overrides:
 
 flutter_icons:
   android: true
