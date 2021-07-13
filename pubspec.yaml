@@ -44,6 +44,10 @@ dependencies:
   cupertino_icons: ^1.0.0
   shared_preferences: ^2.0.6
   image: ^3.0.2  #^3.0.0-nullsafety.0
+  sklite:
+    git:
+      url: https://github.com/axegon/SkLite-dart.git
+
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
