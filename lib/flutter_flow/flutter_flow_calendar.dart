@@ -27,8 +27,8 @@ bool isSameMonth(DateTime a, DateTime b) {
 
 class FlutterFlowCalendar extends StatefulWidget {
   const FlutterFlowCalendar({
-    @required this.color,
-    this.onChange,
+    required this.color,
+    required this.onChange,
     this.runMode = false,
     this.weekFormat = false,
     this.weekStartsMonday = false,

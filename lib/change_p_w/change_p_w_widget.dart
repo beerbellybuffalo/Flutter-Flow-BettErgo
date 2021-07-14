@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChangePWWidget extends StatefulWidget {
-  ChangePWWidget({Key key}) : super(key: key);
+  ChangePWWidget({required Key key}) : super(key: key);
 
   @override
   _ChangePWWidgetState createState() => _ChangePWWidgetState();
 }
 
 class _ChangePWWidgetState extends State<ChangePWWidget> {
-  TextEditingController textController1;
-  TextEditingController textController2;
+  late TextEditingController textController1;
+  late TextEditingController textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

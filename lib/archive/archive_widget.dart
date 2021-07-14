@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ArchiveWidget extends StatefulWidget {
-  ArchiveWidget({Key key}) : super(key: key);
+  ArchiveWidget({required Key key}) : super(key: key);
 
   @override
   _ArchiveWidgetState createState() => _ArchiveWidgetState();
 }
 
 class _ArchiveWidgetState extends State<ArchiveWidget> {
-  DateTimeRange calendarSelectedDay;
+  late DateTimeRange calendarSelectedDay;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
