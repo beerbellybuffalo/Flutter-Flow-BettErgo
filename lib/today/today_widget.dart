@@ -12,7 +12,7 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  TodayWidget({Key key}) : super(key: key);
+  TodayWidget({Key? key}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();
@@ -23,13 +23,13 @@ class _TodayWidgetState extends State<TodayWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   //Graph Stuff
-  List<SittData> chartData;
-  List<PositionBarData> barChartData;
+  late List<SittData> chartData;
+  late List<PositionBarData> barChartData;
   int timer_count =0;
-  String totalSittingTime;
-  String goodSittingTime;
+  late String totalSittingTime;
+  late String goodSittingTime;
 
-  Timer timer;
+  late Timer timer;
   @override
   void dispose(){
     super.dispose();

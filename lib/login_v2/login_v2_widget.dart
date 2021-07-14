@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginV2Widget extends StatefulWidget {
-  LoginV2Widget({Key key}) : super(key: key);
+  LoginV2Widget({Key? key}) : super(key: key);
 
   @override
   _LoginV2WidgetState createState() => _LoginV2WidgetState();

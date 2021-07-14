@@ -7,20 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegistrationWidget extends StatefulWidget {
-  RegistrationWidget({Key key}) : super(key: key);
+  RegistrationWidget({Key? key}) : super(key: key);
 
   @override
   _RegistrationWidgetState createState() => _RegistrationWidgetState();
 }
 
 class _RegistrationWidgetState extends State<RegistrationWidget> {
-  TextEditingController textController1;
-  TextEditingController textController2;
-  TextEditingController textController3;
-  TextEditingController textController4;
-  TextEditingController textController5;
-  TextEditingController textController6;
-  TextEditingController textController7;
+  late TextEditingController textController1;
+  late TextEditingController textController2;
+  late TextEditingController textController3;
+  late TextEditingController textController4;
+  late TextEditingController textController5;
+  late TextEditingController textController6;
+  late TextEditingController textController7;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

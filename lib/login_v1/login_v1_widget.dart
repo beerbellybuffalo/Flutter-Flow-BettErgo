@@ -1,3 +1,4 @@
+import 'package:better_sitt/first_page/first_page_widget.dart';
 import 'package:better_sitt/main.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -9,16 +10,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginV1Widget extends StatefulWidget {
-  LoginV1Widget({Key key}) : super(key: key);
+  LoginV1Widget({Key? key}) : super(key: key);
 
   @override
   _LoginV1WidgetState createState() => _LoginV1WidgetState();
 }
 
 class _LoginV1WidgetState extends State<LoginV1Widget> {
-  TextEditingController emailTextController;
-  TextEditingController passwordTextController;
-  bool passwordVisibility;
+  late TextEditingController emailTextController;
+  late TextEditingController passwordTextController;
+  late bool passwordVisibility;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

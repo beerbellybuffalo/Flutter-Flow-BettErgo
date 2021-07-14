@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class FirstPageWidget extends StatefulWidget {
-  FirstPageWidget({required Key key}) : super(key: key);
+  FirstPageWidget({Key? key}) : super(key: key);
 
   @override
   _FirstPageWidgetState createState() => _FirstPageWidgetState();

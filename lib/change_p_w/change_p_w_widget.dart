@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChangePWWidget extends StatefulWidget {
-  ChangePWWidget({required Key key}) : super(key: key);
+  ChangePWWidget({Key? key}) : super(key: key);
 
   @override
   _ChangePWWidgetState createState() => _ChangePWWidgetState();
