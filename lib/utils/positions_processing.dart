@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:better_sitt/model/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:sklite/tree/tree.dart';
@@ -16,15 +17,25 @@ Future<Map> getData(context) async {
   return json.decode(data);
 }
 
-Future<void> addPositions(String dateStr,int position ) async {
-  DateTime date =  DateTime.parse("2012-02-27 " + dateStr);
+Future<void> addPositions(DateTime dateTime,int position ) async {
 
   final position = Positions()
-    ..dateTime = date
+    ..dateTime = dateTime
     ..position = 0;
 
   final box = Boxes.getPositions();
   box.add(position);
+}
+
+Future<void> getPositions(int index) async{
+  final box = Boxes.getPositions();
+  box.getAt(index);
+}
+
+Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async{
+  final model = await Model.create();
+  int position = model.predict(sensor_vals);
+  addPositions(dateTime, position);
 }
 
 class Model{
@@ -37,28 +48,16 @@ class Model{
   static Future<Model> create() async {
     Model model = Model._();
     await model._getModel();
-    stderr.writeln("Model is"+model.model.toString());
     return model;
   }
 
   Future<void> _getModel() async {
-    log("loading model");
-    loadModel("postureprediction_tree.json").then((x) {
-      log("loading model");
-      stderr.writeln(x);
-
-      this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
-      log("Model loaded: "+this.model.toString());
-    });
-
-    // String modelWeights =await loadModel("postureprediction_tree.json");
-    stderr.writeln("Hello");
-    // this.model = DecisionTreeClassifier.fromMap(json.decode(modelWeights));
-    stderr.writeln("function model is"+model.toString());
+    String x = await loadModel("assets/model/postureprediction_tree.json");
+    this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
+    log("Model loaded: "+this.model.toString());
   }
 
-  Future<int> predict(List<double >input) async {
-    log(this.model.predict(input).toString());
+  int predict(List<double >input) {
     return this.model.predict(input);
   }
 
