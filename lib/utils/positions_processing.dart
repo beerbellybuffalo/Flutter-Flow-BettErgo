@@ -9,6 +9,8 @@ import 'package:sklite/utils/io.dart';
 
 import 'boxes.dart';
 
+
+//Read data from json, inplace of bluetooth, can take away
 Future<Map> getData(context) async {
   String data =
   await DefaultAssetBundle.of(context).loadString("assets/yixuan.json");
@@ -17,6 +19,7 @@ Future<Map> getData(context) async {
   return json.decode(data);
 }
 
+//Adds a position and datetime in hive
 Future<void> addPositions(DateTime dateTime,int position ) async {
 
   final position = Positions()
@@ -27,11 +30,13 @@ Future<void> addPositions(DateTime dateTime,int position ) async {
   box.add(position);
 }
 
+//Given an index, get the row in hive
 Future<void> getPositions(int index) async{
   final box = Boxes.getPositions();
   box.getAt(index);
 }
 
+// Predicts and stores the value in hive
 Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async{
   final model = await Model.create();
   int position = model.predict(sensor_vals);
@@ -44,19 +49,21 @@ class Model{
   // Private constructor, use create() to get an instance
   Model._();
 
-// Future that completes when the new Calendar is ready to use
+  // Future that completes when the new Model is ready to use
   static Future<Model> create() async {
     Model model = Model._();
     await model._getModel();
     return model;
   }
 
+  // Constructs model from weights in postureprediction.json
   Future<void> _getModel() async {
     String x = await loadModel("assets/model/postureprediction_tree.json");
     this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
     log("Model loaded: "+this.model.toString());
   }
 
+  //predicts given a list of values
   int predict(List<double >input) {
     return this.model.predict(input);
   }
