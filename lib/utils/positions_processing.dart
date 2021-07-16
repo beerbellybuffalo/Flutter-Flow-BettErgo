@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:better_sitt/model/positions.dart';
 import 'package:flutter/material.dart';
 import 'package:sklite/tree/tree.dart';
@@ -29,20 +30,36 @@ Future<void> addPositions(String dateStr,int position ) async {
 class Model{
   DecisionTreeClassifier model;
 
-  Model() {
-    getModel();
+  // Private constructor, use create() to get an instance
+  Model._();
+
+// Future that completes when the new Calendar is ready to use
+  static Future<Model> create() async {
+    Model model = Model._();
+    await model._getModel();
+    stderr.writeln("Model is"+model.model.toString());
+    return model;
   }
 
-  void getModel() {
+  Future<void> _getModel() async {
+    log("loading model");
     loadModel("postureprediction_tree.json").then((x) {
+      log("loading model");
+      stderr.writeln(x);
+
       this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
       log("Model loaded: "+this.model.toString());
     });
+
+    // String modelWeights =await loadModel("postureprediction_tree.json");
+    stderr.writeln("Hello");
+    // this.model = DecisionTreeClassifier.fromMap(json.decode(modelWeights));
+    stderr.writeln("function model is"+model.toString());
   }
 
-  Future<int> modelPredict(List<double >input) async{
-    log(this.model!.predict(input).toString());
-    return this.model!.predict(input);
+  Future<int> predict(List<double >input) async {
+    log(this.model.predict(input).toString());
+    return this.model.predict(input);
   }
 
 }

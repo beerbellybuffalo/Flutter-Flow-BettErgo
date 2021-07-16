@@ -63,7 +63,7 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                                 child: Align(
                                   alignment: Alignment(0, 0.86),
                                   child: Image.asset(
-                                    'assets/images/Logo (Login).png',
+                                    'assets/images/Logo_Login.png',
                                     fit: BoxFit.contain,
                                   ),
                                 ),
