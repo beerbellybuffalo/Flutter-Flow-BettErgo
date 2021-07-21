@@ -33,6 +33,7 @@ class FindDevicesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Find Devices'),
+        backgroundColor: FlutterFlowTheme.primaryColor,
       ),
       body: RefreshIndicator(
         onRefresh: () =>
@@ -106,7 +107,9 @@ class FindDevicesScreen extends StatelessWidget {
             return FloatingActionButton(
                 child: Icon(Icons.search),
                 onPressed: () => FlutterBlue.instance
-                    .startScan(timeout: Duration(seconds: 4)));
+                    .startScan(timeout: Duration(seconds: 4)),
+                backgroundColor: Color(0xFF0E4BEF),
+            );
           }
         },
       ),
@@ -130,6 +133,7 @@ class DeviceScreen extends StatelessWidget {
   }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
+    //String cValue;
     return services
         .map(
           (s) => ServiceTile(
@@ -138,7 +142,10 @@ class DeviceScreen extends StatelessWidget {
             .map(
               (c) => CharacteristicTile(
             characteristic: c,
-            onReadPressed: () => c.read(),
+            onReadPressed: () async {
+              c.read();
+              //cValue = c.read().toString();
+            },
             onWritePressed: () async {
               await c.write(_getRandomBytes(), withoutResponse: true);
               await c.read();
@@ -168,6 +175,7 @@ class DeviceScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(device.name),
+        backgroundColor: FlutterFlowTheme.primaryColor,
         actions: <Widget>[
           StreamBuilder<BluetoothDeviceState>(
             stream: device.state,

@@ -77,16 +77,18 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(),
-                                child: Align(
-                                  alignment: Alignment(0, 1),
-                                  child: Text(
-                                    'Creating Better Ergonomic Habits',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.subtitle1.override(
-                                      fontFamily: 'Poppins',
+                              Expanded(
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(),
+                                  child: Align(
+                                    alignment: Alignment(0, 1),
+                                    child: Text(
+                                      'Creating Better Ergonomic Habits',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.subtitle1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),
