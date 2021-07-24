@@ -9,6 +9,7 @@
 
 
 import 'dart:core';
+import 'package:intl/intl.dart';
 
 //var inComingData = new List();
 
@@ -21,14 +22,15 @@ class TotalSittingTime {
   var posNum = [1, 2, 3, 4, 5, 6, 7, 8];
 
   //Constructor
-  TotalSittingTime(List<int?> temp_ls) {
-    this.ls = temp_ls;
+  TotalSittingTime(List<int?> tempLs) {
+    this.ls = tempLs;
   }
   int getTotalSittingTime() {
     for (int i = startingPoint; i < ls.length; i++) {
       if (posNum.contains(ls[i])) {
         _totalSittingTime++; // assuming called every minute
       }
+
     };
     startingPoint = startingPoint + ls.length;
 
@@ -78,6 +80,28 @@ class GoodSittingTime{
     }
   }
 }
+
+void setHiveAppleGraph(DateTime dateTime, int position){ //CALL THIS EVERY MINUTE
+  //Check isBack isSide isLeg for position
+  // ++ to the entry in Hive Table, access the entry that corresponds to dateTime input
+}
+void plotAppleGraph(){ //CALL THIS WHEN REFRESH TODAY PAGE
+  //set a variable to store the previous entry's hour, int prevIndex
+  //create 4 lists with 24 variables each corresponding to the 24 hours in a day.
+  // List<double> TotalLs = List<double>.filled(24, 0, growable: false);
+  // List<double> isBackLs = List<double>.filled(24, 0, growable: false);
+  // List<double> isSideLs = List<double>.filled(24, 0, growable: false);
+  // List<double> isLegLs = List<double>.filled(24, 0, growable: false);
+
+  // for row in hive table,
+  //    get timestamp    //example: String formattedTime = DateFormat.Hm().format(dateTime); // this format -> 17:08
+  //    take the HOUR from formattedTime
+  //    if HOUR == prevIndex > add to List[HOUR] for each of the 4 lists //HOUR is ith index
+  //    else add to List[HOUR+1], prevIndex = HOUR
+
+  //  pass these variables into syncfusion AppleGraph
+}
+
 
 // Good Sitting Time
 

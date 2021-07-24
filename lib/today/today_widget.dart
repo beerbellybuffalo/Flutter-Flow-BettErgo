@@ -13,8 +13,7 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  final String? BLEsensorStr;
-  TodayWidget({Key? key, this.BLEsensorStr}) : super(key: key);
+  TodayWidget({Key? key}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();

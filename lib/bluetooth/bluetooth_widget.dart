@@ -5,7 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../no_bluetooth/no_bluetooth_widget.dart';
 import 'dart:math';
-import '../flutter_blue_widgets.dart';
+import '../flutter_blue_widgets.dart'; //these are taken from github example, like buildServiceTiles etc.
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class BluetoothParent extends StatelessWidget {
   @override
@@ -132,6 +135,39 @@ class DeviceScreen extends StatelessWidget {
     ];
   }
 
+  // for reading/writing to local documents directory https://medium.com/kick-start-fluttering/saving-data-to-local-storage-in-flutter-e20d973d88fa
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    print(directory.path);
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/bluetoothData.txt');
+  }
+
+  Future<String> readContent() async {
+    try {
+      final file = await _localFile;
+      // Read the file
+      String contents = await file.readAsString();
+      // Returning the contents of the file
+      return contents;
+    } catch (e) {
+      // If encountering an error, return
+      return 'Error!';
+    }
+  }
+
+  //writes the characteristic to local storage
+  Future<File> writeContent(List<int> sensorData) async {
+    final file = await _localFile;
+    // TODO Add code here to convert from bytes to string
+    // Write the file
+    return file.writeAsString("\n"+sensorData.toString());
+  }
+
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     //String cValue;
     return services
@@ -143,8 +179,11 @@ class DeviceScreen extends StatelessWidget {
               (c) => CharacteristicTile(
             characteristic: c,
             onReadPressed: () async {
-              c.read();
-              //cValue = c.read().toString();
+              //c.read();
+              c.read().then((sensorData) => writeContent(sensorData))
+                                      .catchError((error){
+                                        print('Caught $error');
+                                      });
             },
             onWritePressed: () async {
               await c.write(_getRandomBytes(), withoutResponse: true);
