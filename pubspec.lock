@@ -604,6 +604,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6"
+  sklite:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "3c6fc02f5b3d4c6c0cce81866c7e4929a1500b60"
+      url: "https://github.com/axegon/SkLite-dart.git"
+    source: git
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -685,7 +694,7 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.2.47"
+    version: "19.2.47+1"
   syncfusion_flutter_core:
     dependency: transitive
     description:

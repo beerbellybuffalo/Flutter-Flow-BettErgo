@@ -1,4 +1,5 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
+import 'package:better_sitt/model/positions.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
@@ -6,8 +7,16 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
 import 'today/today_widget.dart';
 import 'settings/settings_widget.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(PositionsAdapter());
+  await Hive.openBox<Positions>('positions');
+
   runApp(MyApp());
 }
 
@@ -39,6 +48,7 @@ class _NavBarPageState extends State<NavBarPage> {
 
   @override
   void initState() {
+
     super.initState();
     _currentPage = widget.initialPage ?? _currentPage;
   }
