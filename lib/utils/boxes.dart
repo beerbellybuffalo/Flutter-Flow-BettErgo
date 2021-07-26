@@ -3,5 +3,5 @@ import 'package:hive/hive.dart';
 
 class Boxes {
   static Box<Positions> getPositions()=>
-      Hive.box<Positions>('positions');
+      Hive.box<Positions>('Table 2');
 }

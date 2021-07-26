@@ -9,14 +9,20 @@ import 'today/today_widget.dart';
 import 'settings/settings_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:async';
+import 'package:flutter_blue/flutter_blue.dart';
+import '../bluetooth/bluetooth_widget.dart';
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
   Hive.registerAdapter(PositionsAdapter());
-  await Hive.openBox<Positions>('positions');
-
+  await Hive.openBox<Positions>('Table 2');
+  
+  //FlutterBlue.instance.connectedDevices.then((value) => null)
+  //new Timer.periodic(Duration(minutes: 1), (timer) {findModalPosition() });
+  
   runApp(MyApp());
 }
 

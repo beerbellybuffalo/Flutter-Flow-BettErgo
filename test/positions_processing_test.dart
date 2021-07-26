@@ -16,7 +16,7 @@ void main() async {
   // // await Hive.initFlutter();
   //
   // Hive.registerAdapter(PositionsAdapter());
-  // await Hive.openBox<Positions>('positions');
+  // await Hive.openBox<Positions>('Table 2');
 
 
   test("Model setting up", () async {

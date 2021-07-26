@@ -7,8 +7,9 @@ import '../no_bluetooth/no_bluetooth_widget.dart';
 import 'dart:math';
 import '../flutter_blue_widgets.dart'; //these are taken from github example, like buildServiceTiles etc.
 import 'dart:async';
-import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:convert';
 
 class BluetoothParent extends StatelessWidget {
   @override
@@ -29,6 +30,7 @@ class BluetoothParent extends StatelessWidget {
     );
   }
 }
+
 
 class FindDevicesScreen extends StatelessWidget {
   @override
@@ -135,6 +137,8 @@ class DeviceScreen extends StatelessWidget {
     ];
   }
 
+
+
   // for reading/writing to local documents directory https://medium.com/kick-start-fluttering/saving-data-to-local-storage-in-flutter-e20d973d88fa
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -144,7 +148,8 @@ class DeviceScreen extends StatelessWidget {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/bluetoothData.txt');
+    //return File('$path/bluetoothData.txt');
+    return File('$path/bluetoothData.json');
   }
 
   Future<String> readContent() async {
@@ -164,8 +169,16 @@ class DeviceScreen extends StatelessWidget {
   Future<File> writeContent(List<int> sensorData) async {
     final file = await _localFile;
     // TODO Add code here to convert from bytes to string
-    // Write the file
-    return file.writeAsString("\n"+sensorData.toString());
+    String sensorStr = String.fromCharCodes(sensorData);
+    // Get Datetime in ISO8601 string format //yyyy-MM-ddTHH:mm:ss.mmmuuuZ
+    String currentDatetime = DateTime.now().toIso8601String();
+    // Create map to be encoded
+    Map<String,dynamic> map = {
+      'datetime':currentDatetime,
+      'sensorData':sensorStr
+    };
+    // Write Datetime and sensor data to file
+    return file.writeAsString(jsonEncode(map), mode: FileMode.append);
   }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {

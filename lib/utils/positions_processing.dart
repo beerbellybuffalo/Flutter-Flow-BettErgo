@@ -10,7 +10,7 @@ import 'package:sklite/utils/io.dart';
 import 'boxes.dart';
 
 
-//Read data from json, inplace of bluetooth, can take away
+//Read data from json, in place of bluetooth, can take away
 Future<Map> getData(context) async {
   String data =
   await DefaultAssetBundle.of(context).loadString("assets/yixuan.json");
