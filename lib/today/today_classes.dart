@@ -7,7 +7,6 @@
 // //    2. Stacked Bar Graph, i.e. No Time
 //
 
-
 import 'dart:core';
 
 //var inComingData = new List();
@@ -17,7 +16,7 @@ class TotalSittingTime {
   int _totalSittingTime = 0;
   int startingPoint = 0;
   //var inComingData = new List();
-  var ls= []; //cannot initialise variable to List here because null safe?
+  var ls = []; //cannot initialise variable to List here because null safe?
   var posNum = [1, 2, 3, 4, 5, 6, 7, 8];
 
   //Constructor
@@ -29,7 +28,8 @@ class TotalSittingTime {
       if (posNum.contains(ls[i])) {
         _totalSittingTime++; // assuming called every minute
       }
-    };
+    }
+    ;
     startingPoint = startingPoint + ls.length;
 
     return _totalSittingTime;
@@ -40,10 +40,10 @@ class TotalSittingTime {
   }
 }
 
-class GoodSittingTime{
+class GoodSittingTime {
   int nullCounter = 0;
-  int sessionCounter = 0;
-  int goodTimeLength = 0;
+  int sessionCounter = 0; //
+  int goodTimeLength = 0; //Green ring value
 
   int checkPostureCategory(int thisPosture) {
     //only 8 is postures_2
@@ -51,25 +51,22 @@ class GoodSittingTime{
     List postures_0 = [2, 4, 6];
     if (thisPosture == 8) {
       return 2;
-    }
-    else if (postures_1.contains(thisPosture)) {
+    } else if (postures_1.contains(thisPosture)) {
       return 1;
-    }
-    else if (postures_0.contains(thisPosture)) {
+    } else if (postures_0.contains(thisPosture)) {
       return 0;
-    }
-    else
+    } else
       return -1; //-1 for when not sitting, can't use null
   }
-  
+
   void incrementGoodPostureTime(int thisPosture) {
     int currentPosture = checkPostureCategory(thisPosture);
     if (currentPosture == -1) {
       nullCounter++;
-    }
-    else {
+    } else {
       sessionCounter++;
-      if (nullCounter > 5) { //reset session
+      if (nullCounter > 5) {
+        //reset session
         sessionCounter = 0;
       }
       if (sessionCounter <= 20 && currentPosture == 2) {
@@ -79,8 +76,26 @@ class GoodSittingTime{
   }
 }
 
-// Good Sitting Time
+// class transferFunction {
+//   // 2 puprpose:
+//   //  1. Pull/push data from Table 1 to 2
+//   //  2. Trigger Math/Logic equations to fill up the rest of the table
+//
+//   // When new data from table 1 comes in
+//   var dateTime = box.getAt(table1.length()).DateTime;
+//   var predictedPos = box.get(table1.length()).Position;
+//
+//   table2.add(datetime).DateTime;
+//   table2.add(predictedPor).Position;
+//
+//   AppleGraphLogic.getData();
+//   Graph2Logic.getData();
+//
+// }
 
+
+
+// Good Sitting Time
 
 // class GreenRingData{
 //
@@ -121,8 +136,7 @@ class GoodSittingTime{
 //
 // }
 
-//
-// // Position Change Frequency
+//    Position Change Frequency
 //
 // int numberOfNull = 0;
 //
