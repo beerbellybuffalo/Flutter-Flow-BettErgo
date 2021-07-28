@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:better_sitt/model/positions.dart';
+import 'package:better_sitt/model/rawdata.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

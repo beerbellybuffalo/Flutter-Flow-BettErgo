@@ -1,5 +1,5 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
-import 'package:better_sitt/model/positions.dart';
+import 'package:better_sitt/model/rawdata.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
