@@ -31,7 +31,7 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   //Apple Graph Stuff
   final Random random = Random();
-  int count2 = 0;
+  int count_2 = 0;
   List<AppleGraphData> appleChartData = [];
   bool pressAttention1 = false;
   bool pressAttention2 = false;
@@ -100,8 +100,9 @@ class _TodayWidgetState extends State<TodayWidget> {
                         'assets/images/UI_avatar@2x.png',
                       ),
                     ),
+
                     AutoSizeText(
-                      'Hello, Thomas',
+                      'Hello, Friendo',
                       textAlign: TextAlign.left,
                       style: FlutterFlowTheme.title3.override(
                         fontFamily: 'Poppins',
@@ -331,7 +332,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                       appleChartData.clear();
                                                       appleChartData = getAppleChartData();
                                                     }
-                                                    count2++;
+                                                    count_2++;
                                                     setState(() {
                                                       pressAttention1 = true;
                                                       pressAttention2 = false;
@@ -357,14 +358,14 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    if (count2 == 0) {
+                                                    if (count_2 == 0) {
                                                       appleChartData.clear();
                                                       appleChartData = data2;
                                                     } else {
                                                       appleChartData.clear();
                                                       appleChartData = getAppleChartData();
                                                     }
-                                                    count2++;
+                                                    count_2++;
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = true;
@@ -390,14 +391,14 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    if (count2 == 0) {
+                                                    if (count_2 == 0) {
                                                       appleChartData.clear();
                                                       appleChartData = data2;
                                                     } else {
                                                       appleChartData.clear();
                                                       appleChartData = getAppleChartData();
                                                     }
-                                                    count2++;
+                                                    count_2++;
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = false;
