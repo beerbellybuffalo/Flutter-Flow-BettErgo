@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -40,7 +42,7 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention3 = false;
   @override
   void initState() {
-    appleChartData = data2;
+    appleChartData = getAppleChartData();
     super.initState();
   }
 
@@ -318,23 +320,25 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
-                                                    'Material Button',
+                                                    'Back Supported',
                                                     style: new TextStyle(
-                                                      fontSize: 12.0,
+                                                      fontSize: 11.0,
                                                       fontFamily: 'Poppins',
                                                       // color: Theme.of(context).primaryColor,
-                                                      color: pressAttention1 ? Colors.white : Colors.white70
+                                                      color: pressAttention1 ? Colors.white : Colors.white54
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    if (2 == 0) {
-                                                      appleChartData.clear();
-                                                      appleChartData = data2;
-                                                    } else {
-                                                      appleChartData.clear();
-                                                      appleChartData = getAppleChartData();
-                                                    }
-                                                    count_2++;
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = true;
                                                       pressAttention2 = false;
@@ -352,22 +356,25 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
-                                                    'Material Button',
+                                                    'Back Swaying L/M/R',
                                                     style: new TextStyle(
-                                                      fontSize: 12.0,
+                                                      fontSize: 11.0,
                                                       fontFamily: 'Poppins',
-                                                      color: pressAttention2 ? Colors.white : Colors.white70
+
+                                                      color: pressAttention2 ? Colors.white : Colors.white54
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    if (count_2 == 0) {
-                                                      appleChartData.clear();
-                                                      appleChartData = data2;
-                                                    } else {
-                                                      appleChartData.clear();
-                                                      appleChartData = getAppleChartData();
-                                                    }
-                                                    count_2++;
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = true;
@@ -385,22 +392,24 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
-                                                    'Material Button',
+                                                    'Legs Supported',
                                                     style: new TextStyle(
-                                                      fontSize: 12.0,
+                                                      fontSize: 11.0,
                                                       fontFamily: 'Poppins',
-                                                      color: pressAttention3 ? Colors.white : Colors.white70
+                                                      color: pressAttention3 ? Colors.white : Colors.white54
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    if (count_2 == 0) {
-                                                      appleChartData.clear();
-                                                      appleChartData = data2;
-                                                    } else {
-                                                      appleChartData.clear();
-                                                      appleChartData = getAppleChartData();
-                                                    }
-                                                    count_2++;
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = false;
@@ -483,8 +492,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         color: Colors.white38,
                                         fontFamily: 'Poppins',
                                         fontSize: 10,
-                                        //fontStyle: FontStyle.italic,
-                                        //fontWeight: FontWeight.w500
                                       )
                                   ),
                                 ),
@@ -556,11 +563,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         fontFamily: 'Poppins',
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.info,
-                                      color: FlutterFlowTheme.tertiaryColor,
-                                      size: 24,
-                                    )
+
                                   ],
                                 ),
                               ),
@@ -574,27 +577,27 @@ class _TodayWidgetState extends State<TodayWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-yyy.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-nny.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-nyn.png',
                                   fit: BoxFit.contain,
@@ -759,9 +762,6 @@ class _TodayWidgetState extends State<TodayWidget> {
       goodSittingTime = '3hr 53min';
       timer_count = 0;
     }
-    // if (timer != null) {
-    //   timer.cancel();
-    // }
     return infoData;
   }
 
@@ -776,7 +776,7 @@ class _TodayWidgetState extends State<TodayWidget> {
         PostureTimingData('P6', 0, 0, 0),
         PostureTimingData('P7', 0, 5, 0),
         PostureTimingData('P8', 0, 1, 0),
-
+        PostureTimingData('P8', 0, 0, 0),
       ];
       timer_count++;
     } else if (timer_count == 1) {
@@ -807,31 +807,31 @@ class _TodayWidgetState extends State<TodayWidget> {
     return PostureTimingChartData;
   }
 
-  List<AppleGraphData> data2 = [
-    AppleGraphData(x: '1', y: 5, y2: 55),
-    AppleGraphData(x: '2', y: 10, y2: 50),
-    AppleGraphData(x: '3', y: 15, y2: 45),
-    AppleGraphData(x: '4', y: 20, y2: 40),
-    AppleGraphData(x: '5', y: 25, y2: 35),
-    AppleGraphData(x: '6', y: 30, y2: 30),
-    AppleGraphData(x: '7', y: 35, y2: 25),
-    AppleGraphData(x: '8', y: 40, y2: 20),
-    AppleGraphData(x: '9', y: 45, y2: 15),
-    AppleGraphData(x: '10', y: 50, y2: 10),
-    AppleGraphData(x: '11', y: 55, y2: 5),
-    AppleGraphData(x: '12', y: 60, y2: 0),
-    AppleGraphData(x: '13', y: 55, y2: 5),
-    AppleGraphData(x: '14', y: 50, y2: 10),
-    AppleGraphData(x: '15', y: 45, y2: 15),
-    AppleGraphData(x: '16', y: 40, y2: 20),
-    AppleGraphData(x: '17', y: 35, y2: 25),
-    AppleGraphData(x: '18', y: 30, y2: 30),
-    AppleGraphData(x: '19', y: 25, y2: 35),
-    AppleGraphData(x: '20', y: 20, y2: 40),
-    AppleGraphData(x: '21', y: 15, y2: 45),
-    AppleGraphData(x: '22', y: 10, y2: 50),
-    AppleGraphData(x: '23', y: 5, y2: 55),
-    AppleGraphData(x: '24', y: 0, y2: 60), ];
+  // List<AppleGraphData> data2 = [
+  //   AppleGraphData(x: '1', y: 5, y2: 55),
+  //   AppleGraphData(x: '2', y: 10, y2: 50),
+  //   AppleGraphData(x: '3', y: 15, y2: 45),
+  //   AppleGraphData(x: '4', y: 20, y2: 40),
+  //   AppleGraphData(x: '5', y: 25, y2: 35),
+  //   AppleGraphData(x: '6', y: 30, y2: 30),
+  //   AppleGraphData(x: '7', y: 35, y2: 25),
+  //   AppleGraphData(x: '8', y: 40, y2: 20),
+  //   AppleGraphData(x: '9', y: 45, y2: 15),
+  //   AppleGraphData(x: '10', y: 50, y2: 10),
+  //   AppleGraphData(x: '11', y: 55, y2: 5),
+  //   AppleGraphData(x: '12', y: 60, y2: 0),
+  //   AppleGraphData(x: '13', y: 55, y2: 5),
+  //   AppleGraphData(x: '14', y: 50, y2: 10),
+  //   AppleGraphData(x: '15', y: 45, y2: 15),
+  //   AppleGraphData(x: '16', y: 40, y2: 20),
+  //   AppleGraphData(x: '17', y: 35, y2: 25),
+  //   AppleGraphData(x: '18', y: 30, y2: 30),
+  //   AppleGraphData(x: '19', y: 25, y2: 35),
+  //   AppleGraphData(x: '20', y: 20, y2: 40),
+  //   AppleGraphData(x: '21', y: 15, y2: 45),
+  //   AppleGraphData(x: '22', y: 10, y2: 50),
+  //   AppleGraphData(x: '23', y: 5, y2: 55),
+  //   AppleGraphData(x: '24', y: 0, y2: 60), ];
 
   double _getRandomValue(int min, int max) {
     return min + random.nextInt(max - min).toDouble();
@@ -889,7 +889,6 @@ class _TodayWidgetState extends State<TodayWidget> {
 
     return appleChartData;
   }
-
 
 }
 

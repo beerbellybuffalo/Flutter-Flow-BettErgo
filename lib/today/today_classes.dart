@@ -141,7 +141,7 @@ class GoodSittingTime {
 // int numberOfNull = 0;
 //
 // int getNumberOfSwitchPositions() {
-//   int timesUserSwitch;
+//   int timesUserSwitch = 0;
 //   var box = Hive.box('durationPosTable');
 //
 //   // still sitting (last entry not null)
