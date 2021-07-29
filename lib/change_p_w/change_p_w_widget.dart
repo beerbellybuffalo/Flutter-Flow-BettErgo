@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -13,15 +15,23 @@ class ChangePWWidget extends StatefulWidget {
 }
 
 class _ChangePWWidgetState extends State<ChangePWWidget> {
-  late TextEditingController textController1;
-  late TextEditingController textController2;
+  final currentPWController = TextEditingController();
+  final newPWController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: 'my current password');
-    textController2 = TextEditingController();
+  }
+
+  void setPW() async {
+    final prefs = await SharedPreferences.getInstance();
+    String oldPW = prefs.getString('Password')??"-";
+    String newPW = newPWController.text;
+    prefs.setString('Password', newPW);
+    print("old password: $oldPW");
+    print("updated password: $newPW");
+    setState(() {});
   }
 
   @override
@@ -84,7 +94,7 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController1,
+                              controller: currentPWController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'your current password',
@@ -133,7 +143,7 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController2,
+                              controller: newPWController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'new password',
@@ -182,13 +192,17 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
                         alignment: Alignment(0, 0),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'Settings'),
-                              ),
-                            );
+                            final prefs = await SharedPreferences.getInstance();
+                            if (prefs.getString('Password')==currentPWController.text){
+                              setPW();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NavBarPage(initialPage: 'Settings'),
+                                ),
+                              );
+                            };
                           },
                           text: 'Confirm',
                           options: FFButtonOptions(

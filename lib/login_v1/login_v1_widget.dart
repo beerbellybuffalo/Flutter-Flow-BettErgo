@@ -1,5 +1,6 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
 import 'package:better_sitt/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -17,18 +18,65 @@ class LoginV1Widget extends StatefulWidget {
 }
 
 class _LoginV1WidgetState extends State<LoginV1Widget> {
-  late TextEditingController emailTextController;
-  late TextEditingController passwordTextController;
-  late bool passwordVisibility;
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late bool passwordVisibility;
+  late String alertDialogText;
+  late List<TextEditingController> controllerLs;
 
   @override
   void initState() {
     super.initState();
-    emailTextController = TextEditingController();
-    passwordTextController = TextEditingController();
     passwordVisibility = false;
+    controllerLs = [emailTextController,passwordTextController];
   }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Unable to Login'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(alertDialogText),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> loginUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final anyEmptyFields = controllerLs.any((TextEditingController T) => T.text.isEmpty);
+    final anyMismatched = (emailTextController.text!=prefs.getString('Email')||passwordTextController.text!=prefs.getString('Password'));
+    //Alert Dialog if any uncompleted fields or conflicting passwords
+    if (anyEmptyFields || anyMismatched) {
+      if (anyEmptyFields){
+        alertDialogText = "All Fields Must be Filled!";
+      }
+      else if (anyMismatched){
+        alertDialogText = "Wrong Password or Email, try again!";
+      }
+      _showMyDialog();
+      return false;
+    }
+    return true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -273,13 +321,11 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                   0, 0, 0, 20),
                                               child: FFButtonWidget(
                                                 onPressed: () async {
-                                                  await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          NavBarPage(),
-                                                    ),
-                                                  );
+                                                  loginUser().then((isRegistered) {
+                                                    if(isRegistered){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => NavBarPage(),),);
+                                                    }
+                                                  });
                                                   // print('Button pressed ...');
                                                 },
                                                 text: 'Log In',
