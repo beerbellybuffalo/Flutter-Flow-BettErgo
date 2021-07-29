@@ -122,6 +122,24 @@ class FindDevicesScreen extends StatelessWidget {
   }
 }
 
+//pass decoded element from json array into factory constructor to get back the json object
+class BluetoothDataEntry {
+  late final DateTime datetime;
+  late final String sensorData;
+
+  BluetoothDataEntry({required this.datetime, required this.sensorData});
+
+  factory BluetoothDataEntry.fromJson(Map<String, dynamic> json) {
+    return BluetoothDataEntry(datetime: json['datetime'], sensorData: json['sensorData']);
+  }
+
+  // Override toString to have a beautiful log of student object
+  @override
+  String toString() {
+    return 'BluetoothDataEntry: {datetime = $datetime, sensorData = $sensorData}';
+  }
+}
+
 class DeviceScreen extends StatelessWidget {
   const DeviceScreen({Key? key, required this.device}) : super(key: key);
 
@@ -148,7 +166,7 @@ class DeviceScreen extends StatelessWidget {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    //return File('$path/bluetoothData.txt');
+    print('$path/bluetoothData.json');
     return File('$path/bluetoothData.json');
   }
 
@@ -166,19 +184,37 @@ class DeviceScreen extends StatelessWidget {
   }
 
   //writes the characteristic to local storage
-  Future<File> writeContent(List<int> sensorData) async {
+  //we need to 1.decode the json 2.add the new entry into the array 3.encode and write to bluetoothData.json
+  Future<File> writeContent(List<int> sensorData) async {//sensorData is in bytes
     final file = await _localFile;
-    // TODO Add code here to convert from bytes to string
+    // convert from bytes to string
     String sensorStr = String.fromCharCodes(sensorData);
+    // TODO convert sensorStr to List<double> so that can pass through ML. once implemented, amend BluetoothDataEntry class to take List<double> in constructor instead of String
     // Get Datetime in ISO8601 string format //yyyy-MM-ddTHH:mm:ss.mmmuuuZ
-    String currentDatetime = DateTime.now().toIso8601String();
-    // Create map to be encoded
-    Map<String,dynamic> map = {
-      'datetime':currentDatetime,
-      'sensorData':sensorStr
-    };
+    DateTime currentDatetime = DateTime.now();
+    String dateTimeStr = currentDatetime.toIso8601String();
+    var decodedJson;
+    var newJson = [];
+    readContent().then((jsonString) => decodedJson = jsonDecode(jsonString));
+    // If the JSON file holds an array, the decoded json is a list.
+    // We will do the loop through this list to parse objects.
+    if (decodedJson != null) {
+      decodedJson.forEach((element) {
+        final data = BluetoothDataEntry.fromJson(element);
+        newJson.add(data);
+      });
+    }
+    newJson.add(BluetoothDataEntry(datetime: currentDatetime, sensorData: '$sensorStr'));
+    print("writing to bluetoothData.json");
+    return file.writeAsString(jsonEncode(newJson)+"\n", mode: FileMode.append);
+    // // Create map to be encoded
+    // Map<String,dynamic> map = {
+    //   'datetime':dateTimeStr,
+    //   'sensorData':sensorStr
+    // };
+
     // Write Datetime and sensor data to file
-    return file.writeAsString(jsonEncode(map), mode: FileMode.append);
+    //return file.writeAsString(jsonEncode(map)+"\n", mode: FileMode.append);
   }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
