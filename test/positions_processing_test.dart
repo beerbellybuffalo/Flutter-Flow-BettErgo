@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:better_sitt/model/rawdata.dart';
@@ -11,13 +12,16 @@ import 'package:sklite/tree/tree.dart';
 
 
 void main() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  // // WidgetsFlutterBinding.ensureInitialized();
-  // // await Hive.initFlutter();
+  // TestWidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Hive.initFlutter();
   //
   // Hive.registerAdapter(PositionsAdapter());
   // await Hive.openBox<Positions>('Table 2');
 
+  test("test test",() {
+    expect("1","1");
+  });
 
   test("Model setting up", () async {
     final model = await Model.create();

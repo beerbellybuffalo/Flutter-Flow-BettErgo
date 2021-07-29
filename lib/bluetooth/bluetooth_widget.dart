@@ -1,3 +1,5 @@
+import 'package:better_sitt/utils/positions_processing.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -183,38 +185,17 @@ class DeviceScreen extends StatelessWidget {
     }
   }
 
-  //writes the characteristic to local storage
+  //Writes the characteristic to Hive
   //we need to 1.decode the json 2.add the new entry into the array 3.encode and write to bluetoothData.json
-  Future<File> writeContent(List<int> sensorData) async {//sensorData is in bytes
-    final file = await _localFile;
-    // convert from bytes to string
-    String sensorStr = String.fromCharCodes(sensorData);
-    // TODO convert sensorStr to List<double> so that can pass through ML. once implemented, amend BluetoothDataEntry class to take List<double> in constructor instead of String
-    // Get Datetime in ISO8601 string format //yyyy-MM-ddTHH:mm:ss.mmmuuuZ
-    DateTime currentDatetime = DateTime.now();
-    String dateTimeStr = currentDatetime.toIso8601String();
-    var decodedJson;
-    var newJson = [];
-    readContent().then((jsonString) => decodedJson = jsonDecode(jsonString));
-    // If the JSON file holds an array, the decoded json is a list.
-    // We will do the loop through this list to parse objects.
-    if (decodedJson != null) {
-      decodedJson.forEach((element) {
-        final data = BluetoothDataEntry.fromJson(element);
-        newJson.add(data);
-      });
-    }
-    newJson.add(BluetoothDataEntry(datetime: currentDatetime, sensorData: '$sensorStr'));
-    print("writing to bluetoothData.json");
-    return file.writeAsString(jsonEncode(newJson)+"\n", mode: FileMode.append);
-    // // Create map to be encoded
-    // Map<String,dynamic> map = {
-    //   'datetime':dateTimeStr,
-    //   'sensorData':sensorStr
-    // };
+  Future<void> writeContent(List<int> sensorDataBytes) async {//sensorData is in bytes
 
-    // Write Datetime and sensor data to file
-    //return file.writeAsString(jsonEncode(map)+"\n", mode: FileMode.append);
+    // log(sensorData.toString());
+
+    // Convert from bytes to string to List<double>
+    List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
+    DateTime currentDatetime = DateTime.now();
+    predictAndStore(currentDatetime,sensorData);
+
   }
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {

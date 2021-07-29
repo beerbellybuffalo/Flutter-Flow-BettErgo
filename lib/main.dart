@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
+import 'model/processeddata.dart';
 import 'today/today_widget.dart';
 import 'settings/settings_widget.dart';
 import 'package:hive/hive.dart';
@@ -17,8 +18,10 @@ Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  Hive.registerAdapter(PositionsAdapter());
-  await Hive.openBox<Positions>('Table 2');
+  Hive.registerAdapter(RawDataAdapter());
+  await Hive.openBox<RawData>('rawdata');
+  Hive.registerAdapter(ProcessedDataAdapter());
+  await Hive.openBox<RawData>('processeddata');
   
   //FlutterBlue.instance.connectedDevices.then((value) => null)
   //new Timer.periodic(Duration(minutes: 1), (timer) {findModalPosition() });

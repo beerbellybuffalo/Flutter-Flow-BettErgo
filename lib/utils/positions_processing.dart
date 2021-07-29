@@ -51,6 +51,7 @@ class Model{
 
   // Future that completes when the new Model is ready to use
   static Future<Model> create() async {
+    stderr.writeln("harlo");
     Model model = Model._();
     await model._getModel();
     return model;

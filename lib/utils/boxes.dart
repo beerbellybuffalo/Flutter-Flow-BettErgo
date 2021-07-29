@@ -8,6 +8,6 @@ class Boxes {
       Hive.box<RawData>('rawdata');
   static Box<ProcessedData> getProcessedDataBox()=>
       Hive.box<ProcessedData>('processeddata');
-  static Box<VisualisationData> getVisualisationDataBox()=>
-      Hive.box<VisualisationData>('visualisationdata');
+  // static Box<VisualisationData> getVisualisationDataBox()=>
+  //     Hive.box<VisualisationData>('visualisationdata');
 }
