@@ -44,7 +44,7 @@ Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async{
 }
 
 class Model{
-  DecisionTreeClassifier model;
+ late  DecisionTreeClassifier model;
 
   // Private constructor, use create() to get an instance
   Model._();
