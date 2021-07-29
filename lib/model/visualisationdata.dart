@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 // part 'visualisationdata.g.dart';
 
-// @HiveType(typeId: 0)
+// @HiveType(typeId: 2)
 // class VisualisationData extends HiveObject{
 //   @HiveField(0)
 //   late DateTime dateTime;
@@ -10,6 +10,6 @@ import 'package:hive/hive.dart';
 //   @HiveField(1)
 //   late int graph1data;
 //
-//   @HiveField(1)
+//   @HiveField(2)
 //   late int graph2data;
 // }

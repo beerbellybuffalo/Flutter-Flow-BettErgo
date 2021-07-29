@@ -8,7 +8,7 @@ part of 'processeddata.dart';
 
 class ProcessedDataAdapter extends TypeAdapter<ProcessedData> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
   ProcessedData read(BinaryReader reader) {

@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'processeddata.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class ProcessedData extends HiveObject{
 
   @HiveField(0)
