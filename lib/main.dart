@@ -1,13 +1,33 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
+// import 'package:better_sitt/login_v1/models/user.dart';
+// import 'package:better_sitt/login_v1/services/auth.dart';
+import 'package:better_sitt/model/positions.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
+import 'package:provider/provider.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
+import 'login_v1/authentication_services.dart';
+import 'login_v1/login_v1_widget.dart';
 import 'today/today_widget.dart';
 import 'settings/settings_widget.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+
+Future main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(PositionsAdapter());
+  await Hive.openBox<Positions>('positions');
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
@@ -24,6 +44,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// class AuthenticationWrapper extends StatelessWidget {
+//   const AuthenticationWrapper({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     final fireBaseUser = context.watch<User>();
+//     if (fireBaseUser != null){
+//       return NavBarPage();
+//     }
+//     return LoginV1Widget();
+//   }
+// }
+
+
 class NavBarPage extends StatefulWidget {
   NavBarPage({Key? key, this.initialPage}) : super(key: key);
 
@@ -39,6 +74,7 @@ class _NavBarPageState extends State<NavBarPage> {
 
   @override
   void initState() {
+
     super.initState();
     _currentPage = widget.initialPage ?? _currentPage;
   }

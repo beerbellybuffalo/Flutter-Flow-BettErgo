@@ -25,6 +25,34 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
     );
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Harlo harlo this is something yixuan wants me todo'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('hot dog sausage brb'),
+                Text('yixuan like this can anot'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes good job crystal'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +112,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                   weekStartsMonday: false,
                   onChange: (DateTimeRange newSelectedDate) {
                     setState(() => calendarSelectedDay = newSelectedDate);
+                    _showMyDialog();
                   },
                   titleStyle: FlutterFlowTheme.title3.override(
                     fontFamily: 'Poppins',
@@ -107,3 +136,5 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
     );
   }
 }
+
+
