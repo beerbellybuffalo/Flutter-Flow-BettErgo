@@ -43,28 +43,12 @@ class TotalSittingTime {
   }
 }
 
+//TODO update the unit tests to have 19 positions
 class GoodSittingTime{
   int nullCounter = 0;
   int sessionCounter = 0;
   int goodTimeLength = 0;
 
-  int checkPostureCategory(int thisPosture) {
-    //only 8 is postures_2
-    List postures_1 = [1, 3, 5, 7];
-    List postures_0 = [2, 4, 6];
-    if (thisPosture == 8) {
-      return 2;
-    }
-    else if (postures_1.contains(thisPosture)) {
-      return 1;
-    }
-    else if (postures_0.contains(thisPosture)) {
-      return 0;
-    }
-    else
-      return -1; //-1 for when not sitting, can't use null
-  }
-  
   void incrementGoodPostureTime(int thisPosture) {
     int currentPosture = checkPostureCategory(thisPosture);
     if (currentPosture == -1) {
@@ -81,6 +65,24 @@ class GoodSittingTime{
     }
   }
 }
+
+int checkPostureCategory(int thisPosture) {
+  List<int> goodPos = [11];
+  List<int> mehPos = [2, 5, 8, 14, 17];
+  List<int> badPos = [1, 3, 4, 6, 7, 9, 10, 12, 13, 15, 16, 18];
+  if (goodPos.contains(thisPosture)) {
+    return 2;
+  }
+  else if (mehPos.contains(thisPosture)) {
+    return 1;
+  }
+  else if (badPos.contains(thisPosture)) {
+    return 0;
+  }
+  else
+    return -1; //-1 for when not sitting, can't use null
+}
+
 
 void setHiveAppleGraph(DateTime dateTime, int position){ //CALL THIS EVERY MINUTE
   //Check isBack isSide isLeg for position

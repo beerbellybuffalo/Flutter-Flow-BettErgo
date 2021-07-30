@@ -33,6 +33,8 @@ class _TodayWidgetState extends State<TodayWidget> {
   late Timer timer;
   @override
   void dispose(){
+    //TODO check if this solves the ring behaving weirdly
+    timer.cancel();
     super.dispose();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:better_sitt/model/processeddata.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:better_sitt/model/rawdata.dart';
 import 'package:flutter/material.dart';
@@ -22,17 +23,34 @@ Future<Map> getData(context) async {
 //Adds a position and datetime in hive
 Future<void> addRawData(DateTime dateTime,int position ) async {
 
-  final position = RawData()
+  final rawData = RawData()
     ..dateTime = dateTime
-    ..position = 0;
+    ..position = position;
 
   final box = Boxes.getRawDataBox();
-  box.add(position);
+  box.add(rawData);
 }
 
-//Given an index, get the row in hive
+//Given an index, get the object aka "row" in hive
 Future<void> getRawData(int index) async{
   final box = Boxes.getRawDataBox();
+  box.getAt(index);
+}
+
+Future<void> addProcessedData(DateTime _dateTime,int _position,int _category) async {
+
+  final processedData = ProcessedData()
+    ..dateTime = _dateTime
+    ..position = _position
+    ..category = _category;
+
+  final box = Boxes.getProcessedDataBox();
+  box.add(processedData);
+}
+
+//Given an index, get the object aka "row" in hive
+Future<void> getProcessedData(int index) async{
+  final box = Boxes.getProcessedDataBox();
   box.getAt(index);
 }
 

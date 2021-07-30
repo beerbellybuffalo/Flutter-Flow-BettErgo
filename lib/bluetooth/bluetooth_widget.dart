@@ -35,6 +35,7 @@ class BluetoothParent extends StatelessWidget {
 
 
 class FindDevicesScreen extends StatelessWidget {
+  late Timer myTimer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +64,10 @@ class FindDevicesScreen extends StatelessWidget {
                       builder: (c, snapshot) {
                         if (snapshot.data ==
                             BluetoothDeviceState.connected) {
+                          int counter = 0;
+                          // const oneSec = const Duration(seconds:1);
+                          // print('Timer Started!');
+                          // myTimer = Timer.periodic(oneSec, (Timer t) {counter++;print('hi!$counter');});
                           return RaisedButton(
                             child: Text('OPEN'),
                             onPressed: () => Navigator.of(context).push(
@@ -71,7 +76,11 @@ class FindDevicesScreen extends StatelessWidget {
                                         DeviceScreen(device: d))),
                           );
                         }
-                        return Text(snapshot.data.toString());
+                        // else {
+                        //   myTimer.cancel();
+                        //   print('Timer Cancelled!');
+                          return Text(snapshot.data.toString());
+                        // }
                       },
                     ),
                   ))
@@ -166,6 +175,7 @@ class DeviceScreen extends StatelessWidget {
     return directory.path;
   }
 
+  //not in use currently because using Hive
   Future<File> get _localFile async {
     final path = await _localPath;
     print('$path/bluetoothData.json');
@@ -195,8 +205,8 @@ class DeviceScreen extends StatelessWidget {
     List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
     DateTime currentDatetime = DateTime.now();
     predictAndStore(currentDatetime,sensorData);
-
   }
+
 
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     //String cValue;
@@ -291,7 +301,7 @@ class DeviceScreen extends StatelessWidget {
                     : Icon(Icons.bluetooth_disabled),
                 title: Text(
                     'Device is ${snapshot.data.toString().split('.')[1]}.'),
-                subtitle: Text('${device.id}'),
+                subtitle: Text('${device.id}'), //device.discoverServices().then((services) => services[2].uuid) //index 2 is the one with sensor data
                 trailing: StreamBuilder<bool>(
                   stream: device.isDiscoveringServices,
                   initialData: false,
@@ -317,18 +327,18 @@ class DeviceScreen extends StatelessWidget {
                 ),
               ),
             ),
-            StreamBuilder<int>(
-              stream: device.mtu,
-              initialData: 0,
-              builder: (c, snapshot) => ListTile(
-                title: Text('MTU Size'),
-                subtitle: Text('${snapshot.data} bytes'),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () => device.requestMtu(223),
-                ),
-              ),
-            ),
+            // StreamBuilder<int>(
+            //   stream: device.mtu,
+            //   initialData: 0,
+            //   builder: (c, snapshot) => ListTile(
+            //     title: Text('MTU Size'),
+            //     subtitle: Text('${snapshot.data} bytes'),
+            //     trailing: IconButton(
+            //       icon: Icon(Icons.edit),
+            //       onPressed: () => device.requestMtu(223),
+            //     ),
+            //   ),
+            // ),
             StreamBuilder<List<BluetoothService>>(
               stream: device.services,
               initialData: [],
