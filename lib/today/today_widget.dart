@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -15,8 +16,7 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  final String? BLEsensorStr;
-  TodayWidget({Key? key, this.BLEsensorStr}) : super(key: key);
+  TodayWidget({Key? key}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();
@@ -25,6 +25,9 @@ class TodayWidget extends StatefulWidget {
 class _TodayWidgetState extends State<TodayWidget> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  //var to store Username from sharedprefs
+  String? username;
 
   //Graph2 Stuff
   late List<SittData> infoData;
@@ -43,7 +46,15 @@ class _TodayWidgetState extends State<TodayWidget> {
   @override
   void initState() {
     appleChartData = getAppleChartData();
+    getUsername().then((value) { username = value;});
     super.initState();
+  }
+
+  Future getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Username");
+    String _username = (prefs.getString('Username') ?? "-");
+    return _username;
   }
 
   late Timer timer;
@@ -95,27 +106,33 @@ class _TodayWidgetState extends State<TodayWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround, // initially spaceEvenly
                   children: [
-                    Container(
-                      width: 76,
-                      height: 76,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        width: 76,
+                        height: 76,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                          child: Image.asset(
+                            'assets/images/UI_avatar@2x.png',
+                          ),
                       ),
-                      child: Image.asset(
-                        'assets/images/UI_avatar@2x.png',
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: AutoSizeText(
+                        'Hello, $username',
+                        textAlign: TextAlign.center,
+                        style: FlutterFlowTheme.title3.override(
+                          fontFamily: 'Poppins',
+                          fontSize: 40,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
 
-                    AutoSizeText(
-                      'Hello, Friendo',
-                      textAlign: TextAlign.left,
-                      style: FlutterFlowTheme.title3.override(
-                        fontFamily: 'Poppins',
-                        fontSize: 40,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    )
                   ],
                 ),
               ),
