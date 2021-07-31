@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../flutter_flow/flutter_flow_calendar.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -15,6 +17,7 @@ class ArchiveWidget extends StatefulWidget {
 class _ArchiveWidgetState extends State<ArchiveWidget> {
   late DateTimeRange calendarSelectedDay;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  //String selectedDay = DateFormat('MMM d').format(calendarSelectedDay).toString();
 
   @override
   void initState() {
@@ -31,18 +34,33 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('TESTING THIS IS WHERE WE"LL PUT OUR GRAPHS'),
+          title: Text( 'The Date selected: $calendarSelectedDay',
+                        style: TextStyle(
+                          color: Colors.white
+          )),
+          backgroundColor: FlutterFlowTheme.primaryColor,
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('XXXXXXXXXXXXXXXXXXXXXXX'),
-                Text('XXXXXXXXXXXXXXXXXXXXXXX'),
+                Text( 'XXXXXXXXXXXXXXXXXXXXXXX',
+                      style: TextStyle(
+                        color: Colors.white70
+                )
+                ),
+                Text( 'XXXXXXXXXXXXXXXXXXXXXXX',
+                        style: TextStyle(
+                            color: Colors.white70
+                    )),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Close'),
+              child: const Text('Close',
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.secondaryColor,
+                                  )
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -52,6 +70,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +119,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
               padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.6,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.darkGrey,
                   borderRadius: BorderRadius.circular(25),
