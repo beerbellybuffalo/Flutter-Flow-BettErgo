@@ -1,4 +1,5 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
+// import 'package:better_sitt/login_v1/services/auth.dart';
 import 'package:better_sitt/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +25,9 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
   late bool passwordVisibility;
   late String alertDialogText;
   late List<TextEditingController> controllerLs;
+
+  // Authenticate
+  //final AuthService _auth = AuthService();
 
   @override
   void initState() {
@@ -175,132 +179,91 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       enabledBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
-                                                          color:
-                                                              Color(0x00000000),
+                                                          color:Color(0x00000000),
                                                           width: 1,
                                                         ),
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  4.0),
+                                                        borderRadius: const BorderRadius.only(
+                                                          topLeft: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
-                                                      focusedBorder:
-                                                          UnderlineInputBorder(
+                                                      focusedBorder: UnderlineInputBorder(
                                                         borderSide: BorderSide(
-                                                          color:
-                                                              Color(0x00000000),
+                                                          color:Color(0x00000000),
                                                           width: 1,
                                                         ),
                                                         borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  4.0),
+                                                            const BorderRadius.only(
+                                                          topLeft: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
                                                     ),
                                                     style: GoogleFonts.getFont(
                                                       'Open Sans',
-                                                      color: FlutterFlowTheme
-                                                          .mediumTurquoise,
-                                                      fontWeight:
-                                                          FontWeight.normal,
+                                                      color: FlutterFlowTheme.mediumTurquoise,
+                                                      fontWeight: FontWeight.normal,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  4, 0, 4, 20),
+                                              padding: EdgeInsets.fromLTRB(4, 0, 4, 20),
                                               child: Container(
                                                 width: 300,
                                                 height: 50,
                                                 decoration: BoxDecoration(
                                                   color: Color(0xFFE0E0E0),
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
+                                                  borderRadius: BorderRadius.circular(25),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      20, 2, 20, 2),
+                                                  padding: EdgeInsets.fromLTRB(20, 2, 20, 2),
                                                   child: TextFormField(
-                                                    controller:
-                                                        passwordTextController,
-                                                    obscureText:
-                                                        !passwordVisibility,
+                                                    controller: passwordTextController,
+                                                    obscureText: !passwordVisibility,
                                                     decoration: InputDecoration(
                                                       hintText: 'Password',
                                                       hintStyle:
                                                           GoogleFonts.getFont(
-                                                        'Open Sans',
-                                                        color: FlutterFlowTheme
-                                                            .mediumTurquoise,
-                                                        fontWeight:
-                                                            FontWeight.normal,
+                                                            'Open Sans',
+                                                        color: FlutterFlowTheme.mediumTurquoise,
+                                                        fontWeight: FontWeight.normal,
                                                       ),
                                                       enabledBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
-                                                          color:
-                                                              Color(0x00000000),
+                                                          color: Color(0x00000000),
                                                           width: 1,
                                                         ),
                                                         borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  4.0),
+                                                            const BorderRadius.only(
+                                                          topLeft: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
                                                       focusedBorder:
                                                           UnderlineInputBorder(
                                                         borderSide: BorderSide(
-                                                          color:
-                                                              Color(0x00000000),
+                                                          color: Color(0x00000000),
                                                           width: 1,
                                                         ),
                                                         borderRadius:
-                                                            const BorderRadius
-                                                                .only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  4.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  4.0),
+                                                            const BorderRadius.only(
+                                                          topLeft: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
                                                       contentPadding:
-                                                          EdgeInsets.fromLTRB(
-                                                              1, 0, 0, 0),
+                                                          EdgeInsets.fromLTRB(1, 12, 0, 0),
                                                       suffixIcon: InkWell(
                                                         onTap: () => setState(
-                                                          () => passwordVisibility =
-                                                              !passwordVisibility,
+                                                          () => passwordVisibility = !passwordVisibility,
                                                         ),
                                                         child: Icon(
-                                                          passwordVisibility
-                                                              ? Icons
-                                                                  .visibility_outlined
-                                                              : Icons
-                                                                  .visibility_off_outlined,
-                                                          color: FlutterFlowTheme
-                                                              .mediumTurquoise,
+                                                          passwordVisibility ? Icons.visibility_outlined
+                                                              : Icons.visibility_off_outlined,
+                                                          color: FlutterFlowTheme.mediumTurquoise,
                                                           size: 20,
                                                         ),
                                                       ),

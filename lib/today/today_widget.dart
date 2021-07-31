@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -13,7 +15,8 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  TodayWidget({Key? key}) : super(key: key);
+  final String? BLEsensorStr;
+  TodayWidget({Key? key, this.BLEsensorStr}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();
@@ -23,12 +26,25 @@ class _TodayWidgetState extends State<TodayWidget> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  //Graph Stuff
-  late List<SittData> chartData;
-  late List<PositionBarData> barChartData;
+  //Graph2 Stuff
+  late List<SittData> infoData;
+  late List<PostureTimingData> PostureTimingChartData;
   int timer_count =0;
   late String totalSittingTime;
   late String goodSittingTime;
+
+  //Apple Graph Stuff
+  final Random random = Random();
+  int count_2 = 0;
+  List<AppleGraphData> appleChartData = [];
+  bool pressAttention1 = false;
+  bool pressAttention2 = false;
+  bool pressAttention3 = false;
+  @override
+  void initState() {
+    appleChartData = getAppleChartData();
+    super.initState();
+  }
 
   late Timer timer;
   @override
@@ -41,14 +57,14 @@ class _TodayWidgetState extends State<TodayWidget> {
   @override
   Widget build(BuildContext context) {
 
-    chartData = getChartData();
-    barChartData = getBarChartData();
+    infoData = getChartData();
+    PostureTimingChartData = getPostureTimingChartData();
 
     timer = Timer(const Duration(seconds: 3), () {
       if (mounted)
         setState(() {
-          chartData = getChartData();
-          barChartData = getBarChartData();
+          infoData = getChartData();
+          PostureTimingChartData = getPostureTimingChartData();
           // text file update text to another time
           //updateString();
         });
@@ -77,7 +93,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround, // initially spaceEvenly
                   children: [
                     Container(
                       width: 76,
@@ -90,9 +106,10 @@ class _TodayWidgetState extends State<TodayWidget> {
                         'assets/images/UI_avatar@2x.png',
                       ),
                     ),
+
                     AutoSizeText(
-                      'Hello, Bob',
-                      textAlign: TextAlign.center,
+                      'Hello, Friendo',
+                      textAlign: TextAlign.left,
                       style: FlutterFlowTheme.title3.override(
                         fontFamily: 'Poppins',
                         fontSize: 40,
@@ -133,7 +150,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                             child: SfCircularChart(
                               series: <CircularSeries>[
                                 RadialBarSeries<SittData, String>(
-                                  dataSource: chartData,
+                                  dataSource: infoData,
                                   xValueMapper: (SittData data, _) => data.name,
                                   yValueMapper: (SittData data, _) => data.data,
                                   pointColorMapper: (SittData data, _) => data.pointColour,
@@ -170,10 +187,8 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 color: FlutterFlowTheme.tertiaryColor,
                                 fontSize: 22,
                                 fontWeight: FontWeight.normal,
-                              ),
-                            )
-                          ],
-                        ),
+                              ),)],
+                        ), // Total Sitting Time
                         Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -181,6 +196,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               'Good Sitting Time',
                               style: FlutterFlowTheme.bodyText1.override(
                                 fontFamily: 'Poppins',
+                                color: FlutterFlowTheme.secondaryColor,
                               ),
                             ),
                             Text(
@@ -193,7 +209,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                               ),
                             )
                           ],
-                        ),
+                        ), // Good Sitting Time
                         Column(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -209,11 +225,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 fontFamily: 'Poppins',
                                 fontSize: 22,
                                 fontWeight: FontWeight.normal,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+                              ),)],)], // Position Change Frequency
                     )
                   ],
                 ),
@@ -236,22 +248,190 @@ class _TodayWidgetState extends State<TodayWidget> {
                             Card(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(15),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  'assets/images/Daily Posture Card.png',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        child: SfCartesianChart(
+                                          primaryXAxis: CategoryAxis(
+                                              majorGridLines: MajorGridLines(width: 0),
+                                              labelStyle: TextStyle(
+                                                color: Colors.white38,
+                                                fontFamily: 'Poppins'
+                                          )),
+                                          primaryYAxis: NumericAxis(
+                                            maximum: 60,
+                                            majorGridLines: MajorGridLines(width: 0),
+                                            labelStyle: TextStyle(
+                                              color: Colors.white38,
+                                              fontFamily: 'Poppins'
+                                            )
+                                          ),
+                                          title: ChartTitle(
+                                              borderWidth: 5,
+                                              alignment: ChartAlignment.near,
+                                              text: 'Apple Graph',
+                                              textStyle: TextStyle(
+                                                color: Color(0xFFdfdfdf),
+                                                fontSize: 10,
+                                                fontFamily: 'Poppins',
+                                              )
+                                            ),
+                                            backgroundColor: FlutterFlowTheme.darkGrey,
+                                            series: <ChartSeries<AppleGraphData, String>>[
+                                              StackedColumnSeries<AppleGraphData, String>(
+                                                dataSource: appleChartData,
+                                                xValueMapper: (AppleGraphData data, _) => data.x,
+                                                yValueMapper: (AppleGraphData data, _) => data.y,
+                                                borderWidth: 0.4,
+                                                //borderColor: Colors.white54,
+                                                //color: Color(0xFFdfdfdf),
+                                                color: Color(0xFF00DBA3),
+                                                name: 'Sales1',
+                                              ),
+                                              StackedColumnSeries<AppleGraphData, String>(
+                                                dataSource: appleChartData,
+                                                xValueMapper: (AppleGraphData data, _) => data.x,
+                                                yValueMapper: (AppleGraphData data, _) => data.y2,
+                                                //color: FlutterFlowTheme.darkGrey,
+                                                color: Color(0xFFFF6B6B),
+                                                borderWidth: 0.4,
+                                                //borderColor: Colors.white54,
+                                                name: 'Sales1',
+                                              )
+                                            ]),
+                                      ),
+                                    ),
+                                    Container(
+                                        // width: double.infinity,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.darkGrey,
+                                        ),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Center(
+                                                child: MaterialButton(
+                                                  height: 15,
+                                                  minWidth: 100,
+                                                  //color: Theme.of(context).primaryColor,
+                                                  //textColor: Colors.black87,
+                                                  child: Text(
+                                                    'Back Supported',
+                                                    style: new TextStyle(
+                                                      fontSize: 11.0,
+                                                      fontFamily: 'Poppins',
+                                                      // color: Theme.of(context).primaryColor,
+                                                      color: pressAttention1 ? Colors.white : Colors.white54
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
+                                                    setState(() {
+                                                      pressAttention1 = true;
+                                                      pressAttention2 = false;
+                                                      pressAttention3 = false;
+                                                    }); // Set state
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Center(
+                                                child: MaterialButton(
+                                                  height: 15,
+                                                  //minWidth: 100,
+                                                  //color: Theme.of(context).primaryColor,
+                                                  //textColor: Colors.black87,
+                                                  child: Text(
+                                                    'Back Swaying L/M/R',
+                                                    style: new TextStyle(
+                                                      fontSize: 11.0,
+                                                      fontFamily: 'Poppins',
+
+                                                      color: pressAttention2 ? Colors.white : Colors.white54
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
+                                                    setState(() {
+                                                      pressAttention1 = false;
+                                                      pressAttention2 = true;
+                                                      pressAttention3 = false;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Center(
+                                                child: MaterialButton(
+                                                  height: 15,
+                                                  minWidth: 100,
+                                                  //color: Theme.of(context).primaryColor,
+                                                  //textColor: Colors.black87,
+                                                  child: Text(
+                                                    'Legs Supported',
+                                                    style: new TextStyle(
+                                                      fontSize: 11.0,
+                                                      fontFamily: 'Poppins',
+                                                      color: pressAttention3 ? Colors.white : Colors.white54
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    // if (count_2 == 0) {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = data2;
+                                                    // } else {
+                                                    //   appleChartData.clear();
+                                                    //   appleChartData = getAppleChartData();
+                                                    // }
+                                                    // count_2++;
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
+                                                    setState(() {
+                                                      pressAttention1 = false;
+                                                      pressAttention2 = false;
+                                                      pressAttention3 = true;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+
+                                )
                               ),
                             ),
                             Card(
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(15),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
@@ -266,30 +446,33 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         fontFamily: 'Poppins',
                                       )
                                   ),
-                                  backgroundColor: Color(0xFF545454),
+                                  backgroundColor: FlutterFlowTheme.darkGrey,
                                   legend: Legend(isVisible: false),
                                   series: <ChartSeries>[
-                                    StackedColumnSeries<PositionBarData, String>(
-                                      dataSource: barChartData,
-                                      //animationDuration: 1000,
-                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
-                                      yValueMapper: (PositionBarData data, _) => data.green,
+                                    StackedColumnSeries<PostureTimingData, String>(
+                                      width: 0.5,
+                                      dataSource: PostureTimingChartData,
+                                      // animationDuration: 2500,
+                                      xValueMapper: (PostureTimingData data, _) => data.postureCategory,
+                                      yValueMapper: (PostureTimingData data, _) => data.green,
                                       name: 'p1',
                                       color: Color(0xFFFF6B6B),
                                     ),
-                                    StackedColumnSeries<PositionBarData, String>(
-                                      dataSource: barChartData,
-                                      //animationDuration: 1000,
-                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
-                                      yValueMapper: (PositionBarData data, _) => data.yellow,
+                                    StackedColumnSeries<PostureTimingData, String>(
+                                      width: 0.5,
+                                      dataSource: PostureTimingChartData,
+                                      // animationDuration: 2500,
+                                      xValueMapper: (PostureTimingData data, _) => data.postureCategory,
+                                      yValueMapper: (PostureTimingData data, _) => data.yellow,
                                       name: 'p2',
                                       color: Color(0xFFFFE66D),
                                     ),
-                                    StackedColumnSeries<PositionBarData, String>(
-                                      dataSource: barChartData,
-                                      //animationDuration: 1000,
-                                      xValueMapper: (PositionBarData data, _) => data.expenseCategory,
-                                      yValueMapper: (PositionBarData data, _) => data.red,
+                                    StackedColumnSeries<PostureTimingData, String>(
+                                      width: 0.5,
+                                      dataSource: PostureTimingChartData,
+                                      // animationDuration: 2500,
+                                      xValueMapper: (PostureTimingData data, _) => data.postureCategory,
+                                      yValueMapper: (PostureTimingData data, _) => data.red,
                                       color: Color(0xFF00DBA3),
                                       name: 'p3',
                                       borderRadius: BorderRadius.only(
@@ -311,8 +494,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         color: Colors.white38,
                                         fontFamily: 'Poppins',
                                         fontSize: 10,
-                                        //fontStyle: FontStyle.italic,
-                                        //fontWeight: FontWeight.w500
                                       )
                                   ),
                                 ),
@@ -384,11 +565,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         fontFamily: 'Poppins',
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.info,
-                                      color: FlutterFlowTheme.tertiaryColor,
-                                      size: 24,
-                                    )
                                   ],
                                 ),
                               ),
@@ -402,27 +578,27 @@ class _TodayWidgetState extends State<TodayWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-yyy.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-nny.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
                               Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(),
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
                                   'assets/images/posture-nyn.png',
                                   fit: BoxFit.contain,
@@ -546,7 +722,7 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   List<SittData> getChartData() {
     if (timer_count == 0) {
-      chartData = <SittData>[
+      infoData = <SittData>[
         SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 40, Color(0xFF00DBA3)),
       ];
@@ -554,7 +730,7 @@ class _TodayWidgetState extends State<TodayWidget> {
       goodSittingTime = '3hr 25min';
       timer_count++;
      } else if (timer_count == 1) {
-      chartData = <SittData>[
+      infoData = <SittData>[
         SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 45, Color(0xFF00DBA3)),
       ];
@@ -562,7 +738,7 @@ class _TodayWidgetState extends State<TodayWidget> {
       goodSittingTime = '3hr 29min';
       timer_count++;
     } else if (timer_count == 2) {
-      chartData = <SittData>[
+      infoData = <SittData>[
         SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
         SittData('Second Ass', 50, Color(0xFF00DBA3)),
       ];//2413
@@ -570,7 +746,7 @@ class _TodayWidgetState extends State<TodayWidget> {
       goodSittingTime = '3hr 32min';
       timer_count++;
     } else if (timer_count == 3) {
-      chartData = <SittData>[
+      infoData = <SittData>[
         SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
         SittData('Second Ass', 55, Color(0xFF00DBA3)),
       ];
@@ -579,7 +755,7 @@ class _TodayWidgetState extends State<TodayWidget> {
       timer_count++;
     }
      else if (timer_count == 4) {
-      chartData = <SittData>[
+      infoData = <SittData>[
         SittData('My Ass', 50, Color(0xFFFF6B6B)),
         SittData('Second Ass', 60, Color(0xFF00DBA3)),
       ];
@@ -587,52 +763,132 @@ class _TodayWidgetState extends State<TodayWidget> {
       goodSittingTime = '3hr 53min';
       timer_count = 0;
     }
-    // if (timer != null) {
-    //   timer.cancel();
-    // }
-    return chartData;
+    return infoData;
   }
 
-  List<PositionBarData> getBarChartData() {
+  List<PostureTimingData> getPostureTimingChartData() {
     if (timer_count == 0) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 15, 0, 13),
-        PositionBarData('P2', 3, 0, 4),
-        PositionBarData('P3', 0, 0, 0),
-        PositionBarData('P4', 0, 0, 0),
-        PositionBarData('P5', 13, 2, 0),
-        PositionBarData('P6', 0, 0, 0),
-        PositionBarData('P7', 0, 5, 0),
-        PositionBarData('P8', 0, 1, 0),
-
+      PostureTimingChartData = <PostureTimingData>[
+        PostureTimingData('P1', 15, 0, 13),
+        PostureTimingData('P2', 3, 0, 4),
+        PostureTimingData('P3', 0, 0, 0),
+        PostureTimingData('P4', 0, 0, 0),
+        PostureTimingData('P5', 13, 2, 0),
+        PostureTimingData('P6', 0, 0, 0),
+        PostureTimingData('P7', 0, 5, 0),
+        PostureTimingData('P8', 0, 1, 0),
+        PostureTimingData('P8', 0, 0, 0),
       ];
       timer_count++;
     } else if (timer_count == 1) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 15, 4, 6),
-        PositionBarData('P2', 3, 0, 4),
-        PositionBarData('P3', 0, 0, 0),
-        PositionBarData('P4', 0, 0, 0),
-        PositionBarData('P5', 13, 2, 5),
-        PositionBarData('P6', 0, 0, 0),
-        PositionBarData('P7', 0, 8, 0),
-        PositionBarData('P8', 0, 5, 0),
+      PostureTimingChartData = <PostureTimingData>[
+        PostureTimingData('P1', 15, 4, 6),
+        PostureTimingData('P2', 3, 0, 4),
+        PostureTimingData('P3', 0, 0, 0),
+        PostureTimingData('P4', 0, 0, 0),
+        PostureTimingData('P5', 13, 2, 5),
+        PostureTimingData('P6', 0, 0, 0),
+        PostureTimingData('P7', 0, 8, 0),
+        PostureTimingData('P8', 0, 5, 0),
       ];
       timer_count++;
     } else if (timer_count == 2) {
-      barChartData = <PositionBarData>[
-        PositionBarData('P1', 21, 4, 6),
-        PositionBarData('P2', 3, 0, 4),
-        PositionBarData('P3', 2, 0, 0),
-        PositionBarData('P4', 0, 0, 0),
-        PositionBarData('P5', 13, 10, 5),
-        PositionBarData('P6', 0, 0, 0),
-        PositionBarData('P7', 0, 12, 0),
-        PositionBarData('P8', 0, 5, 3),
+      PostureTimingChartData = <PostureTimingData>[
+        PostureTimingData('P1', 21, 4, 6),
+        PostureTimingData('P2', 3, 0, 4),
+        PostureTimingData('P3', 2, 0, 0),
+        PostureTimingData('P4', 0, 0, 0),
+        PostureTimingData('P5', 13, 10, 5),
+        PostureTimingData('P6', 0, 0, 0),
+        PostureTimingData('P7', 0, 12, 0),
+        PostureTimingData('P8', 0, 5, 3),
       ];
       timer_count = 0;
     }
-    return barChartData;
+    return PostureTimingChartData;
+  }
+
+  // List<AppleGraphData> data2 = [
+  //   AppleGraphData(x: '1', y: 5, y2: 55),
+  //   AppleGraphData(x: '2', y: 10, y2: 50),
+  //   AppleGraphData(x: '3', y: 15, y2: 45),
+  //   AppleGraphData(x: '4', y: 20, y2: 40),
+  //   AppleGraphData(x: '5', y: 25, y2: 35),
+  //   AppleGraphData(x: '6', y: 30, y2: 30),
+  //   AppleGraphData(x: '7', y: 35, y2: 25),
+  //   AppleGraphData(x: '8', y: 40, y2: 20),
+  //   AppleGraphData(x: '9', y: 45, y2: 15),
+  //   AppleGraphData(x: '10', y: 50, y2: 10),
+  //   AppleGraphData(x: '11', y: 55, y2: 5),
+  //   AppleGraphData(x: '12', y: 60, y2: 0),
+  //   AppleGraphData(x: '13', y: 55, y2: 5),
+  //   AppleGraphData(x: '14', y: 50, y2: 10),
+  //   AppleGraphData(x: '15', y: 45, y2: 15),
+  //   AppleGraphData(x: '16', y: 40, y2: 20),
+  //   AppleGraphData(x: '17', y: 35, y2: 25),
+  //   AppleGraphData(x: '18', y: 30, y2: 30),
+  //   AppleGraphData(x: '19', y: 25, y2: 35),
+  //   AppleGraphData(x: '20', y: 20, y2: 40),
+  //   AppleGraphData(x: '21', y: 15, y2: 45),
+  //   AppleGraphData(x: '22', y: 10, y2: 50),
+  //   AppleGraphData(x: '23', y: 5, y2: 55),
+  //   AppleGraphData(x: '24', y: 0, y2: 60), ];
+
+  double _getRandomValue(int min, int max) {
+    return min + random.nextInt(max - min).toDouble();
+  }
+
+  List<AppleGraphData> getAppleChartData() {
+    appleChartData.add(AppleGraphData(
+        x: '1', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '2', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '3', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '4', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '5', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '6', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '7', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '8', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '9', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '10', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '11', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '12', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '13', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '14', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '15', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '16', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '17', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '18', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '19', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '20', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '21', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '22', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '23', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+    appleChartData.add(AppleGraphData(
+        x: '24', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
+
+    return appleChartData;
   }
 
 }
@@ -646,11 +902,17 @@ class SittData {
   final Color pointColour;
 }
 
-class PositionBarData {
-  PositionBarData( this.expenseCategory, this.green, this.yellow, this.red);
-  final String expenseCategory;
+class PostureTimingData {
+  PostureTimingData( this.postureCategory, this.green, this.yellow, this.red);
+  final String postureCategory;
   final num green;
   final num yellow;
   final num red;
+}
 
+class AppleGraphData {
+  AppleGraphData({this.x, this.y, this.y2});
+  final String? x;
+  final double? y;
+  final double? y2;
 }
