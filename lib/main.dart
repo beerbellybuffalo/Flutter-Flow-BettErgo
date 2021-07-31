@@ -12,7 +12,6 @@ import 'archive/archive_widget.dart';
 import 'model/processeddata.dart';
 // import 'package:better_sitt/login_v1/models/user.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
-import 'package:better_sitt/model/positions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
