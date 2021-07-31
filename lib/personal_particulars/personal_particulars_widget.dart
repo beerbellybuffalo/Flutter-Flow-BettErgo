@@ -26,23 +26,28 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
   final emailController = TextEditingController();
   final heightController = TextEditingController();
   final weightController = TextEditingController();
+  //final prefs = SharedPreferences.getInstance();
 
-  late String initContactNo;
-  late String initEmail;
-  late String initHeight;
-  late String initWeight;
+  String? initContactNo;
+  String? initEmail;
+  String? initHeight;
+  String? initWeight;
 
   @override
   void initState() {
     super.initState();
-    //get stored Personal Particulars from sharedpreferences
-    getParticulars();
+    // //get stored Personal Particulars from sharedpreferences
+    // getParticulars().then((particularsLs) {initContactNo = particularsLs[0];
+    //                                        initEmail = particularsLs[1];
+    //                                        initHeight = particularsLs[2];
+    //                                        initWeight = particularsLs[3];});
+    //
 
-    //initialise controller textfields
-    contactnoController.text = initContactNo;
-    emailController.text = initEmail;
-    heightController.text = initHeight;
-    weightController.text = initWeight;
+    // //initialise controller textfields
+    getContactNo().then((value) { initContactNo = value; contactnoController.text = initContactNo ?? "-";});
+    getEmail().then((value) { initEmail = value; emailController.text = initEmail ?? "-";});
+    getHeight().then((value) { initHeight = value; heightController.text = initHeight ?? "-";});
+    getWeight().then((value) { initWeight = value; weightController.text = initWeight ?? "-";});
 
     //add Listeners to store the new input values
     contactnoController.addListener(updateContactNo);
@@ -51,25 +56,53 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
     weightController.addListener(updateWeight);
   }
 
-  void getParticulars() async {
+  // Future getParticulars() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   print("Accessing SHAREDPREFS");
+  //   String ContactNo = (prefs.getString('ContactNo') ?? "-");
+  //   String Email = (prefs.getString('Email') ?? "-");
+  //   String Height = (prefs.getString('Height') ?? "-");
+  //   String Weight = (prefs.getString('Weight') ?? "-");
+  //   return [ContactNo,Email,Height,Weight];
+  // }
+
+  Future getContactNo() async {
     final prefs = await SharedPreferences.getInstance();
-     setState(() {
-      initContactNo = (prefs.getString('ContactNo') ?? "-");
-      initEmail = (prefs.getString('Email') ?? "-");
-      initHeight = (prefs.getString('Height') ?? "-");
-      initWeight = (prefs.getString('Weight') ?? "-");
-     });
+    print("Getting ContactNo");
+    String ContactNo = (prefs.getString('ContactNo') ?? "-");
+    return ContactNo;
+  }
+
+  Future getEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Email");
+    String Email = (prefs.getString('Email') ?? "-");
+    return Email;
+  }
+
+  Future getHeight() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Height");
+    String Height = (prefs.getString('Height') ?? "-");
+    return Height;
+  }
+
+  Future getWeight() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Weight");
+    String Weight = (prefs.getString('Weight') ?? "-");
+    return Weight;
   }
 
   void setParticulars() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('ContactNo', initContactNo);
+    prefs.setString('ContactNo', initContactNo!);
     print("updated contactno: $initContactNo");
-    prefs.setString('Email', initEmail);
+    prefs.setString('Email', initEmail!);
     print("updated email: $initEmail");
-    prefs.setString('Height', initHeight);
+    prefs.setString('Height', initHeight!);
     print("updated height: $initHeight");
-    prefs.setString('Weight', initWeight);
+    prefs.setString('Weight', initWeight!);
     print("updated weight: $initWeight");
     setState(() {});
   }

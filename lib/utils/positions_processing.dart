@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:better_sitt/model/processeddata.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:better_sitt/model/positions.dart';
+import 'package:better_sitt/model/rawdata.dart';
 import 'package:flutter/material.dart';
 import 'package:sklite/tree/tree.dart';
 import 'package:sklite/utils/io.dart';
@@ -19,18 +20,36 @@ Future<Map> getData(context) async {
 }
 
 //Adds a position and datetime in hive
-Future<void> addPositions(DateTime dateTime, int position) async {
-  final position = Positions()
-    ..dateTime = dateTime
-    ..position = 0;
+Future<void> addRawData(DateTime dateTime,int position ) async {
 
-  final box = Boxes.getPositions();
-  box.add(position);
+  final rawData = RawData()
+    ..dateTime = dateTime
+    ..position = position;
+
+  final box = Boxes.getRawDataBox();
+  box.add(rawData);
 }
 
-//Given an index, get the row in hive
-Future<void> getPositions(int index) async {
-  final box = Boxes.getPositions();
+//Given an index, get the object aka "row" in hive
+Future<void> getRawData(int index) async{
+  final box = Boxes.getRawDataBox();
+  box.getAt(index);
+}
+
+Future<void> addProcessedData(DateTime _dateTime,int _position,int _category) async {
+
+  final processedData = ProcessedData()
+    ..dateTime = _dateTime
+    ..position = _position
+    ..category = _category;
+
+  final box = Boxes.getProcessedDataBox();
+  box.add(processedData);
+}
+
+//Given an index, get the object aka "row" in hive
+Future<void> getProcessedData(int index) async{
+  final box = Boxes.getProcessedDataBox();
   box.getAt(index);
 }
 
@@ -39,7 +58,7 @@ Future<void> predictAndStore(
     DateTime dateTime, List<double> sensor_vals) async {
   final model = await Model.create();
   int position = model.predict(sensor_vals);
-  addPositions(dateTime, position);
+  addRawData(dateTime, position);
 }
 
 class Model {
@@ -50,6 +69,7 @@ class Model {
 
   // Future that completes when the new Model is ready to use
   static Future<Model> create() async {
+    stderr.writeln("harlo");
     Model model = Model._();
     await model._getModel();
     return model;

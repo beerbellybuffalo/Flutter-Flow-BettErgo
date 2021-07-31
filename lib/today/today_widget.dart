@@ -1,5 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -16,8 +17,7 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  final String? BLEsensorStr;
-  TodayWidget({Key? key, this.BLEsensorStr}) : super(key: key);
+  TodayWidget({Key? key}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();
@@ -29,9 +29,10 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   String DayDate = DateFormat('MMM d').format(DateTime.now()).toString();
 
+  //var to store Username from sharedprefs
+  String? username;
 
   //Graph2 Stuff
-  late List<SittData> infoData;
   late List<PostureTimingData> PostureTimingChartData;
   int timer_count =0;
   late String totalSittingTime;
@@ -46,13 +47,23 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention3 = false;
   @override
   void initState() {
-    appleChartData = getAppleChartData(); // first plot data for Factor 1
+    appleChartData = getAppleChartData();
+    getUsername().then((value) { username = value;});
     super.initState();
+  }
+
+  Future getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Username");
+    String _username = (prefs.getString('Username') ?? "-");
+    return _username;
   }
 
   late Timer timer;
   @override
   void dispose(){
+    //TODO check if this solves the ring behaving weirdly
+    timer.cancel();
     super.dispose();
   }
 
@@ -97,27 +108,33 @@ class _TodayWidgetState extends State<TodayWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround, // initially spaceEvenly
                   children: [
-                    Container(
-                      width: 76,
-                      height: 76,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        width: 76,
+                        height: 76,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                          child: Image.asset(
+                            'assets/images/UI_avatar@2x.png',
+                          ),
                       ),
-                      child: Image.asset(
-                        'assets/images/UI_avatar@2x.png',
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: AutoSizeText(
+                        'Hello, $username',
+                        textAlign: TextAlign.center,
+                        style: FlutterFlowTheme.title3.override(
+                          fontFamily: 'Poppins',
+                          fontSize: 40,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
 
-                    AutoSizeText(
-                      'Hello, Friendo',
-                      textAlign: TextAlign.left,
-                      style: FlutterFlowTheme.title3.override(
-                        fontFamily: 'Poppins',
-                        fontSize: 40,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    )
                   ],
                 ),
               ),

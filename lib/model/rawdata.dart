@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'positions.g.dart';
+part 'rawdata.g.dart';
 
 @HiveType(typeId: 0)
-class Positions extends HiveObject{
+class RawData extends HiveObject{
   @HiveField(0)
   late DateTime dateTime;
 
