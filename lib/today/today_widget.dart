@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -26,6 +27,9 @@ class _TodayWidgetState extends State<TodayWidget> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String DayDate = DateFormat('MMM d').format(DateTime.now()).toString();
+
+
   //Graph2 Stuff
   late List<SittData> infoData;
   late List<PostureTimingData> PostureTimingChartData;
@@ -37,12 +41,12 @@ class _TodayWidgetState extends State<TodayWidget> {
   final Random random = Random();
   int count_2 = 0;
   List<AppleGraphData> appleChartData = [];
-  bool pressAttention1 = false;
+  bool pressAttention1 = true;
   bool pressAttention2 = false;
   bool pressAttention3 = false;
   @override
   void initState() {
-    appleChartData = getAppleChartData();
+    appleChartData = getAppleChartData(); // first plot data for Factor 1
     super.initState();
   }
 
@@ -230,7 +234,7 @@ class _TodayWidgetState extends State<TodayWidget> {
               ),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.31,
                 decoration: BoxDecoration(),
                 child: Container(
                   width: double.infinity,
@@ -256,26 +260,38 @@ class _TodayWidgetState extends State<TodayWidget> {
                                       child: Container(
                                         child: SfCartesianChart(
                                           primaryXAxis: CategoryAxis(
-                                              majorGridLines: MajorGridLines(width: 0),
+                                              majorGridLines: MajorGridLines(
+                                                width: 1,
+                                                color: Colors.white24,
+                                                //dashArray: <double>[2.3,2.3]
+                                              ),
+                                               minorGridLines: MinorGridLines(
+                                                 width: 0.5,
+                                                 color: Colors.white24,
+                                              //   dashArray: <double>[2.3,2.3]
+                                               ),
+                                              minorTicksPerInterval:3,
                                               labelStyle: TextStyle(
                                                 color: Colors.white38,
                                                 fontFamily: 'Poppins'
                                           )),
                                           primaryYAxis: NumericAxis(
+                                            minimum: 0,
                                             maximum: 60,
+                                            desiredIntervals: 3,
                                             majorGridLines: MajorGridLines(width: 0),
                                             labelStyle: TextStyle(
                                               color: Colors.white38,
-                                              fontFamily: 'Poppins'
+                                              fontFamily: 'Poppins',
                                             )
                                           ),
                                           title: ChartTitle(
                                               borderWidth: 5,
                                               alignment: ChartAlignment.near,
-                                              text: 'Apple Graph',
+                                              text: 'Today, $DayDate',
                                               textStyle: TextStyle(
                                                 color: Color(0xFFdfdfdf),
-                                                fontSize: 10,
+                                                fontSize: 14,
                                                 fontFamily: 'Poppins',
                                               )
                                             ),
@@ -315,14 +331,15 @@ class _TodayWidgetState extends State<TodayWidget> {
                                             Expanded(
                                               child: Center(
                                                 child: MaterialButton(
-                                                  height: 15,
+                                                  height: 20,
                                                   minWidth: 100,
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
-                                                    'Back Supported',
+                                                    'Back Supported \n F/S/B',
+                                                    textAlign: TextAlign.center,
                                                     style: new TextStyle(
-                                                      fontSize: 11.0,
+                                                      fontSize: 10.0,
                                                       fontFamily: 'Poppins',
                                                       // color: Theme.of(context).primaryColor,
                                                       color: pressAttention1 ? Colors.white : Colors.white54
@@ -351,16 +368,16 @@ class _TodayWidgetState extends State<TodayWidget> {
                                             Expanded(
                                               child: Center(
                                                 child: MaterialButton(
-                                                  height: 15,
+                                                  height: 20,
                                                   //minWidth: 100,
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
-                                                    'Back Swaying L/M/R',
+                                                    'Back Leaning \n L/M/R',
+                                                    textAlign: TextAlign.center,
                                                     style: new TextStyle(
-                                                      fontSize: 11.0,
+                                                      fontSize: 10.0,
                                                       fontFamily: 'Poppins',
-
                                                       color: pressAttention2 ? Colors.white : Colors.white54
                                                     ),
                                                   ),
@@ -387,12 +404,13 @@ class _TodayWidgetState extends State<TodayWidget> {
                                             Expanded(
                                               child: Center(
                                                 child: MaterialButton(
-                                                  height: 15,
+                                                  height: 20,
                                                   minWidth: 100,
                                                   //color: Theme.of(context).primaryColor,
                                                   //textColor: Colors.black87,
                                                   child: Text(
                                                     'Legs Supported',
+                                                    textAlign: TextAlign.center,
                                                     style: new TextStyle(
                                                       fontSize: 11.0,
                                                       fontFamily: 'Poppins',
@@ -435,14 +453,15 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 borderRadius: BorderRadius.circular(15),
                                 child: SfCartesianChart(
                                   title: ChartTitle(
-                                      borderWidth: 20,
+                                      borderWidth: 12,
                                       alignment: ChartAlignment.near,
                                       text: 'Posture Timing in Mins',
                                       textStyle: TextStyle(
                                         color: Color(0xFFdfdfdf),
-                                        fontSize: 10,
+                                        fontSize: 12,
                                         fontFamily: 'Poppins',
-                                      )
+                                      ),
+
                                   ),
                                   backgroundColor: FlutterFlowTheme.darkGrey,
                                   legend: Legend(isVisible: false),
@@ -485,6 +504,10 @@ class _TodayWidgetState extends State<TodayWidget> {
                                           fontSize: 12,
                                           //fontStyle: FontStyle.italic,
                                           //fontWeight: FontWeight.w500
+                                      ),
+                                      majorGridLines: MajorGridLines(
+                                        color: Colors.white24,
+                                        //dashArray: <double>[2.3,2.3]
                                       )
                                   ),
                                   primaryYAxis: CategoryAxis(
@@ -492,6 +515,9 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         color: Colors.white38,
                                         fontFamily: 'Poppins',
                                         fontSize: 10,
+                                      ),
+                                      majorGridLines: MajorGridLines(
+                                        color: Colors.white24,
                                       )
                                   ),
                                 ),
@@ -563,7 +589,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                         fontFamily: 'Poppins',
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),

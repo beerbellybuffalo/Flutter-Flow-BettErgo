@@ -31,18 +31,18 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Harlo harlo this is something yixuan wants me todo'),
+          title: const Text('TESTING THIS IS WHERE WE"LL PUT OUR GRAPHS'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('hot dog sausage brb'),
-                Text('yixuan like this can anot'),
+                Text('XXXXXXXXXXXXXXXXXXXXXXX'),
+                Text('XXXXXXXXXXXXXXXXXXXXXXX'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Yes good job crystal'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

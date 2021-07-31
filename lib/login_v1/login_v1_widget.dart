@@ -179,8 +179,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       hintStyle:
                                                           GoogleFonts.getFont(
                                                             'Open Sans',
-                                                        color: FlutterFlowTheme.mediumTurquoise,
-                                                        fontWeight: FontWeight.normal,
+                                                            color: FlutterFlowTheme.mediumTurquoise,
+                                                            fontWeight: FontWeight.normal,
                                                       ),
                                                       enabledBorder:
                                                           UnderlineInputBorder(
