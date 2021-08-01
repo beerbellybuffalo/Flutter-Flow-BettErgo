@@ -18,6 +18,7 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
   final currentPWController = TextEditingController();
   final newPWController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late String alertDialogText;
 
   @override
   void initState() {
@@ -33,6 +34,34 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
     print("updated password: $newPW");
     setState(() {});
   }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Wrong Input for Current PW'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(alertDialogText),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -195,14 +224,15 @@ class _ChangePWWidgetState extends State<ChangePWWidget> {
                             final prefs = await SharedPreferences.getInstance();
                             if (prefs.getString('Password')==currentPWController.text){
                               setPW();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      NavBarPage(initialPage: 'Settings'),
-                                ),
-                              );
-                            };
+                            }
+                            else {_showMyDialog();}
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NavBarPage(initialPage: 'Settings'),
+                              ),
+                            );
                           },
                           text: 'Confirm',
                           options: FFButtonOptions(

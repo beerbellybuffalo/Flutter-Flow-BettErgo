@@ -46,7 +46,9 @@ class _TodayWidgetState extends State<TodayWidget> {
   @override
   void initState() {
     appleChartData = getAppleChartData();
-    getUsername().then((value) { username = value;});
+    getUsername().then((value) { setState(() {
+      username = value;
+    }); });
     super.initState();
   }
 
@@ -124,7 +126,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                       flex: 4,
                       child: AutoSizeText(
                         'Hello, $username',
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.left,
                         style: FlutterFlowTheme.title3.override(
                           fontFamily: 'Poppins',
                           fontSize: 40,

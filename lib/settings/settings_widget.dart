@@ -1,4 +1,7 @@
 import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
+import 'package:better_sitt/main.dart';
+import 'package:better_sitt/my_data/my_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../change_p_w/change_p_w_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -18,6 +21,25 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  //var to store Username from sharedprefs
+  String? username;
+
+  @override
+  void initState() {
+    super.initState();
+    getUsername().then((value) { setState(() {
+      username = value;
+    });});
+  }
+
+  Future getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Getting Username");
+    String _username = (prefs.getString('Username') ?? "-");
+    return _username;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +112,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                                 child: Text(
-                                  'Friendo',
+                                  '$username',
                                   style: FlutterFlowTheme.title1.override(
                                     fontFamily: 'Poppins',
                                   ),
@@ -114,7 +136,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         padding: EdgeInsets.fromLTRB(24, 12, 0, 12),
                         child: Text(
                           'Account Settings',
-                          style: FlutterFlowTheme.bodyText1.override(
+                          style: FlutterFlowTheme.title3.override(
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold,
                           ),
@@ -157,12 +179,24 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 flex: 1,
                                 child: Align(
                                   alignment: Alignment(0.9, 0),
-                                  child: Icon(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              MyDataWidget(),
+                                        ),
+                                      );
+                                    },
+
+                                    child: Icon(
                                     Icons.arrow_forward_ios,
                                     color: Color(0xFF95A1AC),
-                                    size: 18,
+                                    size: 24,
+                                    ),
                                   ),
-                                ),
+                                )
                               )
                             ],
                           ),
@@ -212,7 +246,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       child: Icon(
                                         Icons.arrow_forward_ios,
                                         color: Color(0xFF95A1AC),
-                                        size: 18,
+                                        size: 24,
                                       ),
                                     ),
                                   ),
@@ -256,7 +290,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     child: Icon(
                                       Icons.arrow_forward_ios,
                                       color: Color(0xFF95A1AC),
-                                      size: 18,
+                                      size: 24,
                                     ),
                                   ),
                                 )
@@ -309,7 +343,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       child: Icon(
                                         Icons.arrow_forward_ios,
                                         color: Color(0xFF95A1AC),
-                                        size: 18,
+                                        size: 24,
                                       ),
                                     ),
                                   ),
@@ -363,7 +397,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       child: Icon(
                                         Icons.arrow_forward_ios,
                                         color: Color(0xFF95A1AC),
-                                        size: 18,
+                                        size: 24,
                                       ),
                                     ),
                                   ),
@@ -383,12 +417,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         children: [
                           FFButtonWidget(
                             onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginV1Widget(),
-                                ),
-                              );
+                              Navigator.of(context).pushNamedAndRemoveUntil('/first', (Route<dynamic> route) => false);
                             },
                             text: 'Log Out',
                             options: FFButtonOptions(

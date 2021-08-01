@@ -168,36 +168,35 @@ class DeviceScreen extends StatelessWidget {
 
 
 
-  // for reading/writing to local documents directory https://medium.com/kick-start-fluttering/saving-data-to-local-storage-in-flutter-e20d973d88fa
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    print(directory.path);
-    return directory.path;
-  }
+  // // for reading/writing to local documents directory https://medium.com/kick-start-fluttering/saving-data-to-local-storage-in-flutter-e20d973d88fa
+  // Future<String> get _localPath async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   print(directory.path);
+  //   return directory.path;
+  // }
+  //
+  // //not in use currently because using Hive
+  // Future<File> get _localFile async {
+  //   final path = await _localPath;
+  //   print('$path/bluetoothData.json');
+  //   return File('$path/bluetoothData.json');
+  // }
+  //
+  // Future<String> readContent() async {
+  //   try {
+  //     final file = await _localFile;
+  //     // Read the file
+  //     String contents = await file.readAsString();
+  //     // Returning the contents of the file
+  //     return contents;
+  //   } catch (e) {
+  //     // If encountering an error, return
+  //     return 'Error!';
+  //   }
+  // }
 
-  //not in use currently because using Hive
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    print('$path/bluetoothData.json');
-    return File('$path/bluetoothData.json');
-  }
-
-  Future<String> readContent() async {
-    try {
-      final file = await _localFile;
-      // Read the file
-      String contents = await file.readAsString();
-      // Returning the contents of the file
-      return contents;
-    } catch (e) {
-      // If encountering an error, return
-      return 'Error!';
-    }
-  }
-
-  //Writes the characteristic to Hive
-  //we need to 1.decode the json 2.add the new entry into the array 3.encode and write to bluetoothData.json
-  Future<void> writeContent(List<int> sensorDataBytes) async {//sensorData is in bytes
+  //Writes the characteristic value to Hive
+  Future<void> convertAndWriteToHive(List<int> sensorDataBytes) async {//sensorData is in bytes
 
     // log(sensorData.toString());
 
@@ -219,11 +218,11 @@ class DeviceScreen extends StatelessWidget {
               (c) => CharacteristicTile(
             characteristic: c,
             onReadPressed: () async {
-              //c.read();
-              c.read().then((sensorData) => writeContent(sensorData))
-                                      .catchError((error){
-                                        print('Caught $error');
-                                      });
+              c.read();
+              // c.read().then((sensorData) => convertAndWriteToHive(sensorData))
+              //                         .catchError((error){
+              //                           print('Caught $error');
+              //                         });
             },
             onWritePressed: () async {
               await c.write(_getRandomBytes(), withoutResponse: true);

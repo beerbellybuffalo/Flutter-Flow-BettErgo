@@ -31,9 +31,9 @@ Future<void> addRawData(DateTime dateTime,int position ) async {
 }
 
 //Given an index, get the object aka "row" in hive
-Future<void> getRawData(int index) async{
+Future<RawData?> getRawData(int index) async{
   final box = Boxes.getRawDataBox();
-  box.getAt(index);
+  return box.getAt(index);
 }
 
 Future<void> addProcessedData(DateTime _dateTime,int _position,int _category) async {
@@ -48,14 +48,13 @@ Future<void> addProcessedData(DateTime _dateTime,int _position,int _category) as
 }
 
 //Given an index, get the object aka "row" in hive
-Future<void> getProcessedData(int index) async{
+Future<ProcessedData?> getProcessedData(int index) async{
   final box = Boxes.getProcessedDataBox();
-  box.getAt(index);
+  return box.getAt(index);
 }
 
 // Predicts and stores the value in hive
-Future<void> predictAndStore(
-    DateTime dateTime, List<double> sensor_vals) async {
+Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async {
   final model = await Model.create();
   int position = model.predict(sensor_vals);
   addRawData(dateTime, position);
