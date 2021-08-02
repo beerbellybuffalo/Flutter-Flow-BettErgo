@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'processeddata.g.dart';
+part 'processed_data.g.dart';
 
 @HiveType(typeId: 1)
 class ProcessedData extends HiveObject{
@@ -12,5 +12,5 @@ class ProcessedData extends HiveObject{
   late int position;
 
   @HiveField(2)
-  late int category;
+  late String category;
 }

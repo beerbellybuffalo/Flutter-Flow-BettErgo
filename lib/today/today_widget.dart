@@ -55,7 +55,7 @@ class _TodayWidgetState extends State<TodayWidget> {
   Future getUsername() async {
     final prefs = await SharedPreferences.getInstance();
     print("Getting Username");
-    String _username = (prefs.getString('Username') ?? "-");
+    String _username = (prefs.getString('Username') ?? "[Username]");
     return _username;
   }
 

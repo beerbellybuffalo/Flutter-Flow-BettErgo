@@ -32,7 +32,7 @@ class TotalSittingTime {
         _totalSittingTime++; // assuming called every minute
       }
 
-    };
+    }
     startingPoint = startingPoint + ls.length;
 
     return _totalSittingTime;
@@ -50,37 +50,40 @@ class GoodSittingTime{
   int goodTimeLength = 0; //Green ring value
 
   void incrementGoodPostureTime(int thisPosture) {
-    int currentPosture = checkPostureCategory(thisPosture);
-    if (currentPosture == -1) {
+    String currentPosCat = checkPostureCategory(thisPosture);
+    if (currentPosCat == "A") {
       nullCounter++;
-    } else {
+    }
+    else {
       sessionCounter++;
       if (nullCounter > 5) {
         //reset session
         sessionCounter = 0;
       }
-      if (sessionCounter <= 20 && currentPosture == 2) {
+      if (sessionCounter <= 20 && currentPosCat == "G") {
         goodTimeLength++;
       }
     }
   }
 }
 
-int checkPostureCategory(int thisPosture) {
+String checkPostureCategory(int thisPosture) {
+  int away = 0;
   List<int> goodPos = [11];
   List<int> mehPos = [2, 5, 8, 14, 17];
   List<int> badPos = [1, 3, 4, 6, 7, 9, 10, 12, 13, 15, 16, 18];
   if (goodPos.contains(thisPosture)) {
-    return 2;
+    return "G";
   }
   else if (mehPos.contains(thisPosture)) {
-    return 1;
+    return "Y";
   }
   else if (badPos.contains(thisPosture)) {
-    return 0;
+    return "R";
   }
-  else
-    return -1; //-1 for when not sitting, can't use null
+  else if (thisPosture == away)
+    return "A"; //3 for when not sitting, can't use null
+  else return "INVALID"; //invalid position
 }
 
 

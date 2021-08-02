@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:better_sitt/model/processeddata.dart';
+import 'package:better_sitt/model/processed_data.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:better_sitt/model/rawdata.dart';
+import 'package:better_sitt/model/raw_data.dart';
 import 'package:flutter/material.dart';
 import 'package:sklite/tree/tree.dart';
 import 'package:sklite/utils/io.dart';
@@ -36,7 +36,7 @@ Future<RawData?> getRawData(int index) async{
   return box.getAt(index);
 }
 
-Future<void> addProcessedData(DateTime _dateTime,int _position,int _category) async {
+Future<void> addProcessedData(DateTime _dateTime,int _position,String _category) async {
 
   final processedData = ProcessedData()
     ..dateTime = _dateTime

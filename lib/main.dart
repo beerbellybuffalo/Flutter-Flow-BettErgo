@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:better_sitt/first_page/first_page_widget.dart';
-import 'package:better_sitt/model/rawdata.dart';
+import 'package:better_sitt/model/raw_data.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:better_sitt/today/today_widget.dart';
 import 'package:intl/intl.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
-import 'model/processeddata.dart';
+import 'model/processed_data.dart';
 // import 'package:better_sitt/login_v1/models/user.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';

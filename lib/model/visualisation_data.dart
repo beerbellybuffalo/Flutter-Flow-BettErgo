@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-// part 'visualisationdata.g.dart';
+// part 'visualisation_data.g.dart';
 
 // @HiveType(typeId: 2)
 // class VisualisationData extends HiveObject{

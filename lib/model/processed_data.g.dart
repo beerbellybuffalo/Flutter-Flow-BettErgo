@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'processeddata.dart';
+part of 'processed_data.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -19,7 +19,7 @@ class ProcessedDataAdapter extends TypeAdapter<ProcessedData> {
     return ProcessedData()
       ..dateTime = fields[0] as DateTime
       ..position = fields[1] as int
-      ..category = fields[2] as int;
+      ..category = fields[2] as String;
   }
 
   @override

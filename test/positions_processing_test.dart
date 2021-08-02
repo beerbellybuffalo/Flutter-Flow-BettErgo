@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:better_sitt/model/processeddata.dart';
-import 'package:better_sitt/model/rawdata.dart';
+import 'package:better_sitt/model/processed_data.dart';
+import 'package:better_sitt/model/raw_data.dart';
 import 'package:better_sitt/utils/boxes.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';

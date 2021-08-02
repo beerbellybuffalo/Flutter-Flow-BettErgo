@@ -1,6 +1,6 @@
-import 'package:better_sitt/model/processeddata.dart';
-import 'package:better_sitt/model/rawdata.dart';
-import 'package:better_sitt/model/visualisationdata.dart';
+import 'package:better_sitt/model/processed_data.dart';
+import 'package:better_sitt/model/raw_data.dart';
+import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:hive/hive.dart';
 
 class Boxes {
