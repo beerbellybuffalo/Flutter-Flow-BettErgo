@@ -240,29 +240,27 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                   0, 0, 0, 20),
                                               child: FFButtonWidget(
                                                 onPressed: () async { // hereiam
-                                                  try {
-                                                    auth.signInWithEmailAndPassword(email: _email, password: _password);
-                                                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavBarPage()));
-
-                                                    // await Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //     builder: (context) => NavBarPage(),
-                                                    //   ),
-                                                    // );
-                                                  } catch (e){
-                                                    //
-                                                   print('Account does not exist - Toast');
-                                                   Fluttertoast.showToast(
-                                                       msg: "Email/Password Not Found",
-                                                       toastLength: Toast.LENGTH_SHORT,
-                                                       gravity: ToastGravity.CENTER,
-                                                       // timeInSecForIosWeb: 1,
-                                                       backgroundColor: Colors.red,
-                                                       textColor: Colors.white,
-                                                       fontSize: 16.0
-                                                   );
-                                                  }
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => NavBarPage(),
+                                                    ),
+                                                  );
+                                                  // try {
+                                                  //   auth.signInWithEmailAndPassword(email: _email, password: _password);
+                                                  //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavBarPage()));
+                                                  // } catch (e){
+                                                  //  print('Error Logging In');
+                                                  //  Fluttertoast.showToast(
+                                                  //      msg: "Email/Password Not Found",
+                                                  //      toastLength: Toast.LENGTH_SHORT,
+                                                  //      gravity: ToastGravity.CENTER,
+                                                  //      // timeInSecForIosWeb: 1,
+                                                  //      // backgroundColor: Colors.red,
+                                                  //      // textColor: Colors.white,
+                                                  //      fontSize: 16.0
+                                                  //  );
+                                                  // } // End of Try-Catch Block
                                                 },
                                                 text: 'Log In',
                                                 options: FFButtonOptions(
@@ -450,10 +448,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                             ),
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(
@@ -473,11 +469,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       context,
                                                       PageTransition(
                                                         type: PageTransitionType.topToBottom,
-                                                        duration: Duration(
-                                                            milliseconds: 300
-                                                        ),
-                                                        reverseDuration:
-                                                            Duration(
+                                                        duration: Duration(milliseconds: 300),
+                                                        reverseDuration: Duration(
                                                                 milliseconds: 300
                                                             ),
                                                         child:
@@ -491,8 +484,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       'Open Sans',
                                                       color: FlutterFlowTheme.secondaryColor,
                                                       fontSize: 14,
-                                                      fontStyle:
-                                                          FontStyle.normal,
+                                                      fontStyle: FontStyle.normal,
                                                     ),
                                                   ),
                                                 )

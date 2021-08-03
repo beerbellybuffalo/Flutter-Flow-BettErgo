@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:131687020960:android:e3f9c8db5dbd87cbbf8cc5",
+        "android_client_info": {
+          "package_name": "com.example.firebase_demo_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131687020960-7asup8b0q7l4qdut5tfnafoj061rejtb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-KHP5dmR80c4OASFota_X8kTlTkh93Tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131687020960-7asup8b0q7l4qdut5tfnafoj061rejtb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:131687020960:android:89dda5093a937f72bf8cc5",
         "android_client_info": {
           "package_name": "com.flutterflow.bettersitt"

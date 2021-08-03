@@ -1,4 +1,5 @@
 import 'package:better_sitt/login_v1/login_v1_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -22,6 +23,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   late TextEditingController textController6;
   late TextEditingController textController7;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -445,6 +447,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             alignment: Alignment(0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                auth.createUserWithEmailAndPassword(email: textController4.toString(), password: textController3.toString());
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(

@@ -270,6 +270,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                  color: Colors.white24,
                                               //   dashArray: <double>[2.3,2.3]
                                                ),
+
                                               minorTicksPerInterval:3,
                                               labelStyle: TextStyle(
                                                 color: Colors.white38,
@@ -278,7 +279,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                           primaryYAxis: NumericAxis(
                                             minimum: 0,
                                             maximum: 60,
-                                            desiredIntervals: 3,
+                                            desiredIntervals: 2,
                                             majorGridLines: MajorGridLines(width: 0),
                                             labelStyle: TextStyle(
                                               color: Colors.white38,
@@ -321,11 +322,9 @@ class _TodayWidgetState extends State<TodayWidget> {
                                       ),
                                     ),
                                     Container(
-                                        // width: double.infinity,
                                         height: 24,
                                         decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.darkGrey,
-                                        ),
+                                          color: FlutterFlowTheme.darkGrey, ),
                                         child: Row(
                                           children: <Widget>[
                                             Expanded(
@@ -346,14 +345,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // if (count_2 == 0) {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = data2;
-                                                    // } else {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = getAppleChartData();
-                                                    // }
-                                                    // count_2++;
                                                     appleChartData.clear();
                                                     appleChartData = getAppleChartData();
                                                     setState(() {
@@ -382,14 +373,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // if (count_2 == 0) {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = data2;
-                                                    // } else {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = getAppleChartData();
-                                                    // }
-                                                    // count_2++;
                                                     appleChartData.clear();
                                                     appleChartData = getAppleChartData();
                                                     setState(() {
@@ -418,14 +401,6 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    // if (count_2 == 0) {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = data2;
-                                                    // } else {
-                                                    //   appleChartData.clear();
-                                                    //   appleChartData = getAppleChartData();
-                                                    // }
-                                                    // count_2++;
                                                     appleChartData.clear();
                                                     appleChartData = getAppleChartData();
                                                     setState(() {
@@ -438,9 +413,9 @@ class _TodayWidgetState extends State<TodayWidget> {
                                               ),
                                             ),
                                           ],
-                                        ))
+                                        )
+                                    )
                                   ],
-
                                 )
                               ),
                             ),
@@ -452,6 +427,30 @@ class _TodayWidgetState extends State<TodayWidget> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: SfCartesianChart(
+                                  primaryXAxis: CategoryAxis(
+                                      labelStyle: TextStyle(
+                                        color: Colors.white54,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 7.88,
+                                        fontStyle: FontStyle.italic,
+                                        //fontWeight: FontWeight.w500
+                                      ),
+                                      desiredIntervals: 17,
+                                      majorGridLines: MajorGridLines(
+                                        color: Colors.white24,
+                                        //dashArray: <double>[2.3,2.3]
+                                      )
+                                  ),
+                                  primaryYAxis: CategoryAxis(
+                                      labelStyle: TextStyle(
+                                        color: Colors.white54,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 10,
+                                      ),
+                                      majorGridLines: MajorGridLines(
+                                        color: Colors.white24,
+                                      )
+                                  ),
                                   title: ChartTitle(
                                       borderWidth: 12,
                                       alignment: ChartAlignment.near,
@@ -492,34 +491,12 @@ class _TodayWidgetState extends State<TodayWidget> {
                                       yValueMapper: (PostureTimingData data, _) => data.red,
                                       color: Color(0xFF00DBA3),
                                       name: 'p3',
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(3),
-                                          topRight: Radius.circular(3)),
+                                      // borderRadius: BorderRadius.only(
+                                      //     topLeft: Radius.circular(3),
+                                      //     topRight: Radius.circular(3)
+                                      // ),
                                     ),
                                   ],
-                                  primaryXAxis: CategoryAxis(
-                                      labelStyle: TextStyle(
-                                          color: Colors.white38,
-                                          fontFamily: 'Poppins',
-                                          fontSize: 12,
-                                          //fontStyle: FontStyle.italic,
-                                          //fontWeight: FontWeight.w500
-                                      ),
-                                      majorGridLines: MajorGridLines(
-                                        color: Colors.white24,
-                                        //dashArray: <double>[2.3,2.3]
-                                      )
-                                  ),
-                                  primaryYAxis: CategoryAxis(
-                                      labelStyle: TextStyle(
-                                        color: Colors.white38,
-                                        fontFamily: 'Poppins',
-                                        fontSize: 10,
-                                      ),
-                                      majorGridLines: MajorGridLines(
-                                        color: Colors.white24,
-                                      )
-                                  ),
                                 ),
                               ),
                             ),
@@ -802,6 +779,16 @@ class _TodayWidgetState extends State<TodayWidget> {
         PostureTimingData('P7', 0, 5, 0),
         PostureTimingData('P8', 0, 1, 0),
         PostureTimingData('P8', 0, 0, 0),
+        PostureTimingData('P9', 12, 3, 8),
+        PostureTimingData('P10', 0, 10, 4),
+        PostureTimingData('P11', 0, 0, 0),
+        PostureTimingData('P12', 0, 0, 0),
+        PostureTimingData('P13', 13, 2, 0),
+        PostureTimingData('P14', 0, 0, 0),
+        PostureTimingData('P15', 0, 3, 0),
+        PostureTimingData('P16', 0, 5, 0),
+        PostureTimingData('P17', 0, 0, 0),
+        PostureTimingData('P18', 0, 0, 0),
       ];
       timer_count++;
     } else if (timer_count == 1) {
@@ -814,6 +801,16 @@ class _TodayWidgetState extends State<TodayWidget> {
         PostureTimingData('P6', 0, 0, 0),
         PostureTimingData('P7', 0, 8, 0),
         PostureTimingData('P8', 0, 5, 0),
+        PostureTimingData('P9', 16, 8, 8),
+        PostureTimingData('P10', 0, 13, 6),
+        PostureTimingData('P11', 0, 0, 0),
+        PostureTimingData('P12', 0, 0, 0),
+        PostureTimingData('P13', 15, 8, 0),
+        PostureTimingData('P14', 0, 0, 0),
+        PostureTimingData('P15', 0, 7, 0),
+        PostureTimingData('P16', 0, 12, 0),
+        PostureTimingData('P17', 0, 0, 0),
+        PostureTimingData('P18', 0, 0, 0),
       ];
       timer_count++;
     } else if (timer_count == 2) {
@@ -826,37 +823,21 @@ class _TodayWidgetState extends State<TodayWidget> {
         PostureTimingData('P6', 0, 0, 0),
         PostureTimingData('P7', 0, 12, 0),
         PostureTimingData('P8', 0, 5, 3),
+        PostureTimingData('P9', 16, 14, 18),
+        PostureTimingData('P10', 5, 24, 13),
+        PostureTimingData('P11', 0, 0, 0),
+        PostureTimingData('P12', 0, 0, 0),
+        PostureTimingData('P13', 16, 9, 2),
+        PostureTimingData('P14', 0, 0, 0),
+        PostureTimingData('P15', 0, 9, 3),
+        PostureTimingData('P16', 0, 16, 2),
+        PostureTimingData('P17', 0, 0, 0),
+        PostureTimingData('P18', 0, 0, 0),
       ];
       timer_count = 0;
     }
     return PostureTimingChartData;
   }
-
-  // List<AppleGraphData> data2 = [
-  //   AppleGraphData(x: '1', y: 5, y2: 55),
-  //   AppleGraphData(x: '2', y: 10, y2: 50),
-  //   AppleGraphData(x: '3', y: 15, y2: 45),
-  //   AppleGraphData(x: '4', y: 20, y2: 40),
-  //   AppleGraphData(x: '5', y: 25, y2: 35),
-  //   AppleGraphData(x: '6', y: 30, y2: 30),
-  //   AppleGraphData(x: '7', y: 35, y2: 25),
-  //   AppleGraphData(x: '8', y: 40, y2: 20),
-  //   AppleGraphData(x: '9', y: 45, y2: 15),
-  //   AppleGraphData(x: '10', y: 50, y2: 10),
-  //   AppleGraphData(x: '11', y: 55, y2: 5),
-  //   AppleGraphData(x: '12', y: 60, y2: 0),
-  //   AppleGraphData(x: '13', y: 55, y2: 5),
-  //   AppleGraphData(x: '14', y: 50, y2: 10),
-  //   AppleGraphData(x: '15', y: 45, y2: 15),
-  //   AppleGraphData(x: '16', y: 40, y2: 20),
-  //   AppleGraphData(x: '17', y: 35, y2: 25),
-  //   AppleGraphData(x: '18', y: 30, y2: 30),
-  //   AppleGraphData(x: '19', y: 25, y2: 35),
-  //   AppleGraphData(x: '20', y: 20, y2: 40),
-  //   AppleGraphData(x: '21', y: 15, y2: 45),
-  //   AppleGraphData(x: '22', y: 10, y2: 50),
-  //   AppleGraphData(x: '23', y: 5, y2: 55),
-  //   AppleGraphData(x: '24', y: 0, y2: 60), ];
 
   double _getRandomValue(int min, int max) {
     return min + random.nextInt(max - min).toDouble();
