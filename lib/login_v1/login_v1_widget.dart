@@ -1,6 +1,8 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
 import 'package:better_sitt/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -22,6 +24,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  // late String _email, _password;
+  // final auth = FirebaseAuth.instance;
   late bool passwordVisibility;
   late String alertDialogText;
   late List<TextEditingController> controllerLs;
@@ -149,35 +153,31 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  4, 0, 0, 20),
+                                              padding: EdgeInsets.fromLTRB(4, 0, 0, 20),
                                               child: Container(
                                                 width: 300,
                                                 height: 50,
                                                 decoration: BoxDecoration(
                                                   color: Color(0xFFE0E0E0),
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
+                                                  borderRadius: BorderRadius.circular(25),
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      20, 0, 20, 0),
+                                                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                                   child: TextFormField(
-                                                    controller:
-                                                        emailTextController,
+                                                    controller: emailTextController,
                                                     obscureText: false,
+                                                    onChanged: (value){
+                                                      setState(() {
+                                                        _email = value.trim();
+                                                      });
+                                                    },
                                                     decoration: InputDecoration(
                                                       hintText: 'Email',
-                                                      hintStyle:
-                                                          GoogleFonts.getFont(
-                                                        'Open Sans',
-                                                        color: FlutterFlowTheme
-                                                            .mediumTurquoise,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
+                                                      hintStyle: GoogleFonts.getFont(
+                                                            'Open Sans',
+                                                            color: FlutterFlowTheme.mediumTurquoise,
+                                                            fontWeight: FontWeight.normal),
+                                                      enabledBorder: UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                           color:Color(0x00000000),
                                                           width: 1,
@@ -190,12 +190,11 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       focusedBorder: UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                           color:Color(0x00000000),
-                                                          width: 1,
+                                                          width: 1
                                                         ),
-                                                        borderRadius:
-                                                            const BorderRadius.only(
+                                                        borderRadius: const BorderRadius.only(
                                                           topLeft: Radius.circular(4.0),
-                                                          topRight: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0)
                                                         ),
                                                       ),
                                                     ),
@@ -222,13 +221,18 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                   child: TextFormField(
                                                     controller: passwordTextController,
                                                     obscureText: !passwordVisibility,
+                                                    onChanged: (value){
+                                                      setState(() {
+                                                        _email = value.trim();
+                                                      });
+                                                    },
                                                     decoration: InputDecoration(
                                                       hintText: 'Password',
                                                       hintStyle:
                                                           GoogleFonts.getFont(
                                                             'Open Sans',
-                                                        color: FlutterFlowTheme.mediumTurquoise,
-                                                        fontWeight: FontWeight.normal,
+                                                            color: FlutterFlowTheme.mediumTurquoise,
+                                                            fontWeight: FontWeight.normal,
                                                       ),
                                                       enabledBorder:
                                                           UnderlineInputBorder(
@@ -283,13 +287,35 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                               padding: EdgeInsets.fromLTRB(
                                                   0, 0, 0, 20),
                                               child: FFButtonWidget(
-                                                onPressed: () async {
-                                                  loginUser().then((isRegistered) {
-                                                    if(isRegistered){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => NavBarPage(),),);
-                                                    }
-                                                  });
-                                                  // print('Button pressed ...');
+                                                // onPressed: () async {
+                                                //   loginUser().then((isRegistered) {
+                                                //     if(isRegistered){
+                                                //       Navigator.push(context, MaterialPageRoute(builder: (context) => NavBarPage(),),);
+                                                //     }
+                                                //   });
+                                                //   // print('Button pressed ...');
+                                                onPressed: () async { // hereiam
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => NavBarPage(),
+                                                    ),
+                                                  );
+                                                  // try {
+                                                  //   auth.signInWithEmailAndPassword(email: _email, password: _password);
+                                                  //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavBarPage()));
+                                                  // } catch (e){
+                                                  //  print('Error Logging In');
+                                                  //  Fluttertoast.showToast(
+                                                  //      msg: "Email/Password Not Found",
+                                                  //      toastLength: Toast.LENGTH_SHORT,
+                                                  //      gravity: ToastGravity.CENTER,
+                                                  //      // timeInSecForIosWeb: 1,
+                                                  //      // backgroundColor: Colors.red,
+                                                  //      // textColor: Colors.white,
+                                                  //      fontSize: 16.0
+                                                  //  );
+                                                  // } // End of Try-Catch Block
                                                 },
                                                 text: 'Log In',
                                                 options: FFButtonOptions(
@@ -477,10 +503,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                             ),
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Padding(
                                                   padding: EdgeInsets.fromLTRB(
@@ -499,14 +523,11 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                     await Navigator.push(
                                                       context,
                                                       PageTransition(
-                                                        type: PageTransitionType
-                                                            .topToBottom,
-                                                        duration: Duration(
-                                                            milliseconds: 300),
-                                                        reverseDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    300),
+                                                        type: PageTransitionType.topToBottom,
+                                                        duration: Duration(milliseconds: 300),
+                                                        reverseDuration: Duration(
+                                                                milliseconds: 300
+                                                            ),
                                                         child:
                                                             RegistrationWidget(),
                                                       ),
@@ -516,12 +537,9 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                     'Register here',
                                                     style: GoogleFonts.getFont(
                                                       'Open Sans',
-                                                      color: FlutterFlowTheme
-                                                          .secondaryColor,
-                                                      //green
+                                                      color: FlutterFlowTheme.secondaryColor,
                                                       fontSize: 14,
-                                                      fontStyle:
-                                                          FontStyle.normal,
+                                                      fontStyle: FontStyle.normal,
                                                     ),
                                                   ),
                                                 )

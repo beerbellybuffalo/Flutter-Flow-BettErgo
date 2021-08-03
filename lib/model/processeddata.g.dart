@@ -1,38 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-<<<<<<< HEAD:lib/model/raw_data.g.dart
-part of 'raw_data.dart';
-=======
-part of 'rawdata.dart';
->>>>>>> visualisation_functions:lib/model/rawdata.g.dart
+part of 'processeddata.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RawDataAdapter extends TypeAdapter<RawData> {
+class ProcessedDataAdapter extends TypeAdapter<ProcessedData> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  RawData read(BinaryReader reader) {
+  ProcessedData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return RawData()
+    return ProcessedData()
       ..dateTime = fields[0] as DateTime
-      ..position = fields[1] as int;
+      ..position = fields[1] as int
+      ..category = fields[2] as int;
   }
 
   @override
-  void write(BinaryWriter writer, RawData obj) {
+  void write(BinaryWriter writer, ProcessedData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.dateTime)
       ..writeByte(1)
-      ..write(obj.position);
+      ..write(obj.position)
+      ..writeByte(2)
+      ..write(obj.category);
   }
 
   @override
@@ -41,7 +40,7 @@ class RawDataAdapter extends TypeAdapter<RawData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RawDataAdapter &&
+      other is ProcessedDataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

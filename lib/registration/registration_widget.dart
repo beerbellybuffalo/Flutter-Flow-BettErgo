@@ -1,4 +1,5 @@
 import 'package:better_sitt/login_v1/login_v1_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -23,6 +24,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   final heightController = TextEditingController();
   final weightController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final auth = FirebaseAuth.instance;
   late List<TextEditingController> controllerLs;
   late String alertDialogText;
 
@@ -508,12 +510,23 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             alignment: Alignment(0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                auth.createUserWithEmailAndPassword(email: textController4.toString(), password: textController3.toString());
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginV1Widget(),
+                                  ),
+                                );
+
+
                                 //TODO create account in Firebase with inputs, but for now just store in shareprefs
-                                registerNewUser().then((isRegistered) {
-                                  if(isRegistered){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV1Widget(),),);
-                                  }
-                                });
+                                // registerNewUser().then((isRegistered) {
+                                //   if(isRegistered){
+                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV1Widget(),),);
+                                //   }
+                                // });
+
                                 // print('Button pressed ...');
                               },
                               text: 'Register',
