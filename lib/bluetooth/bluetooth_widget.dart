@@ -1,3 +1,5 @@
+import 'package:better_sitt/utils/positions_processing.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import '../no_bluetooth/no_bluetooth_widget.dart';
 import 'dart:math';
-import '../flutter_blue_widgets.dart';
+import '../flutter_blue_widgets.dart'; //these are taken from github example, like buildServiceTiles etc.
+import 'dart:async';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:convert';
 
 class BluetoothParent extends StatelessWidget {
   @override
@@ -27,7 +33,9 @@ class BluetoothParent extends StatelessWidget {
   }
 }
 
+
 class FindDevicesScreen extends StatelessWidget {
+  late Timer myTimer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +64,10 @@ class FindDevicesScreen extends StatelessWidget {
                       builder: (c, snapshot) {
                         if (snapshot.data ==
                             BluetoothDeviceState.connected) {
+                          int counter = 0;
+                          // const oneSec = const Duration(seconds:1);
+                          // print('Timer Started!');
+                          // myTimer = Timer.periodic(oneSec, (Timer t) {counter++;print('hi!$counter');});
                           return RaisedButton(
                             child: Text('OPEN'),
                             onPressed: () => Navigator.of(context).push(
@@ -64,7 +76,11 @@ class FindDevicesScreen extends StatelessWidget {
                                         DeviceScreen(device: d))),
                           );
                         }
-                        return Text(snapshot.data.toString());
+                        // else {
+                        //   myTimer.cancel();
+                        //   print('Timer Cancelled!');
+                          return Text(snapshot.data.toString());
+                        // }
                       },
                     ),
                   ))
@@ -117,6 +133,24 @@ class FindDevicesScreen extends StatelessWidget {
   }
 }
 
+//pass decoded element from json array into factory constructor to get back the json object
+class BluetoothDataEntry {
+  late final DateTime datetime;
+  late final String sensorData;
+
+  BluetoothDataEntry({required this.datetime, required this.sensorData});
+
+  factory BluetoothDataEntry.fromJson(Map<String, dynamic> json) {
+    return BluetoothDataEntry(datetime: json['datetime'], sensorData: json['sensorData']);
+  }
+
+  // Override toString to have a beautiful log of student object
+  @override
+  String toString() {
+    return 'BluetoothDataEntry: {datetime = $datetime, sensorData = $sensorData}';
+  }
+}
+
 class DeviceScreen extends StatelessWidget {
   const DeviceScreen({Key? key, required this.device}) : super(key: key);
 
@@ -132,6 +166,47 @@ class DeviceScreen extends StatelessWidget {
     ];
   }
 
+
+
+  // // for reading/writing to local documents directory https://medium.com/kick-start-fluttering/saving-data-to-local-storage-in-flutter-e20d973d88fa
+  // Future<String> get _localPath async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   print(directory.path);
+  //   return directory.path;
+  // }
+  //
+  // //not in use currently because using Hive
+  // Future<File> get _localFile async {
+  //   final path = await _localPath;
+  //   print('$path/bluetoothData.json');
+  //   return File('$path/bluetoothData.json');
+  // }
+  //
+  // Future<String> readContent() async {
+  //   try {
+  //     final file = await _localFile;
+  //     // Read the file
+  //     String contents = await file.readAsString();
+  //     // Returning the contents of the file
+  //     return contents;
+  //   } catch (e) {
+  //     // If encountering an error, return
+  //     return 'Error!';
+  //   }
+  // }
+
+  //Writes the characteristic value to Hive
+  Future<void> convertAndWriteToHive(List<int> sensorDataBytes) async {//sensorData is in bytes
+
+    // log(sensorData.toString());
+
+    // Convert from bytes to string to List<double>
+    List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
+    DateTime currentDatetime = DateTime.now();
+    predictAndStore(currentDatetime,sensorData);
+  }
+
+
   List<Widget> _buildServiceTiles(List<BluetoothService> services) {
     //String cValue;
     return services
@@ -144,7 +219,10 @@ class DeviceScreen extends StatelessWidget {
             characteristic: c,
             onReadPressed: () async {
               c.read();
-              //cValue = c.read().toString();
+              // c.read().then((sensorData) => convertAndWriteToHive(sensorData))
+              //                         .catchError((error){
+              //                           print('Caught $error');
+              //                         });
             },
             onWritePressed: () async {
               await c.write(_getRandomBytes(), withoutResponse: true);
@@ -222,7 +300,7 @@ class DeviceScreen extends StatelessWidget {
                     : Icon(Icons.bluetooth_disabled),
                 title: Text(
                     'Device is ${snapshot.data.toString().split('.')[1]}.'),
-                subtitle: Text('${device.id}'),
+                subtitle: Text('${device.id}'), //device.discoverServices().then((services) => services[2].uuid) //index 2 is the one with sensor data
                 trailing: StreamBuilder<bool>(
                   stream: device.isDiscoveringServices,
                   initialData: false,
@@ -248,18 +326,18 @@ class DeviceScreen extends StatelessWidget {
                 ),
               ),
             ),
-            StreamBuilder<int>(
-              stream: device.mtu,
-              initialData: 0,
-              builder: (c, snapshot) => ListTile(
-                title: Text('MTU Size'),
-                subtitle: Text('${snapshot.data} bytes'),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () => device.requestMtu(223),
-                ),
-              ),
-            ),
+            // StreamBuilder<int>(
+            //   stream: device.mtu,
+            //   initialData: 0,
+            //   builder: (c, snapshot) => ListTile(
+            //     title: Text('MTU Size'),
+            //     subtitle: Text('${snapshot.data} bytes'),
+            //     trailing: IconButton(
+            //       icon: Icon(Icons.edit),
+            //       onPressed: () => device.requestMtu(223),
+            //     ),
+            //   ),
+            // ),
             StreamBuilder<List<BluetoothService>>(
               stream: device.services,
               initialData: [],
