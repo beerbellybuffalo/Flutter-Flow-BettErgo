@@ -1,5 +1,6 @@
 import 'package:better_sitt/login_v1/login_v1_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -15,26 +16,88 @@ class RegistrationWidget extends StatefulWidget {
 }
 
 class _RegistrationWidgetState extends State<RegistrationWidget> {
-  late TextEditingController textController1;
-  late TextEditingController textController2;
-  late TextEditingController textController3;
-  late TextEditingController textController4;
-  late TextEditingController textController5;
-  late TextEditingController textController6;
-  late TextEditingController textController7;
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordController2 = TextEditingController();
+  final emailController = TextEditingController();
+  final contactNoController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final auth = FirebaseAuth.instance;
+  late List<TextEditingController> controllerLs;
+  late String alertDialogText;
 
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
-    textController3 = TextEditingController();
-    textController4 = TextEditingController();
-    textController5 = TextEditingController();
-    textController6 = TextEditingController();
-    textController7 = TextEditingController();
+    controllerLs = [usernameController,passwordController,passwordController2,emailController,contactNoController,heightController,weightController];
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Unable to Register User'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(alertDialogText),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> registerNewUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final anyEmptyFields = controllerLs.any((TextEditingController T) => T.text.isEmpty);
+    //Alert Dialog if any uncompleted fields or conflicting passwords
+    if (anyEmptyFields || passwordController.text != passwordController2.text) {
+      if (anyEmptyFields){
+        alertDialogText = "All Fields Must be Filled!";
+      }
+      else if (passwordController.text != passwordController2.text){
+        alertDialogText = "Password Fields Must be Identical!";
+      }
+      _showMyDialog();
+      return false;
+    }
+    else {
+      setState(() {
+      String username = usernameController.text;
+      prefs.setString('Username', username);
+      print("added username: $username");
+      String password = passwordController.text;
+      prefs.setString('Password', password);
+      print("added password: $password");
+      String contactno = contactNoController.text;
+      prefs.setString('ContactNo', contactno);
+      print("added contactno: $contactno");
+      String email = emailController.text;
+      prefs.setString('Email', email);
+      print("added email: $email");
+      String height = heightController.text;
+      prefs.setString('Height', height);
+      print("added height: $height");
+      String weight = weightController.text;
+      prefs.setString('Weight', weight);
+      print("added weight: $weight");
+      });
+    }
+    return true;
   }
 
   @override
@@ -95,7 +158,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController1,
+                              controller: usernameController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'username',
@@ -144,7 +207,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController2,
+                              controller: passwordController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'password',
@@ -193,7 +256,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController3,
+                              controller: passwordController2,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'confirm password',
@@ -253,7 +316,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController4,
+                              controller: emailController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'email',
@@ -302,7 +365,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController5,
+                              controller: contactNoController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'contact number',
@@ -351,7 +414,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController6,
+                              controller: heightController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'height',
@@ -400,7 +463,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: TextFormField(
-                              controller: textController7,
+                              controller: weightController,
                               obscureText: false,
                               decoration: InputDecoration(
                                 hintText: 'weight',
@@ -447,6 +510,8 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             alignment: Alignment(0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
+
+                                
                                 auth.createUserWithEmailAndPassword(email: textController4.toString(), password: textController3.toString());
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
                                 await Navigator.push(
@@ -455,6 +520,15 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                     builder: (context) => LoginV1Widget(),
                                   ),
                                 );
+
+
+                                //TODO create account in Firebase with inputs, but for now just store in shareprefs
+                                // registerNewUser().then((isRegistered) {
+                                //   if(isRegistered){
+                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV1Widget(),),);
+                                //   }
+                                // });
+
                                 // print('Button pressed ...');
                               },
                               text: 'Register',
