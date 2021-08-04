@@ -51,14 +51,19 @@ Future<int> predict(List<double> sensor_vals) async{
         .first
         .toInt();
 
-
-    if (sensor_vals[11]>0||sensor_vals[12]>0) {
-      if (position == 1) {
-        position = 2;
-      }else if (position == 4) {
-        position = 5;
+      if (sensor_vals[9] ==0 && sensor_vals[10]== 0) {
+        if (position == 2) {
+          position = 1;
+        } else if (position == 5) {
+          position = 4;
+        }
+      } else{
+        if (position ==1){
+          position =2;
+        }else if (position ==4){
+          position =5;
+        }
       }
-    }
 
     var left = (sensor_vals[0] + sensor_vals[3] + sensor_vals[6]) / 3;
     var right = (sensor_vals[2] + sensor_vals[5] + sensor_vals[8]) / 3;

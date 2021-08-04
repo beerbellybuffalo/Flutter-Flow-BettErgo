@@ -19,13 +19,13 @@ void main() async {
   });
 
   test('Model prediction testing leaning forward, middle', () async {
-    List<double> input = [98.29,0.0,101.34,258.49,99.27,195.36,232.23,106.11,177.41,0.0,0.0,170,66];
+    List<double> input = [98.53,0.0,102.2,256.65,100.73,197.07,232.36,108.18,179.61,0.0,0.0,170,66];
     int prediction = await predict(input);
     expect(prediction, 10);
   });
 
   test('Model prediction testing supported, middle', () async {
-    List<double> input = [87.06,0.0,98.53,254.21,100.73,189.74,232.36,101.1,168.38,0.0,1.4,170,66];
+    List<double> input = [104.03,0.0,97.31,271.67,80.95,172.65,181.68,134.92,168.86,59.83,54.0,170,66];
     int prediction = await predict(input);
     expect(prediction, 11);
   });
