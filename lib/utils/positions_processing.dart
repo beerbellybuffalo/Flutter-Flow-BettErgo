@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:better_sitt/model/processed_data.dart';
+import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:better_sitt/model/raw_data.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,12 @@ Future<void> addProcessedData(DateTime _dateTime,int _position,String _category)
 //Given an index, get the object aka "row" in hive
 Future<ProcessedData?> getProcessedData(int index) async{
   final box = Boxes.getProcessedDataBox();
+  return box.getAt(index);
+}
+
+//TODO getVisualisationData
+Future<VisualisationData?> getVisualisationData(int index) async{
+  final box = Boxes.getVisualisationDataBox();
   return box.getAt(index);
 }
 

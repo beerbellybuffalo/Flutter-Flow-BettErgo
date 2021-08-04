@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:better_sitt/model/visualisation_data.dart';
+import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:better_sitt/today/today_classes.dart';
 import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
+import 'package:better_sitt/utils/boxes.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/rendering.dart';
@@ -31,13 +38,42 @@ class _TodayWidgetState extends State<TodayWidget> {
   //var to store Username from sharedprefs
   String? username;
 
-  //Graph2 Stuff
+  //PostureGraph Stuff
   late List<PostureTimingData> PostureTimingChartData;
   late List<SittData> infoData;
   int timer_count =0;
   late String totalSittingTime;
   late String goodSittingTime;
 
+  //For top 3 positions
+  //late List<String> postureImages;
+  late String top1PosImg;
+  late String top2PosImg;
+  late String top3PosImg;
+
+  Map<int,dynamic> imageDirectoriesMap = {
+    0: 'assets/images/posture-0.png',
+    1: 'assets/images/posture-1.png',
+    2: 'assets/images/posture-2.png',
+    3: 'assets/images/posture-3.png',
+    4: 'assets/images/posture-4.png',
+    5: 'assets/images/posture-5.png',
+    6: 'assets/images/posture-6.png',
+    7: 'assets/images/posture-7.png',
+    8: 'assets/images/posture-8.png',
+    9: 'assets/images/posture-9.png',
+    10: 'assets/images/posture-10.png',
+    11: 'assets/images/posture-11.png',
+    12: 'assets/images/posture-12.png',
+    13: 'assets/images/posture-13.png',
+    14: 'assets/images/posture-14.png',
+    15: 'assets/images/posture-15.png',
+    16: 'assets/images/posture-16.png',
+    17: 'assets/images/posture-17.png',
+    18: 'assets/images/posture-18.png',
+  };
+
+  //TODO remove this after finish implementing apple
   //Apple Graph Stuff
   final Random random = Random();
   int count_2 = 0;
@@ -45,20 +81,91 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention1 = true;
   bool pressAttention2 = false;
   bool pressAttention3 = false;
+
+  //South of the border
+  late Rings yestRings;
+  late Rings todayRings;
+  late String comparisonMessage;
+  late String salutation;
+  String percentageChange = "-";
+
+
   @override
   void initState() {
     appleChartData = getAppleChartData();
+    //_initPostureImages();
     getUsername().then((value) { setState(() {
       username = value;
     }); });
+    setState(() {
+      percentageChange = getPercentageChange(yestRings, todayRings).abs().toString();
+      setSalutation(getPercentageChange(yestRings, todayRings));
+      setComparisonMessage(getPercentageChange(yestRings, todayRings));
+    });
+    //get today's posture graph information
+    Box<VisualisationData> visBox = Boxes.getVisualisationDataBox();
+    setState(() {
+      top1PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[0]]??'assets/images/posture-0.png';
+      top2PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[1]]??'assets/images/posture-0.png';
+      top3PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[2]]??'assets/images/posture-0.png';
+      todayRings = visBox.getAt(visBox.length-1)!.rings;
+      yestRings = visBox.getAt(visBox.length-2)!.rings;
+    });
+    // getVisualisationData(Boxes.getVisualisationDataBox().length-1).then((data) {top1Pos = data!.postureGraph.topThreePositions[0];
+    //                                                                             top2Pos = data.postureGraph.topThreePositions[1];
+    //                                                                             top3Pos = data.postureGraph.topThreePositions[2];
+    //                                                                             todayRings = data.rings;});
     super.initState();
   }
+  void setComparisonMessage(int _percentChange) {
+    if (_percentChange<0){
+      //return worsened message
+      comparisonMessage = 'Your Sitting Habits have worsened';
+    }
+    else if (_percentChange>=0){
+      //return improved message
+      comparisonMessage = 'Your Sitting Habits have improved';
+    }
+  }
+
+  void setSalutation(int _percentChange) {
+    if (_percentChange<0){
+      //return bad salutation
+      salutation = 'Oops...';
+    }
+    else if (_percentChange>=0){
+      //return good salutation
+      salutation = 'Congrats!';
+    }
+  }
+
+  // Future _initPostureImages() async {
+  //   // final manifestContent = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+  //   // final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+  //   //
+  //   // final imagePaths = manifestMap.keys
+  //   //     .where((String key) => key.contains('images/'))
+  //   //     .where((String key) => key.contains('posture-'))
+  //   //     //.where((String key) => key.contains('.png'))
+  //   //     .toList();
+  //   //
+  //   // setState(() {
+  //   //   postureImages = imagePaths;
+  //   //   String postures = "";
+  //   //   postureImages.forEach((element) {postures += element;});
+  //   //   log(postures);
+  //   // });
+  // }
 
   Future getUsername() async {
     final prefs = await SharedPreferences.getInstance();
     print("Getting Username");
     String _username = (prefs.getString('Username') ?? "[Username]");
     return _username;
+  }
+
+  int getPercentageChange(Rings yestRings, Rings todayRings) {
+    return (todayRings.goodSittingTime-yestRings.goodSittingTime)*100;
   }
 
   late Timer timer;
@@ -602,7 +709,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-yyy.png',
+                                  '$top1PosImg',
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -611,7 +718,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-nny.png',
+                                  '$top2PosImg',
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -620,7 +727,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-nyn.png',
+                                  '$top3PosImg',
                                   fit: BoxFit.contain,
                                 ),
                               )
@@ -651,7 +758,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Congrats!',
+                            '$salutation',
                             textAlign: TextAlign.start,
                             style: FlutterFlowTheme.title3.override(
                               fontFamily: 'Poppins',
@@ -667,13 +774,13 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Text(
-                                    'Your Sitting Habits have improved',
+                                    '$comparisonMessage',
                                     style: FlutterFlowTheme.bodyText1.override(
                                       fontFamily: 'Poppins',
                                     ),
                                   ),
                                   Text(
-                                    '12%',
+                                    '$percentageChange%',
                                     style: FlutterFlowTheme.bodyText2.override(
                                       fontFamily: 'Poppins',
                                       fontSize: 22,

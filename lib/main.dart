@@ -164,8 +164,12 @@ class _NavBarPageState extends State<NavBarPage> {
           addCat = 'B';
         }
         else{addCat = checkPostureCategory(modalPos);}
-        //add entry to Hive
+        //add entry to Table2
         addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, addCat);
+        //TODO add entry to Table3
+        //var box3 = Boxes.getVisualisationDataBox();
+        //get the entry
+        //updateApple();
         //TODO Clear Table 1?
         box.clear();
       }

@@ -8,7 +8,9 @@
 //
 
 import 'dart:core';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import '../utils/positions_processing.dart';
 import '../utils/boxes.dart';
 import '../model/raw_data.dart';
@@ -16,12 +18,15 @@ import '../model/processed_data.dart';
 import '../model/visualisation_data.dart';
 //var inComingData = new List();
 
+
 class Rings {
   int totalSittingTime = 0;
   int goodSittingTime = 0;
   int postureChangeFrequency = 0;
+  double innerRing = 0;
+  double outerRing = 0;
   //Constructor
-  Rings(this.totalSittingTime,this.goodSittingTime,this.postureChangeFrequency);
+  Rings(this.totalSittingTime,this.goodSittingTime,this.postureChangeFrequency,this.innerRing,this.outerRing);
 
   //Setters
   set setTotalSitting(int t){
@@ -30,11 +35,30 @@ class Rings {
   set setGoodSitting(int t){
     goodSittingTime = t;
   }
-  set posChange(int t){
+  set setPosChange(int t){
     postureChangeFrequency = t;
   }
+  set setInner(double d){
+    innerRing = d;
+  }
+  set setOuter(double d){
+    outerRing = d;
+  }
+
   //Methods
+  double calcInner(){
+    double inner = this.totalSittingTime/60; //in hours
+    return inner;
+  }
+  double calcOuter(){
+    double outer = (this.goodSittingTime/this.totalSittingTime)*100; //percentage
+    var table2 = Boxes.getProcessedDataBox();
+    return outer;
+  }
+//end of Rings class
 }
+
+
 
 int calcTotalTime(){
   int totalTime = 0;
@@ -49,6 +73,7 @@ int calcTotalTime(){
   return totalTime;
 }
 
+
 int calcGoodTime(){
   int goodTime = 0;
   var table2 = Boxes.getProcessedDataBox();
@@ -62,14 +87,172 @@ int calcGoodTime(){
   return goodTime;
 }
 
-// int calcPostureChangeFreq(){
-//
-// }
+int calcPostureChangeFreq(Rings ringsInstance){
+  int freq = 0;
+  int prevPos = 0;
+  var table2 = Boxes.getProcessedDataBox();
+  //initialise prevPos
+  getProcessedData(0).then((processedData) => prevPos = processedData!.position);
+  for (int i=0;i<table2.length;i++) {
+    getProcessedData(i).then((processedData) {
+      if (processedData!.position != prevPos) {
+        freq++; //add to change countmap obje
+      }
+    });
+  }
+  return (ringsInstance.totalSittingTime/freq).round(); //3.5 to 4, -3.5 to -4
+}
 
+class AppleGraph {
+  //categorisation lists
+  List<int> backSuppPostures = [2,5,8,11,14,17];
+  List<int> backCenterPostures = [7,8,9,10,11,12];
+  List<int> legSuppPostures = [4,5,6,10,11,12,16,17,18];
+
+  var backSupp = List<int>.filled(24, 0, growable: false);
+  var backCenter = List<int>.filled(24, 0, growable: false);
+  var legSupp = List<int>.filled(24, 0, growable: false);
+  var totalTime = List<int>.filled(24, 0, growable: false);
+  AppleGraph(this.totalTime,this.backCenter,this.backSupp,this.legSupp);
+  //Setters
+
+
+  //Methods
+  //1. One-shot version
+  var table2 = Boxes.getProcessedDataBox();
+  void fillAppleOneShot() {
+    for (int i=0;i<table2.length;i++) {
+      getProcessedData(i).then((processedData) {
+        int hour = processedData!.dateTime.hour;
+        if (backSuppPostures.contains(processedData.position)) {
+          backSupp[hour]++;
+        }
+        else if (backCenterPostures.contains(processedData.position)) {
+          backCenter[hour]++;
+        }
+        else if (legSuppPostures.contains(processedData.position)) {
+          legSupp[hour]++;
+        }
+      });
+    }
+  }
+  //2. Incremental version called every minute
+  void updateApple(RawData data) {
+    int hour = data.dateTime.hour;
+    if (backSuppPostures.contains(data.position)) {
+      backSupp[hour]++;
+    }
+    else if (backCenterPostures.contains(data.position)) {
+      backCenter[hour]++;
+    }
+    else if (legSuppPostures.contains(data.position)) {
+      legSupp[hour]++;
+    }
+  }
+
+}
+
+class PostureGraph{
+  // Purpose of PostureGraph:
+  //  1. Draw information from table 2 process it and push to list
+  //  2. Hold the list[19] to plot the graph with
+
+  // list[19]: corresponding to time spend in each position
+  var greenPositionTime = new List.filled(19, 0); // [11]
+  var yellowPositionTime = new List.filled(19, 0); // [2,5,8,14,17]
+  var redPositionTime = new List.filled(19, 0); // [1,3,4,6,7,9,10,12,13,15,16,18]
+  var totalSittingPerHour = new List.filled(19, 0);
+  var topThreePositions = new List.filled(3, 0);
+
+  //CONSTRUCTOR
+  PostureGraph(this.greenPositionTime,this.yellowPositionTime,this.redPositionTime,this.totalSittingPerHour,this.topThreePositions);
+
+  Box<ProcessedData> box = Boxes.getProcessedDataBox();
+
+  // // To continue where you left off
+  // int lastInd = 0;
+
+  void calculateTotalSittingPerHour(){
+    for (int i = 0; i<greenPositionTime.length; i++){
+      totalSittingPerHour[i] += greenPositionTime[i];
+      totalSittingPerHour[i] += yellowPositionTime[i];
+      totalSittingPerHour[i] += redPositionTime[i];
+    }
+  }
+
+  //Add in time spent in each part of the list (see Alternative)
+  void fillInPositionTimeLs(){
+    // read whole list for 'G' an add to [11] of greenPositionTime
+    for (int i = 0; i < box.length ; i++){
+      getProcessedData(i).then((processedData){
+        if( processedData!.category == 'G'){
+          greenPositionTime[processedData.position]++; // only position 11 can be Green
+        }
+        if ( processedData.category == 'Y'){
+          yellowPositionTime[processedData.position]++;
+        }
+        if ( processedData.category == 'R'){
+          redPositionTime[processedData.position]++;
+        }
+      });
+    }
+  }
+  // Alternative:
+  //  everytime a reading is stored in table 2, a fn automatically updates
+  //  the lists
+  void updatePositionTimeLs(){
+    // points to Table2.length
+    getProcessedData(box.length-1).then((processedData){
+      if (processedData!.category == 'G'){
+        greenPositionTime[processedData.position]++;
+      } else if (processedData.category == 'Y'){
+        yellowPositionTime[processedData.position]++;
+      } else if (processedData.category == 'R'){
+        redPositionTime[processedData.position]++;
+      }
+    });
+
+
+  }
+
+  // returns list of Top 3 sitting position, i.e. [top,seconf,third]
+  List<int> setTopThreePositions (){
+    int largestNum = 0;
+    int secondNum = 0;
+    int thirdNum = 0;
+
+    List<int> ls = totalSittingPerHour;
+
+    fillInPositionTimeLs();
+    calculateTotalSittingPerHour();
+
+    for (int i=0; i< ls.length; i++){
+      if (ls[i] > largestNum){
+        largestNum = ls[i];
+      }
+    }
+    for (int i=0; i< ls.length; i++){
+      if (ls[i] > secondNum && ls[i] != largestNum){
+        secondNum = ls[i];
+      }
+    }
+    for (int i=0; i< ls.length; i++){
+      if (ls[i] > thirdNum && ls[i] < secondNum){
+        thirdNum = ls[i];
+      }
+    }
+
+    topThreePositions[0] = ls.indexOf(largestNum);
+    topThreePositions[1] = ls.indexOf(secondNum);
+    topThreePositions[2] = ls.indexOf(thirdNum);
+    return topThreePositions;
+  }
+
+}
 
 // For Total Sitting Time:
 class TotalSittingTime {
-  int _totalSittingTime = 0;
+  int totalSittingTime = 0;
   int startingPoint = 0;
   //var inComingData = new List();
   var ls = []; //cannot initialise variable to List here because null safe?
@@ -82,17 +265,17 @@ class TotalSittingTime {
   int getTotalSittingTime() {
     for (int i = startingPoint; i < ls.length; i++) {
       if (posNum.contains(ls[i])) {
-        _totalSittingTime++; // assuming called every minute
+        totalSittingTime++; // assuming called every minute
       }
 
     }
     startingPoint = startingPoint + ls.length;
 
-    return _totalSittingTime;
+    return totalSittingTime;
   }
 
   int getTotalSittingTimeText() {
-    return _totalSittingTime;
+    return totalSittingTime;
   }
 }
 
@@ -120,6 +303,7 @@ class GoodSittingTime{
   }
 }
 
+//used in main to check if user is taking a break
 bool isBreak() {
   int awayCount = 0;
   var box2 = Boxes.getProcessedDataBox();
@@ -140,8 +324,24 @@ String checkPostureCategory(int thisPosture) {
   List<int> goodPos = [11];
   List<int> mehPos = [2, 5, 8, 14, 17];
   List<int> badPos = [1, 3, 4, 6, 7, 9, 10, 12, 13, 15, 16, 18];
-  if (goodPos.contains(thisPosture)) {
-    return "G";
+  var box = Boxes.getProcessedDataBox();
+  var lastBreakIndex = 0;
+  List<int> sinceLastBreak = [];
+  //find last time there was a break
+  for (int i = box.length-1; i>0; i--){
+    if (box.getAt(i)!.category=='B') {lastBreakIndex=i; break;}
+    else {sinceLastBreak.add(box.getAt(i)!.position);}
+    //getProcessedData(i).then((data) {if(data!.category=='B'){lastBreakIndex=i;}} );
+  }
+  if (sinceLastBreak.length>30){
+    return 'R';
+  }
+  else if (goodPos.contains(thisPosture)) {
+    int goodPosCount = 0;
+    sinceLastBreak.forEach((x) {if(x==thisPosture){goodPosCount++;}});
+    if (goodPosCount<=20) {return 'G';}
+    //TODO continue from here
+    else {return "R";}
   }
   else if (mehPos.contains(thisPosture)) {
     return "Y";
