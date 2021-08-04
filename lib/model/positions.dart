@@ -5,8 +5,8 @@ part 'positions.g.dart';
 @HiveType(typeId: 0)
 class Positions extends HiveObject{
   @HiveField(0)
-  DateTime dateTime;
+  late DateTime dateTime;
 
   @HiveField(1)
-  int position;
+  late int position;
 }

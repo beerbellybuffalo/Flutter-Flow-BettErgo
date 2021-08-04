@@ -4,6 +4,8 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:better_sitt/today/today_widget.dart';
 
 class ArchiveWidget extends StatefulWidget {
   ArchiveWidget({Key? key}) : super(key: key);
@@ -77,7 +79,10 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                   color: FlutterFlowTheme.darkGrey,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: FlutterFlowCalendar(
+                child: new Stack(
+                  alignment: const Alignment(5, 0.6),
+                    children:<Widget>[FlutterFlowCalendar(
+
                   color: FlutterFlowTheme.secondaryColor,
                   iconColor: FlutterFlowTheme.tertiaryColor,
                   weekFormat: false,
@@ -98,12 +103,62 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                     color: FlutterFlowTheme.primaryColor,
                   ),
                   inactiveDateStyle: TextStyle(),
-                )
+                ),
+                      rowDayScore()
+                ]
+                // )
               ),
             ),
           )
         ],
       ),
+    );
+  }
+
+  Widget rowDayScore(){
+    return Row( mainAxisSize: MainAxisSize.min,
+        children: [Expanded(child:colDayScore()),Expanded(child:colDayScore()),Expanded(child:colDayScore()),Expanded(child:colDayScore()),Expanded(child:colDayScore()),Expanded(child:colDayScore()),Expanded(child:colDayScore()),
+        ]);
+  }
+
+  Widget colDayScore(){
+    return Column(
+      children:[
+        SizedBox(height: 275),
+    Expanded(
+    child:dayScore()
+    ),
+    Expanded(
+    child:dayScore()
+    ),
+    Expanded(
+    child:dayScore()
+    ),
+    Expanded(
+    child:dayScore()
+    ),
+    Expanded(
+    child:dayScore()
+    ), SizedBox(width: 100)
+    ]);
+  }
+  Widget dayScore(){
+    return SfCircularChart(
+      series: <CircularSeries>[
+        RadialBarSeries<SittData, String>(
+            dataSource: <SittData>[
+              SittData('My Ass', 50, Color(0xFFFF6B6B)),
+            ],
+            xValueMapper: (SittData data, _) => data.name,
+            yValueMapper: (SittData data, _) => data.data,
+            pointColorMapper: (SittData data, _) => data.pointColour,
+            maximumValue: 100,
+            innerRadius: '80%',
+            radius: '110%',
+            cornerStyle: CornerStyle.bothCurve,
+            trackColor: Color(0xFF181819)
+          // dataLabelSettings: DataLabelSettings(isVisible: true)
+        ) ],
     );
   }
 }
