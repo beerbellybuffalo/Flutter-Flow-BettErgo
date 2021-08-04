@@ -3,8 +3,9 @@
 #include <BLEServer.h> 
 #include <BLE2902.h>
 #define SERVICE_UUID        "ac78dae7-fe7f-45fa-8b4b-a553aba82693"
-#define CHARACTERISTIC_UUID "4cee02fe-dc6f-4a6a-b8fa-789d79058177"
-int fsr1 =34;
+#define CHARACTERISTIC1_UUID "4cee02fe-dc6f-4a6a-b8fa-789d79058177"
+#define CHARACTERISTIC2_UUID "c53e7632-9a2b-4272-b1a8-d2f4d658752a"
+int fsr1 = 34;
 int fsr2 = 35; 
 int fsr3 = 32; 
 int fsr4 = 33;
@@ -13,16 +14,21 @@ int fsr6 = 26;
 int fsr7 = 27;
 int fsr8 = 14;
 int fsr9 = 12;
-int fsr10 = 15;
-int fsr11 = 2;
+int fsr10 = 4;
+int fsr11 = 16;
+int vibmot = 2;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 int period = 1000;
-unsigned long time_now = 0;
+int vibperiod = 1000;
+unsigned long time_1= 0;
+unsigned long time_2 = 0;
+unsigned long time_3 = 0;
 String collate = "";
 BLEServer* pServer = NULL;
-BLECharacteristic* pCharacteristic = NULL;
+BLECharacteristic* pCharacteristic1 = NULL;
+BLECharacteristic* pCharacteristic2 = NULL;
 
 String checkReading (int pin) {
     float reading = analogRead(pin);
@@ -57,6 +63,8 @@ void setup() {
   pinMode(fsr9, INPUT);
   pinMode(fsr10, INPUT);
   pinMode(fsr11, INPUT);
+  pinMode(vibmot, OUTPUT);
+  
   
 
   Serial.println("Starting BLE work!");
@@ -64,14 +72,21 @@ void setup() {
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
   BLEService *pService = pServer->createService(SERVICE_UUID);
-  pCharacteristic = pService->createCharacteristic(
-                                         CHARACTERISTIC_UUID,
+  pCharacteristic1 = pService->createCharacteristic(
+                                         CHARACTERISTIC1_UUID,
                                          BLECharacteristic::PROPERTY_READ   |
                                          BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_INDICATE
                                        );
-  
-  pCharacteristic->addDescriptor(new BLE2902());
+  pCharacteristic2 = pService->createCharacteristic(
+                                       CHARACTERISTIC2_UUID,
+                                       BLECharacteristic::PROPERTY_READ |
+                                       BLECharacteristic::PROPERTY_WRITE |
+                                       BLECharacteristic::PROPERTY_NOTIFY |
+                                       BLECharacteristic::PROPERTY_INDICATE
+                                     );
+  pCharacteristic1->addDescriptor(new BLE2902());
+  pCharacteristic2->addDescriptor(new BLE2902());
   pService->start();
   // BLEAdvertising *pAdvertising = pServer->getAdvertising();  // this still is working for backward compatibility
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
@@ -79,23 +94,43 @@ void setup() {
   pAdvertising->setScanResponse(false);
   pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connections issue
   pAdvertising->setMinPreferred(0x12);
-  pCharacteristic->setValue("Initialising");
-  pCharacteristic->notify();
+  pCharacteristic1->setValue("Initialising");
+  pCharacteristic1->notify();
+  pCharacteristic2->setValue("0");
+  pCharacteristic2->notify();
   BLEDevice::startAdvertising();
   Serial.println("Characteristic defined! Now you can read it in your phone!");
 }
 
 void loop(void) {
     
-    //collate = "7, 6, 69, 26, 757, 731, 252, 0, 10";
-    if(millis() >= time_now + period){
-        time_now += period;
-        if (deviceConnected) {
-      
+    if (deviceConnected) {
+      if(millis() >= time_1 + period){
+        time_1 += period;
+        //collate = "7, 6, 69, 26, 757, 731, 252, 0, 10";
         collate = checkReading(fsr1)+","+checkReading(fsr2)+","+checkReading(fsr3)+","+checkReading(fsr4)+","+checkReading(fsr5)+","+checkReading(fsr6)+","+checkReading(fsr7)+","+checkReading(fsr8)+","+checkReading(fsr9)+","+checkReading(fsr10)+","+checkReading(fsr11);
-        pCharacteristic->setValue(collate.c_str());
-        pCharacteristic->notify();
-      
+        pCharacteristic1->setValue(collate.c_str());
+        pCharacteristic1->notify();
+        std::string rxValue = pCharacteristic2->getValue();
+        if (rxValue == "1"){
+          digitalWrite(vibmot, HIGH);
+          if(millis() >= time_2 + vibperiod){
+          time_2 += vibperiod;
+          
+          digitalWrite(vibmot, LOW);
+          pCharacteristic2->setValue("0");
+          pCharacteristic2->notify();
+          }
+        if (rxValue == "2"){
+          digitalWrite(vibmot, HIGH);
+          if(millis() >= time_3 + vibperiod){
+          time_3 += vibperiod;
+          
+          digitalWrite(vibmot, LOW);
+          pCharacteristic2->setValue("0");
+          pCharacteristic2->notify();
+          }
+        }
       Serial.print("*** Sent Value: ");
       Serial.print(collate);
       Serial.println(" ***");
