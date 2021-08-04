@@ -510,7 +510,7 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             alignment: Alignment(0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                auth.createUserWithEmailAndPassword(email: textController4.toString(), password: textController3.toString());
+                                auth.createUserWithEmailAndPassword(email: emailController.toString(), password: passwordController2.toString());
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
                                 await Navigator.push(
                                   context,

@@ -1,10 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-<<<<<<< HEAD:lib/model/raw_data.g.dart
+
 part of 'raw_data.dart';
-=======
-part of 'rawdata.dart';
->>>>>>> visualisation_functions:lib/model/rawdata.g.dart
+
 
 // **************************************************************************
 // TypeAdapterGenerator

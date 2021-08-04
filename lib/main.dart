@@ -145,7 +145,7 @@ class _NavBarPageState extends State<NavBarPage> {
       log("Connected Devices: "+connectedString);
       List<int> positionLs = List<int>.filled(19, 0); // 19 positions including null
       var box = Boxes.getRawDataBox();
-      //var box2 = Boxes.getProcessedDataBox();
+      var box2 = Boxes.getProcessedDataBox();
       //Check if >= 1minute has elapsed
       if (box.getAt(box.length-1)!.dateTime.minute>box.getAt(0)!.dateTime.minute){
         log('FINDING MODAL POSITION');
@@ -158,7 +158,14 @@ class _NavBarPageState extends State<NavBarPage> {
             modalPos = i;
           }
         }
-        addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, checkPostureCategory(modalPos));
+        //decide whether to input 'A' or 'B' into the box
+        String addCat;
+        if (checkPostureCategory(modalPos)=='A' && isBreak()) {
+          addCat = 'B';
+        }
+        else{addCat = checkPostureCategory(modalPos);}
+        //add entry to Hive
+        addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, addCat);
         //TODO Clear Table 1?
         box.clear();
       }
