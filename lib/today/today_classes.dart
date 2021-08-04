@@ -11,8 +11,61 @@ import 'dart:core';
 import 'package:intl/intl.dart';
 import '../utils/positions_processing.dart';
 import '../utils/boxes.dart';
-
+import '../model/raw_data.dart';
+import '../model/processed_data.dart';
+import '../model/visualisation_data.dart';
 //var inComingData = new List();
+
+class Rings {
+  int totalSittingTime = 0;
+  int goodSittingTime = 0;
+  int postureChangeFrequency = 0;
+  //Constructor
+  Rings(this.totalSittingTime,this.goodSittingTime,this.postureChangeFrequency);
+
+  //Setters
+  set setTotalSitting(int t){
+    totalSittingTime = t;
+  }
+  set setGoodSitting(int t){
+    goodSittingTime = t;
+  }
+  set posChange(int t){
+    postureChangeFrequency = t;
+  }
+  //Methods
+}
+
+int calcTotalTime(){
+  int totalTime = 0;
+  var table2 = Boxes.getProcessedDataBox();
+  for (int i=0;i<table2.length;i++) {
+    getProcessedData(i).then((processedData) {
+      if (processedData!.category!='A'||processedData.category!='B') { //not away or break
+        totalTime++; //add to count if sitting
+      }
+    });
+  }
+  return totalTime;
+}
+
+int calcGoodTime(){
+  int goodTime = 0;
+  var table2 = Boxes.getProcessedDataBox();
+  for (int i=0;i<table2.length;i++) {
+    getProcessedData(i).then((processedData) {
+      if (processedData!.category=='G') {
+        goodTime++; //add to count if G for good
+      }
+    });
+  }
+  return goodTime;
+}
+
+// int calcPostureChangeFreq(){
+//
+// }
+
 
 // For Total Sitting Time:
 class TotalSittingTime {
@@ -65,6 +118,21 @@ class GoodSittingTime{
       }
     }
   }
+}
+
+bool isBreak() {
+  int awayCount = 0;
+  var box2 = Boxes.getProcessedDataBox();
+  for (int i=box2.length-5;i<box2.length;i++){
+    getProcessedData(i).then((data) {
+      if(data!.category=='B') {return true;}
+      else if (data.category=='A') {
+        awayCount++;
+      }
+    });
+  }
+  if (awayCount==5) {return true;}
+  return false;
 }
 
 String checkPostureCategory(int thisPosture) {

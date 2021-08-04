@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -25,12 +26,14 @@ class TodayWidget extends StatefulWidget {
 class _TodayWidgetState extends State<TodayWidget> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String DayDate = DateFormat('MMM d').format(DateTime.now()).toString();
 
   //var to store Username from sharedprefs
   String? username;
 
   //Graph2 Stuff
   late List<PostureTimingData> PostureTimingChartData;
+  late List<SittData> infoData;
   int timer_count =0;
   late String totalSittingTime;
   late String goodSittingTime;

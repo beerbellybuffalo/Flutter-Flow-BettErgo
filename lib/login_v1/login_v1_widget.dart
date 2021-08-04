@@ -24,8 +24,8 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  // late String _email, _password;
-  // final auth = FirebaseAuth.instance;
+  late String _email, _password;
+  final auth = FirebaseAuth.instance;
   late bool passwordVisibility;
   late String alertDialogText;
   late List<TextEditingController> controllerLs;
