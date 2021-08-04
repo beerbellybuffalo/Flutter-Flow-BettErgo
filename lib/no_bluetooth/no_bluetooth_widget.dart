@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NoBluetoothWidget extends StatefulWidget {
-  NoBluetoothWidget({Key key}) : super(key: key);
+  NoBluetoothWidget({Key? key}) : super(key: key);
 
   @override
   _NoBluetoothWidgetState createState() => _NoBluetoothWidgetState();

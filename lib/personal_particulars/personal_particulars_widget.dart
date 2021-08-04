@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalParticularsWidget extends StatefulWidget {
-  PersonalParticularsWidget({Key key}) : super(key: key);
+  PersonalParticularsWidget({Key? key}) : super(key: key);
 
   @override
   _PersonalParticularsWidgetState createState() =>
@@ -27,10 +27,10 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
   final heightController = TextEditingController();
   final weightController = TextEditingController();
 
-  String initContactNo;
-  String initEmail;
-  String initHeight;
-  String initWeight;
+  late String initContactNo;
+  late String initEmail;
+  late String initHeight;
+  late String initWeight;
 
   @override
   void initState() {
@@ -197,7 +197,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                     fontSize: 16,
                                   ),
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return 'Field is required';
                                     }
 
@@ -269,7 +269,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                     fontSize: 16,
                                   ),
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return 'Field is required';
                                     }
 
@@ -341,7 +341,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                     fontSize: 16,
                                   ),
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return 'Field is required';
                                     }
 
@@ -413,7 +413,7 @@ class _PersonalParticularsWidgetState extends State<PersonalParticularsWidget> {
                                     fontSize: 16,
                                   ),
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return 'Field is required';
                                     }
 

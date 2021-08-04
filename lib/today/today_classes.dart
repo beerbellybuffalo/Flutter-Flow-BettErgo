@@ -8,18 +8,20 @@
 //
 
 
-var inComingData = new List();
+import 'dart:core';
+
+//var inComingData = new List();
 
 // For Total Sitting Time:
 class TotalSittingTime {
   int _totalSittingTime = 0;
   int startingPoint = 0;
   //var inComingData = new List();
-  var ls = new List();
+  var ls= []; //cannot initialise variable to List here because null safe?
   var posNum = [1, 2, 3, 4, 5, 6, 7, 8];
 
   //Constructor
-  TotalSittingTime(List<int> temp_ls) {
+  TotalSittingTime(List<int?> temp_ls) {
     this.ls = temp_ls;
   }
   int getTotalSittingTime() {
@@ -57,12 +59,12 @@ class GoodSittingTime{
       return 0;
     }
     else
-      return null; //null for when not sitting
+      return -1; //-1 for when not sitting, can't use null
   }
   
   void incrementGoodPostureTime(int thisPosture) {
     int currentPosture = checkPostureCategory(thisPosture);
-    if (currentPosture == null) {
+    if (currentPosture == -1) {
       nullCounter++;
     }
     else {

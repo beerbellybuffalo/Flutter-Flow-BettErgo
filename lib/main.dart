@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
 }
 
 class NavBarPage extends StatefulWidget {
-  NavBarPage({Key key, this.initialPage}) : super(key: key);
+  NavBarPage({Key? key, this.initialPage}) : super(key: key);
 
-  final String initialPage;
+  final String? initialPage;
 
   @override
   _NavBarPageState createState() => _NavBarPageState();

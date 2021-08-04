@@ -11,14 +11,14 @@ extension DateTimeExtension on DateTime {
   DateTime get endOfDay => DateTime(year, month, day, 23, 59);
 }
 
-bool isSameDay(DateTime a, DateTime b) {
+bool isSameDay(DateTime? a, DateTime? b) {
   if (a == null || b == null) {
     return false;
   }
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
-bool isSameMonth(DateTime a, DateTime b) {
+bool isSameMonth(DateTime? a, DateTime? b) {
   if (a == null || b == null) {
     return false;
   }
@@ -27,18 +27,18 @@ bool isSameMonth(DateTime a, DateTime b) {
 
 class FlutterFlowCalendar extends StatefulWidget {
   const FlutterFlowCalendar({
-    @required this.color,
-    this.onChange,
+    required this.color,
+    required this.onChange,
     this.runMode = false,
     this.weekFormat = false,
     this.weekStartsMonday = false,
-    this.iconColor,
-    this.dateStyle,
-    this.dayOfWeekStyle,
-    this.inactiveDateStyle,
-    this.selectedDateStyle,
-    this.titleStyle,
-    Key key,
+    required this.iconColor,
+    required this.dateStyle,
+    required this.dayOfWeekStyle,
+    required this.inactiveDateStyle,
+    required this.selectedDateStyle,
+    required this.titleStyle,
+    Key? key,
   }) : super(key: key);
 
   final bool runMode;
@@ -61,9 +61,9 @@ class FlutterFlowCalendar extends StatefulWidget {
 }
 
 class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
-  DateTime focusedDay;
-  DateTimeRange selectedDay;
-  CalendarController calendarController;
+  late DateTime focusedDay;
+  late DateTimeRange selectedDay;
+  late CalendarController calendarController;
 
   @override
   void initState() {
@@ -90,8 +90,8 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
   Color get lighterColor => widget.color.withOpacity(0.60);
 
   void setSelectedDay(
-    DateTime newSelectedDay, [
-    DateTime newSelectedEnd,
+    DateTime? newSelectedDay, [
+    DateTime? newSelectedEnd,
   ]) {
     final newRange = newSelectedDay == null
         ? null
@@ -100,9 +100,9 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
             end: newSelectedEnd ?? newSelectedDay,
           );
     setState(() {
-      selectedDay = newRange;
+      selectedDay = newRange!;
       calendarController.setSelectedDay(newSelectedDay);
-      widget.onChange?.call(newRange);
+      widget.onChange.call(newRange);
     });
   }
 
@@ -174,7 +174,7 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
             ),
             holidays: const {},
             onDaySelected: (newSelectedDay, _, __) {
-              if (!isSameDay(selectedDay?.start, newSelectedDay)) {
+              if (!isSameDay(selectedDay.start, newSelectedDay)) {
                 setSelectedDay(newSelectedDay);
                 if (!isSameMonth(focusedDay, newSelectedDay)) {
                   setState(() {
@@ -200,20 +200,20 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
 
 class CalendarHeader extends StatelessWidget {
   const CalendarHeader({
-    @required this.focusedDay,
-    @required this.onLeftChevronTap,
-    @required this.onRightChevronTap,
-    @required this.onTodayButtonTap,
-    this.iconColor,
+    required this.focusedDay,
+    required this.onLeftChevronTap,
+    required this.onRightChevronTap,
+    required this.onTodayButtonTap,
+    required this.iconColor,
     this.clearButtonVisible = false,
-    this.onClearButtonTap,
-    this.titleStyle,
-    Key key,
+    //required this.onClearButtonTap,
+    required this.titleStyle,
+    Key? key,
   }) : super(key: key);
 
   final bool clearButtonVisible;
   final DateTime focusedDay;
-  final VoidCallback onClearButtonTap;
+  //final VoidCallback onClearButtonTap;
   final VoidCallback onLeftChevronTap;
   final VoidCallback onRightChevronTap;
   final VoidCallback onTodayButtonTap;
@@ -239,11 +239,11 @@ class CalendarHeader extends StatelessWidget {
               style: const TextStyle(fontSize: 17).merge(titleStyle),
             ),
           ),
-          if (clearButtonVisible)
-            CustomIconButton(
-              icon: Icon(Icons.clear, color: iconColor),
-              onTap: onClearButtonTap,
-            ),
+          // if (clearButtonVisible)
+          //   CustomIconButton(
+          //     icon: Icon(Icons.clear, color: iconColor),
+          //     onTap: onClearButtonTap,
+          //   ),
           CustomIconButton(
             icon: Icon(Icons.calendar_today, color: iconColor),
             onTap: onTodayButtonTap,
@@ -264,11 +264,11 @@ class CalendarHeader extends StatelessWidget {
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
-    @required this.icon,
-    @required this.onTap,
+    required this.icon,
+    required this.onTap,
     this.margin = const EdgeInsets.symmetric(horizontal: 4),
     this.padding = const EdgeInsets.all(10),
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final Icon icon;
@@ -287,8 +287,8 @@ class CustomIconButton extends StatelessWidget {
           padding: padding,
           child: Icon(
             icon.icon,
-            color: icon?.color,
-            size: icon?.size,
+            color: icon.color,
+            size: icon.size,
           ),
         ),
       ),

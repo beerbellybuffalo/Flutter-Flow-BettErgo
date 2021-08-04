@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class FirstPageWidget extends StatefulWidget {
-  FirstPageWidget({Key key}) : super(key: key);
+  FirstPageWidget({Key? key}) : super(key: key);
 
   @override
   _FirstPageWidgetState createState() => _FirstPageWidgetState();
@@ -77,16 +77,18 @@ class _FirstPageWidgetState extends State<FirstPageWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(),
-                                child: Align(
-                                  alignment: Alignment(0, 1),
-                                  child: Text(
-                                    'Creating Better Ergonomic Habits',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.subtitle1.override(
-                                      fontFamily: 'Poppins',
+                              Expanded(
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(),
+                                  child: Align(
+                                    alignment: Alignment(0, 1),
+                                    child: Text(
+                                      'Creating Better Ergonomic Habits',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.subtitle1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),

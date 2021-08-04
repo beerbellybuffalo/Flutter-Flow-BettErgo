@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CalibrationWidget extends StatefulWidget {
-  CalibrationWidget({Key key}) : super(key: key);
+  CalibrationWidget({required Key key}) : super(key: key);
 
   @override
   _CalibrationWidgetState createState() => _CalibrationWidgetState();

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsWidget extends StatefulWidget {
-  SettingsWidget({Key key}) : super(key: key);
+  SettingsWidget({Key? key}) : super(key: key);
 
   @override
   _SettingsWidgetState createState() => _SettingsWidgetState();
@@ -141,16 +141,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                                child: Text(
-                                  'My Data',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                  child: Text(
+                                    'My Data',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
                                   ),
                                 ),
                               ),
                               Expanded(
+                                flex: 1,
                                 child: Align(
                                   alignment: Alignment(0.9, 0),
                                   child: Icon(
@@ -179,16 +183,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                                  child: Text(
-                                    'Personal Particulars',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Poppins',
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                    child: Text(
+                                      'Personal Particulars',
+                                      style: FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
+                                  flex: 1,
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
                                     child: InkWell(
@@ -229,16 +237,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                                  child: Text(
-                                    'Notifications',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Poppins',
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                    child: Text(
+                                      'Notifications',
+                                      style: FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
+                                  flex: 1,
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
                                     child: Icon(
@@ -268,16 +280,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                                  child: Text(
-                                    'Change Password',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Poppins',
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                    child: Text(
+                                      'Change Password',
+                                      style: FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
+                                  flex: 1,
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
                                     child: InkWell(
@@ -318,16 +334,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                                  child: Text(
-                                    'Bluetooth Pairing',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Poppins',
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                                    child: Text(
+                                      'Bluetooth Pairing',
+                                      style: FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                                 ),
                                 Expanded(
+                                  flex: 1,
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
                                     child: InkWell(
@@ -336,7 +356,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                BluetoothWidget(),
+                                                BluetoothParent(),
                                           ),
                                         );
                                       },

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:better_sitt/today/today_classes.dart';
+import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/rendering.dart';
@@ -12,7 +13,8 @@ import 'dart:async';
 import 'dart:math';
 
 class TodayWidget extends StatefulWidget {
-  TodayWidget({Key key}) : super(key: key);
+  final String? BLEsensorStr;
+  TodayWidget({Key? key, this.BLEsensorStr}) : super(key: key);
 
   @override
   _TodayWidgetState createState() => _TodayWidgetState();
@@ -23,13 +25,13 @@ class _TodayWidgetState extends State<TodayWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   //Graph Stuff
-  List<SittData> chartData;
-  List<PositionBarData> barChartData;
+  late List<SittData> chartData;
+  late List<PositionBarData> barChartData;
   int timer_count =0;
-  String totalSittingTime;
-  String goodSittingTime;
+  late String totalSittingTime;
+  late String goodSittingTime;
 
-  Timer timer;
+  late Timer timer;
   @override
   void dispose(){
     super.dispose();
@@ -359,75 +361,77 @@ class _TodayWidgetState extends State<TodayWidget> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Top 3 Positions Today',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                  ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              decoration: BoxDecoration(),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Top 3 Positions Today',
+                                      style: FlutterFlowTheme.bodyText1.override(
+                                        fontFamily: 'Poppins',
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.info,
+                                      color: FlutterFlowTheme.tertiaryColor,
+                                      size: 24,
+                                    )
+                                  ],
                                 ),
-                                Icon(
-                                  Icons.info,
-                                  color: FlutterFlowTheme.tertiaryColor,
-                                  size: 24,
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(),
-                              child: Image.asset(
-                                'assets/images/posture-yyy.png',
-                                fit: BoxFit.contain,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(),
+                                child: Image.asset(
+                                  'assets/images/posture-yyy.png',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(),
-                              child: Image.asset(
-                                'assets/images/posture-nny.png',
-                                fit: BoxFit.contain,
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(),
+                                child: Image.asset(
+                                  'assets/images/posture-nny.png',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(),
-                              child: Image.asset(
-                                'assets/images/posture-nyn.png',
-                                fit: BoxFit.contain,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(),
+                                child: Image.asset(
+                                  'assets/images/posture-nyn.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                 ),
               ),
               Container(
@@ -478,6 +482,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                       fontSize: 22,
                                     ),
                                   ),
+
                                   Text(
                                     'since Yesterday',
                                     style: FlutterFlowTheme.bodyText1.override(
