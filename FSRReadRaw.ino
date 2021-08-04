@@ -4,7 +4,7 @@
 #include <BLE2902.h>
 #define SERVICE_UUID        "ac78dae7-fe7f-45fa-8b4b-a553aba82693"
 #define CHARACTERISTIC1_UUID "4cee02fe-dc6f-4a6a-b8fa-789d79058177"
-#define CHARACTERISTIC2_UUID "c53e7632-9a2b-4272-b1a8-d2f4d658752a"
+#define CHARACTERISTIC2_UUID "c53e7632-9a2b-4272-b1a8-d2f4d658752a" //send values to this one, either 1 or 2.
 int fsr1 = 34;
 int fsr2 = 35; 
 int fsr3 = 32; 
@@ -21,10 +21,16 @@ int vibmot = 2;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 int period = 1000;
-int vibperiod = 1000;
+int vibperiod1 = 1000;
+int vibperiod2 = 3000;
 unsigned long time_1= 0;
 unsigned long time_2 = 0;
 unsigned long time_3 = 0;
+int vibmotoract =0;
+int vib1state = 0;
+int vib2state = 0;
+int lastvib1state = 0;
+int lastvib2state = 0;
 String collate = "";
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic1 = NULL;
@@ -111,32 +117,60 @@ void loop(void) {
         collate = checkReading(fsr1)+","+checkReading(fsr2)+","+checkReading(fsr3)+","+checkReading(fsr4)+","+checkReading(fsr5)+","+checkReading(fsr6)+","+checkReading(fsr7)+","+checkReading(fsr8)+","+checkReading(fsr9)+","+checkReading(fsr10)+","+checkReading(fsr11);
         pCharacteristic1->setValue(collate.c_str());
         pCharacteristic1->notify();
-        std::string rxValue = pCharacteristic2->getValue();
-        if (rxValue == "1"){
-          digitalWrite(vibmot, HIGH);
-          if(millis() >= time_2 + vibperiod){
-          time_2 += vibperiod;
-          
-          digitalWrite(vibmot, LOW);
-          pCharacteristic2->setValue("0");
-          pCharacteristic2->notify();
-          }
-        if (rxValue == "2"){
-          digitalWrite(vibmot, HIGH);
-          if(millis() >= time_3 + vibperiod){
-          time_3 += vibperiod;
-          
-          digitalWrite(vibmot, LOW);
-          pCharacteristic2->setValue("0");
-          pCharacteristic2->notify();
-          }
+        Serial.println(" ***");}
+        
+     std::string rxValue = pCharacteristic2->getValue();
+     rxValue = rxValue.c_str();
+     if (rxValue == "1"){
+      vib1state = 1;
+      if(lastvib1state != vib1state){
+      Serial.print("*** VIBRATE BITCH 1 SEC ***");
+        time_2 = millis();
+        lastvib1state = vib1state;}
+      vibmotoract = 1;
+      digitalWrite(vibmot, HIGH);
+      
+     }
+     if (rxValue == "2"){
+      vib2state = 1;
+      if(lastvib2state != vib2state){
+      Serial.print("*** VIBRATE BITCH 3 SEC ***");
+        time_3 = millis();}
+      vibmotoract = 2;
+      digitalWrite(vibmot, HIGH);
+      lastvib2state = vib2state; 
+
+     if (rxValue == "0"){
+      digitalWrite(vibmot, LOW);
+      vib1state = 0;
+      lastvib1state = 0;
+      vib2state = 0;
+      lastvib2state = 0;
+      vibmotoract = 0;
         }
-      Serial.print("*** Sent Value: ");
-      Serial.print(collate);
-      Serial.println(" ***");
+     }
+     if((millis() - time_2) >= vibperiod1 && vibmotoract == 1){
+      digitalWrite(vibmot, LOW);
+      pCharacteristic2->setValue("0");
+      pCharacteristic2->notify();
+      vib1state = 0;
+      lastvib1state = 0;
+      vibmotoract = 0;
+      }
+     if((millis() - time_3) >= vibperiod2 && vibmotoract == 2){
+      digitalWrite(vibmot, LOW);
+      pCharacteristic2->setValue("0");
+      pCharacteristic2->notify();
+      vib2state = 0;
+      lastvib2state = 0;
+      vibmotoract = 0;
+      }
+
+    
+      //Serial.print("*** Sent Value: ");
+      //Serial.print(collate);
  
       }
-    }
     if (!deviceConnected && oldDeviceConnected) {
        delay(500); // give the bluetooth stack the chance to get things ready
        pServer->startAdvertising(); // restart advertising
