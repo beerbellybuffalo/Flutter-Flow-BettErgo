@@ -17,6 +17,8 @@ import 'package:sklite/utils/io.dart';
 import 'package:sklite/tree/tree.dart';
 import 'boxes.dart';
 
+Future<Model> futureModel = Model.create();
+
 //Read data from json, inplace of bluetooth, can take away
 Future<Map> getData(context) async {
   String data =
@@ -98,7 +100,7 @@ Future<int> predict(List<double> sensor_vals) async{
     return 0;
   }else {
     String response = await rootBundle.loadString('assets/model/ml_algo.json');
-    Model model = await Model.create();
+    // Model model = await Model.create();
     // final model = DecisionTreeClassifier.fromJson(response);
     final data = sensor_vals.getRange(0, 9).toList()+sensor_vals.getRange(11, 13).toList();
     // final df = DataFrame(data, headerExists: false);
@@ -108,7 +110,7 @@ Future<int> predict(List<double> sensor_vals) async{
     //     .first
     //     .first
     //     .toInt();
-
+    Model model = await futureModel;
     int position = model.predict(data);
 
       if (sensor_vals[9] ==0 && sensor_vals[10]== 0) {
