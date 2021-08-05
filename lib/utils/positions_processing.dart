@@ -8,8 +8,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:better_sitt/model/raw_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_algo/ml_algo.dart';
+// import 'package:ml_dataframe/ml_dataframe.dart';
+// import 'package:ml_algo/ml_algo.dart';
+import 'package:sklite/utils/io.dart';
+import 'package:sklite/tree/tree.dart';
 import 'boxes.dart';
 
 //Read data from json, inplace of bluetooth, can take away
@@ -87,15 +89,18 @@ Future<int> predict(List<double> sensor_vals) async{
     return 0;
   }else {
     String response = await rootBundle.loadString('assets/model/ml_algo.json');
-    final model = DecisionTreeClassifier.fromJson(response);
-    final data = [sensor_vals.getRange(0, 9).toList()+sensor_vals.getRange(11, 13).toList()];
-    final df = DataFrame(data, headerExists: false);
-    int position = model
-        .predict(df)
-        .rows
-        .first
-        .first
-        .toInt();
+    Model model = await Model.create();
+    // final model = DecisionTreeClassifier.fromJson(response);
+    final data = sensor_vals.getRange(0, 9).toList()+sensor_vals.getRange(11, 13).toList();
+    // final df = DataFrame(data, headerExists: false);
+    // int position = model
+    //     .predict(df)
+    //     .rows
+    //     .first
+    //     .first
+    //     .toInt();
+
+    int position = model.predict(data);
 
       if (sensor_vals[9] ==0 && sensor_vals[10]== 0) {
         if (position == 2) {
@@ -132,28 +137,28 @@ Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async{
   addRawData(dateTime, position);
 }
 
-// class Model{
-//   late DecisionTreeClassifier model;
-//
-//   // Private constructor, use create() to get an instance
-//   Model._();
-//
-//   // Future that completes when the new Model is ready to use
-//   static Future<Model> create() async {
-//     Model model = Model._();
-//     await model._getModel();
-//     return model;
-//   }
-//
-//   // Constructs model from weights in postureprediction.json
-//   Future<void> _getModel() async {
-//     String x = await loadModel("assets/model/postureprediction_tree.json");
-//     this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
-//     log("Model loaded: "+this.model.toString());
-//   }
-//
-//   //predicts given a list of values
-//   int predict(List<double >input) {
-//     return this.model.predict(input);
-//   }
-// }
+class Model{
+  late DecisionTreeClassifier model;
+
+  // Private constructor, use create() to get an instance
+  Model._();
+
+  // Future that completes when the new Model is ready to use
+  static Future<Model> create() async {
+    Model model = Model._();
+    await model._getModel();
+    return model;
+  }
+
+  // Constructs model from weights in postureprediction.json
+  Future<void> _getModel() async {
+    String x = await loadModel("assets/model/postureprediction.json");
+    this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
+    log("Model loaded: "+this.model.toString());
+  }
+
+  //predicts given a list of values
+  int predict(List<double >input) {
+    return this.model.predict(input);
+  }
+}
