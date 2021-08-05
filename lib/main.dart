@@ -298,6 +298,8 @@ class _NavBarPageState extends State<NavBarPage> {
       log(sensorData.toString());
       //Write to Hive
       try{
+        sensorData.add(170); //height
+        sensorData.add(63); //weight
         writeContent(sensorData);
       } catch(e){
         log(e.toString());
