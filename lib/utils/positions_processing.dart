@@ -36,6 +36,15 @@ Future<RawData?> getRawData(int index) async{
   return box.getAt(index);
 }
 
+Future<void> clearRawDataTable() async{
+  final box = Boxes.getRawDataBox();
+  box.clear();
+}
+
+Future<void> clearProcessedTable() async{
+  final box = Boxes.getProcessedDataBox();
+  box.clear();
+}
 Future<void> addProcessedData(DateTime _dateTime,int _position,String _category) async {
 
   final processedData = ProcessedData()
