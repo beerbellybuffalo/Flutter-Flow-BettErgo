@@ -17,30 +17,16 @@ void main() async {
   Hive.registerAdapter(ProcessedDataAdapter());
   await Hive.openBox<ProcessedData>('processeddata');
 
-
-  test('Check Hive Tables', () async {
+  test('Check Hive Table 1', () async {
     var table1 = Boxes.getRawDataBox();
-    var table2 = Boxes.getProcessedDataBox();
-    print(table1.values);
-    print(table2.values);
+    table1.clear();
+
     //LOG TABLE 1 DATA
-    String table1Data = "table1Data: ";
-    for (int i = 0; i < table1.length; i++) {
-      getRawData(i).then((rawData) =>
-      table1Data +=
-      (rawData!.dateTime.toString() + rawData.position.toString() + "\n"));
-    }
-    print(table1Data);
-    //LOG TABLE 2 DATA
-    String table2Data = "table2Data: ";
-    for (int i = 0; i < table2.length; i++) {
-      getProcessedData(i).then((processedData) {
-        table2Data += (processedData!.dateTime.toString() +
-            processedData.position.toString() +
-            processedData.category.toString() + "\n");
-      });
-    }
-    print(table2Data);
-    expect(table2Data, null);
+    DateTime date = DateTime(2021,8,5);
+    predictAndStore(date, [0,0,0,0,0,0,0,0,0,0,0,170,66]);
+    var rawData = await getRawData(0);
+
+    expect(rawData!.dateTime, DateTime(2021,8,5));
+    expect(rawData.position, 0);
   });
 }
