@@ -26,16 +26,6 @@ class _MyDataWidgetState extends State<MyDataWidget> {
     super.initState();
   }
 
-  void setPW() async {
-    final prefs = await SharedPreferences.getInstance();
-    String oldPW = prefs.getString('Password')??"-";
-    String newPW = newPWController.text;
-    prefs.setString('Password', newPW);
-    print("old password: $oldPW");
-    print("updated password: $newPW");
-    setState(() {});
-  }
-
   Future<void> _clearDataDialog() async {
     return showDialog<void>(
       context: context,
@@ -70,6 +60,7 @@ class _MyDataWidgetState extends State<MyDataWidget> {
       },
     );
   }
+
 
   Future<void> clearData() async{
     //Clears Table2 Data

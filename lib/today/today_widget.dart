@@ -47,9 +47,9 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   //For top 3 positions
   //late List<String> postureImages;
-  late String top1PosImg;
-  late String top2PosImg;
-  late String top3PosImg;
+  String top1PosImg = "assets/images/posture-0.png";
+  String top2PosImg = "assets/images/posture-0.png";
+  String top3PosImg = "assets/images/posture-0.png";
 
   Map<int,dynamic> imageDirectoriesMap = {
     0: 'assets/images/posture-0.png',
@@ -83,8 +83,8 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention3 = false;
 
   //South of the border
-  late Rings yestRings;
-  late Rings todayRings;
+  Rings yestRings = new Rings();
+  Rings todayRings = new Rings();
   late String comparisonMessage;
   late String salutation;
   String percentageChange = "-";
@@ -97,20 +97,40 @@ class _TodayWidgetState extends State<TodayWidget> {
     getUsername().then((value) { setState(() {
       username = value;
     }); });
+    //get today's posture graph information
+    Box<VisualisationData> visBox = Boxes.getVisualisationDataBox();
+    setState(() {
+      if (visBox.length>2){
+        // try {
+          top1PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
+              .postureGraph
+              .topThreePositions[0]] ?? 'assets/images/posture-0.png';
+          top2PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
+              .postureGraph
+              .topThreePositions[1]] ?? 'assets/images/posture-0.png';
+          top3PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
+              .postureGraph
+              .topThreePositions[2]] ?? 'assets/images/posture-0.png';
+          todayRings = visBox.getAt(visBox.length - 1)!.rings;
+          yestRings = visBox.getAt(visBox.length - 2)!.rings;
+      //   }catch(e){
+      //     print(e);
+      //     log(visBox.length - 1);
+      //     log(getAt)
+      //
+      // }
+      }
+    });
+    //set the comparison widget
     setState(() {
       percentageChange = getPercentageChange(yestRings, todayRings).abs().toString();
       setSalutation(getPercentageChange(yestRings, todayRings));
       setComparisonMessage(getPercentageChange(yestRings, todayRings));
     });
-    //get today's posture graph information
-    Box<VisualisationData> visBox = Boxes.getVisualisationDataBox();
-    setState(() {
-      top1PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[0]]??'assets/images/posture-0.png';
-      top2PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[1]]??'assets/images/posture-0.png';
-      top3PosImg = imageDirectoriesMap[visBox.getAt(visBox.length-1)!.postureGraph.topThreePositions[2]]??'assets/images/posture-0.png';
-      todayRings = visBox.getAt(visBox.length-1)!.rings;
-      yestRings = visBox.getAt(visBox.length-2)!.rings;
-    });
+
     // getVisualisationData(Boxes.getVisualisationDataBox().length-1).then((data) {top1Pos = data!.postureGraph.topThreePositions[0];
     //                                                                             top2Pos = data.postureGraph.topThreePositions[1];
     //                                                                             top3Pos = data.postureGraph.topThreePositions[2];

@@ -1,6 +1,7 @@
 import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
 import 'package:better_sitt/main.dart';
 import 'package:better_sitt/my_data/my_data.dart';
+import 'package:better_sitt/notifs/notifs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../change_p_w/change_p_w_widget.dart';
@@ -287,10 +288,21 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   flex: 1,
                                   child: Align(
                                     alignment: Alignment(0.9, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 24,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                NotifWidget(),
+                                          ),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Color(0xFF95A1AC),
+                                        size: 24,
+                                      ),
                                     ),
                                   ),
                                 )
