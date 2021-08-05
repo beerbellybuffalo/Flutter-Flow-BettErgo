@@ -81,14 +81,6 @@ Future<VisualisationData?> getVisualisationData(int index) async{
   return box.getAt(index);
 }
 
-
-// Predicts and stores the value in hive
-Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async {
-  final model = await Model.create();
-  int position = model.predict(sensor_vals);
-  addRawData(dateTime, position);
-}
-
 Future<int> predict(List<double> sensor_vals) async{
   var flag = sensor_vals.getRange(0, 9).toList().every((e)=>e==0);
   if (flag) {
