@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:better_sitt/model/rings.dart';
 import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -83,8 +84,8 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention3 = false;
 
   //South of the border
-  Rings yestRings = new Rings();
-  Rings todayRings = new Rings();
+  HiveRings yestRings = new HiveRings();
+  HiveRings todayRings = new HiveRings();
   late String comparisonMessage;
   late String salutation;
   String percentageChange = "-";
@@ -184,7 +185,7 @@ class _TodayWidgetState extends State<TodayWidget> {
     return _username;
   }
 
-  int getPercentageChange(Rings yestRings, Rings todayRings) {
+  int getPercentageChange(HiveRings yestRings, HiveRings todayRings) {
     return (todayRings.goodSittingTime-yestRings.goodSittingTime)*100;
   }
 
@@ -284,7 +285,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            'Today\'s Score:',
+                            "Today's Score:",
                             style: FlutterFlowTheme.bodyText1.override(
                               fontFamily: 'Poppins',
                             ),

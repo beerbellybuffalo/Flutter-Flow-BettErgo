@@ -659,7 +659,6 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
     infoData = getChartData();
     PostureTimingChartData = getPostureTimingChartData();
 
-
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.primaryColor,

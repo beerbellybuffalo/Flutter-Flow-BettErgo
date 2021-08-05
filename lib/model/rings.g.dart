@@ -1,37 +1,43 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'visualisation_data.dart';
+part of 'rings.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class VisualisationDataAdapter extends TypeAdapter<VisualisationData> {
+class HiveRingsAdapter extends TypeAdapter<HiveRings> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  VisualisationData read(BinaryReader reader) {
+  HiveRings read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return VisualisationData()
-      ..rings = fields[0] as HiveRings
-      ..appleGraph = fields[1] as HiveAppleGraph
-      ..postureGraph = fields[2] as HivePostureGraph;
+    return HiveRings()
+      ..totalSittingTime = fields[0] as int
+      ..goodSittingTime = fields[1] as int
+      ..postureChangeFrequency = fields[2] as int
+      ..innerRing = fields[3] as double
+      ..outerRing = fields[4] as double;
   }
 
   @override
-  void write(BinaryWriter writer, VisualisationData obj) {
+  void write(BinaryWriter writer, HiveRings obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.rings)
+      ..write(obj.totalSittingTime)
       ..writeByte(1)
-      ..write(obj.appleGraph)
+      ..write(obj.goodSittingTime)
       ..writeByte(2)
-      ..write(obj.postureGraph);
+      ..write(obj.postureChangeFrequency)
+      ..writeByte(3)
+      ..write(obj.innerRing)
+      ..writeByte(4)
+      ..write(obj.outerRing);
   }
 
   @override
@@ -40,7 +46,7 @@ class VisualisationDataAdapter extends TypeAdapter<VisualisationData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VisualisationDataAdapter &&
+      other is HiveRingsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

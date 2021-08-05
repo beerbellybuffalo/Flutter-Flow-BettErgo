@@ -114,15 +114,15 @@ class _NotifWidgetState extends State<NotifWidget> {
     flutterBlue.connectedDevices.then((connectedDevicesList) {if(connectedDevicesList.isNotEmpty){
       String pulseDecision = "1";
       List<BluetoothCharacteristic> cList;
-      connectedDevicesList.single.discoverServices().then((services) {
+      connectedDevicesList.single.discoverServices().then((services) async {
         cList = services[2].characteristics;
         //String temp = "cList: ";
         //cList.forEach((element) { temp += element.descriptors.toString();});
         //log(temp);
         log("number of characteristics: "+cList.length.toString());
         //cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
-        cList.last.write(utf8.encode(pulseDecision));
-        log("PULSE SENT");
+        await cList.last.write(utf8.encode(pulseDecision));
+        log("LONG PULSE SENT");
         setHaptics(pulseDecision);
       });
     }
@@ -134,9 +134,11 @@ class _NotifWidgetState extends State<NotifWidget> {
     flutterBlue.connectedDevices.then((connectedDevicesList) {if(connectedDevicesList.isNotEmpty){
       String pulseDecision = "2";
       List<BluetoothCharacteristic> cList;
-      connectedDevicesList.single.discoverServices().then((services) {
+      connectedDevicesList.single.discoverServices().then((services) async {
         cList = services[2].characteristics;
-        cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
+        log("number of characteristics: "+cList.length.toString());
+        await cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
+        log("INTERMITTENT PULSE SENT");
         setHaptics(pulseDecision);
       });
     }
