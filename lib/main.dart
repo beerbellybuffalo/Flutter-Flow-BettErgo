@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
+import 'hive_viewing.dart';
 import 'model/processed_data.dart';
 // import 'package:better_sitt/login_v1/models/user.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BetterSitt',
       //theme: ThemeData(primarySwatch: Colors.blue),
-      home: FirstPageWidget(),
+      home: HiveViewingApp(title:"Check da hive"),
       debugShowCheckedModeBanner: false,
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
