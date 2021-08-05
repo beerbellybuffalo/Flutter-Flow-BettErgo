@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:better_sitt/model/processed_data.dart';
+import 'package:better_sitt/model/visualisation_data.dart';
+import 'package:better_sitt/today/today_classes.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:better_sitt/model/raw_data.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +64,22 @@ Future<ProcessedData?> getProcessedData(int index) async{
   return box.getAt(index);
 }
 
+Future<void> putVisualisationData(Rings _rings, AppleGraph _appleGraph, PostureGraph _postureGraph) async {
+
+  final visualisationData = VisualisationData()
+    ..rings = _rings
+    ..appleGraph = _appleGraph
+    ..postureGraph = _postureGraph;
+
+  final box = Boxes.getVisualisationDataBox();
+  box.put(DateTime.now().toIso8601String(), visualisationData);
+}
+
+//TODO getVisualisationData
+Future<VisualisationData?> getVisualisationData(int index) async{
+  final box = Boxes.getVisualisationDataBox();
+  return box.getAt(index);
+}
 
 Future<int> predict(List<double> sensor_vals) async{
   var flag = sensor_vals.getRange(0, 9).toList().every((e)=>e==0);

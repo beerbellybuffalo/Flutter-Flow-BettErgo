@@ -1,34 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'raw_data.dart';
+part of 'visualisation_data.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class RawDataAdapter extends TypeAdapter<RawData> {
+class VisualisationDataAdapter extends TypeAdapter<VisualisationData> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  RawData read(BinaryReader reader) {
+  VisualisationData read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return RawData()
-      ..dateTime = fields[0] as DateTime
-      ..position = fields[1] as int;
+    return VisualisationData()
+      ..rings = fields[0] as Rings
+      ..appleGraph = fields[1] as AppleGraph
+      ..postureGraph = fields[2] as PostureGraph;
   }
 
   @override
-  void write(BinaryWriter writer, RawData obj) {
+  void write(BinaryWriter writer, VisualisationData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.dateTime)
+      ..write(obj.rings)
       ..writeByte(1)
-      ..write(obj.position);
+      ..write(obj.appleGraph)
+      ..writeByte(2)
+      ..write(obj.postureGraph);
   }
 
   @override
@@ -37,7 +40,7 @@ class RawDataAdapter extends TypeAdapter<RawData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RawDataAdapter &&
+      other is VisualisationDataAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
