@@ -46,23 +46,30 @@ dependencies:
   # hive database
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+
   # firebase database:
-#  firebase_auth: ^0.18.0+1
-#  cloud_firestore: ^0.12.9+4
-#  firebase_core: ^0.5.0
   firebase_core: "^1.4.0"
   firebase_auth: "^3.0.1"
+  cloud_firestore: ^2.4.0
+
   provider: ^4.3.2+1
+
   fluttertoast: ^8.0.7
 
+
+
+
+#  Backup that works:
+#    firebase_core: "^1.4.0"
+#    firebase_auth: "^3.0.1"
+#    provider: ^4.3.2+1
+#    fluttertoast: ^8.0.7
+#    cloud_firestore: ^2.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
-#  ml_dataframe: ^0.5.1
-#  ml_preprocessing: ^6.0.0
-#  ml_algo: ^16.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0
@@ -78,10 +85,8 @@ dependency_overrides:
 
 flutter_icons:
   android: true
-  ios: false
-  image_path: 'assets/images/app_icon.png'
-  adaptive_icon_background: "assets/images/app_icon_back.png"
-  adaptive_icon_foreground: "assets/images/app_icon_fore.png"
+  ios: true
+  image_path: 'assets/images/Logo2.png'
 
 
 # For information on the generic Dart part of this file, see the
@@ -101,6 +106,7 @@ flutter:
     - assets/videos/
     - assets/audios/
     - assets/model/
+    - assets/model/hi.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
