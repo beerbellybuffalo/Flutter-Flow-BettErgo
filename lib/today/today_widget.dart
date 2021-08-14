@@ -41,7 +41,7 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   //PostureGraph Stuff
   late List<PostureTimingData> PostureTimingChartData;
-  late List<SittData> infoData;
+  late List<SittData> ringsData;
   int timer_count =0;
   late String totalSittingTime;
   late String goodSittingTime;
@@ -200,13 +200,13 @@ class _TodayWidgetState extends State<TodayWidget> {
   @override
   Widget build(BuildContext context) {
 
-    infoData = getChartData();
+    ringsData = getChartData();
     PostureTimingChartData = getPostureTimingChartData();
 
     timer = Timer(const Duration(seconds: 3), () {
       if (mounted)
         setState(() {
-          infoData = getChartData();
+          ringsData = getChartData();
           PostureTimingChartData = getPostureTimingChartData();
           // text file update text to another time
           //updateString();
@@ -299,7 +299,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                             child: SfCircularChart(
                               series: <CircularSeries>[
                                 RadialBarSeries<SittData, String>(
-                                  dataSource: infoData,
+                                  dataSource: ringsData,
                                   xValueMapper: (SittData data, _) => data.name,
                                   yValueMapper: (SittData data, _) => data.data,
                                   pointColorMapper: (SittData data, _) => data.pointColour,
@@ -730,7 +730,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top1PosImg',
+                                  'assets/images/posture-2.png', //$top1PosImg
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -739,7 +739,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top2PosImg',
+                                  'assets/images/posture-5.png', //$top2PosImg
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -748,7 +748,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top3PosImg',
+                                  'assets/images/posture-8.png', //$top3PosImg
                                   fit: BoxFit.contain,
                                 ),
                               )
@@ -801,7 +801,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                     ),
                                   ),
                                   Text(
-                                    '$percentageChange%',
+                                    '12%', //$percentageChange
                                     style: FlutterFlowTheme.bodyText2.override(
                                       fontFamily: 'Poppins',
                                       fontSize: 22,
@@ -870,48 +870,48 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   List<SittData> getChartData() {
     if (timer_count == 0) {
-      infoData = <SittData>[
+      ringsData = <SittData>[
         SittData('My Ass', 35, FlutterFlowTheme.naplesYellow),
-        SittData('Second Ass', 40, Color(0xFF00DBA3)),
+        SittData('Second Ass', 40, Color(0xFF00DBA3)), //FlutterFlowTheme.secondaryColor
       ];
       totalSittingTime = '6hr 41min';
-      goodSittingTime = '3hr 25min';
-      timer_count++;
-     } else if (timer_count == 1) {
-      infoData = <SittData>[
-        SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
-        SittData('Second Ass', 45, Color(0xFF00DBA3)),
-      ];
-      totalSittingTime = '6hr 45min';
-      goodSittingTime = '3hr 29min';
-      timer_count++;
-    } else if (timer_count == 2) {
-      infoData = <SittData>[
-        SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
-        SittData('Second Ass', 50, Color(0xFF00DBA3)),
-      ];//2413
-      totalSittingTime = '6hr 50min';
-      goodSittingTime = '3hr 32min';
-      timer_count++;
-    } else if (timer_count == 3) {
-      infoData = <SittData>[
-        SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
-        SittData('Second Ass', 55, Color(0xFF00DBA3)),
-      ];
-      totalSittingTime = '7hr 05min';
-      goodSittingTime = '3hr 44min';
-      timer_count++;
-    }
-     else if (timer_count == 4) {
-      infoData = <SittData>[
-        SittData('My Ass', 50, Color(0xFFFF6B6B)),
-        SittData('Second Ass', 60, Color(0xFF00DBA3)),
-      ];
-      totalSittingTime = '7hr 20min';
-      goodSittingTime = '3hr 53min';
-      timer_count = 0;
-    }
-    return infoData;
+      goodSittingTime = '3hr 25min';}
+    //   timer_count++;
+    //  } else if (timer_count == 1) {
+    //   ringsData = <SittData>[
+    //     SittData('My Ass', 37, FlutterFlowTheme.naplesYellow),
+    //     SittData('Second Ass', 45, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '6hr 45min';
+    //   goodSittingTime = '3hr 29min';
+    //   timer_count++;
+    // } else if (timer_count == 2) {
+    //   ringsData = <SittData>[
+    //     SittData('My Ass', 40, FlutterFlowTheme.naplesYellow),
+    //     SittData('Second Ass', 50, Color(0xFF00DBA3)),
+    //   ];//2413
+    //   totalSittingTime = '6hr 50min';
+    //   goodSittingTime = '3hr 32min';
+    //   timer_count++;
+    // } else if (timer_count == 3) {
+    //   ringsData = <SittData>[
+    //     SittData('My Ass', 45, FlutterFlowTheme.bittersweetRed),
+    //     SittData('Second Ass', 55, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '7hr 05min';
+    //   goodSittingTime = '3hr 44min';
+    //   timer_count++;
+    // }
+    //  else if (timer_count == 4) {
+    //   ringsData = <SittData>[
+    //     SittData('My Ass', 50, Color(0xFFFF6B6B)),
+    //     SittData('Second Ass', 60, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '7hr 20min';
+    //   goodSittingTime = '3hr 53min';
+    //   timer_count = 0;
+    // }
+    return ringsData;
   }
 
   List<PostureTimingData> getPostureTimingChartData() {
@@ -936,53 +936,53 @@ class _TodayWidgetState extends State<TodayWidget> {
         PostureTimingData('P16', 0, 5, 0),
         PostureTimingData('P17', 0, 0, 0),
         PostureTimingData('P18', 0, 0, 0),
-      ];
-      timer_count++;
-    } else if (timer_count == 1) {
-      PostureTimingChartData = <PostureTimingData>[
-        PostureTimingData('P1', 15, 4, 6),
-        PostureTimingData('P2', 3, 0, 4),
-        PostureTimingData('P3', 0, 0, 0),
-        PostureTimingData('P4', 0, 0, 0),
-        PostureTimingData('P5', 13, 2, 5),
-        PostureTimingData('P6', 0, 0, 0),
-        PostureTimingData('P7', 0, 8, 0),
-        PostureTimingData('P8', 0, 5, 0),
-        PostureTimingData('P9', 16, 8, 8),
-        PostureTimingData('P10', 0, 13, 6),
-        PostureTimingData('P11', 0, 0, 0),
-        PostureTimingData('P12', 0, 0, 0),
-        PostureTimingData('P13', 15, 8, 0),
-        PostureTimingData('P14', 0, 0, 0),
-        PostureTimingData('P15', 0, 7, 0),
-        PostureTimingData('P16', 0, 12, 0),
-        PostureTimingData('P17', 0, 0, 0),
-        PostureTimingData('P18', 0, 0, 0),
-      ];
-      timer_count++;
-    } else if (timer_count == 2) {
-      PostureTimingChartData = <PostureTimingData>[
-        PostureTimingData('P1', 21, 4, 6),
-        PostureTimingData('P2', 3, 0, 4),
-        PostureTimingData('P3', 2, 0, 0),
-        PostureTimingData('P4', 0, 0, 0),
-        PostureTimingData('P5', 13, 10, 5),
-        PostureTimingData('P6', 0, 0, 0),
-        PostureTimingData('P7', 0, 12, 0),
-        PostureTimingData('P8', 0, 5, 3),
-        PostureTimingData('P9', 16, 14, 18),
-        PostureTimingData('P10', 5, 24, 13),
-        PostureTimingData('P11', 0, 0, 0),
-        PostureTimingData('P12', 0, 0, 0),
-        PostureTimingData('P13', 16, 9, 2),
-        PostureTimingData('P14', 0, 0, 0),
-        PostureTimingData('P15', 0, 9, 3),
-        PostureTimingData('P16', 0, 16, 2),
-        PostureTimingData('P17', 0, 0, 0),
-        PostureTimingData('P18', 0, 0, 0),
-      ];
-      timer_count = 0;
-    }
+      ];}
+    //   timer_count++;
+    // } else if (timer_count == 1) {
+    //   PostureTimingChartData = <PostureTimingData>[
+    //     PostureTimingData('P1', 15, 4, 6),
+    //     PostureTimingData('P2', 3, 0, 4),
+    //     PostureTimingData('P3', 0, 0, 0),
+    //     PostureTimingData('P4', 0, 0, 0),
+    //     PostureTimingData('P5', 13, 2, 5),
+    //     PostureTimingData('P6', 0, 0, 0),
+    //     PostureTimingData('P7', 0, 8, 0),
+    //     PostureTimingData('P8', 0, 5, 0),
+    //     PostureTimingData('P9', 16, 8, 8),
+    //     PostureTimingData('P10', 0, 13, 6),
+    //     PostureTimingData('P11', 0, 0, 0),
+    //     PostureTimingData('P12', 0, 0, 0),
+    //     PostureTimingData('P13', 15, 8, 0),
+    //     PostureTimingData('P14', 0, 0, 0),
+    //     PostureTimingData('P15', 0, 7, 0),
+    //     PostureTimingData('P16', 0, 12, 0),
+    //     PostureTimingData('P17', 0, 0, 0),
+    //     PostureTimingData('P18', 0, 0, 0),
+    //   ];
+    //   timer_count++;
+    // } else if (timer_count == 2) {
+    //   PostureTimingChartData = <PostureTimingData>[
+    //     PostureTimingData('P1', 21, 4, 6),
+    //     PostureTimingData('P2', 3, 0, 4),
+    //     PostureTimingData('P3', 2, 0, 0),
+    //     PostureTimingData('P4', 0, 0, 0),
+    //     PostureTimingData('P5', 13, 10, 5),
+    //     PostureTimingData('P6', 0, 0, 0),
+    //     PostureTimingData('P7', 0, 12, 0),
+    //     PostureTimingData('P8', 0, 5, 3),
+    //     PostureTimingData('P9', 16, 14, 18),
+    //     PostureTimingData('P10', 5, 24, 13),
+    //     PostureTimingData('P11', 0, 0, 0),
+    //     PostureTimingData('P12', 0, 0, 0),
+    //     PostureTimingData('P13', 16, 9, 2),
+    //     PostureTimingData('P14', 0, 0, 0),
+    //     PostureTimingData('P15', 0, 9, 3),
+    //     PostureTimingData('P16', 0, 16, 2),
+    //     PostureTimingData('P17', 0, 0, 0),
+    //     PostureTimingData('P18', 0, 0, 0),
+    //   ];
+    //   timer_count = 0;
+    // }
     return PostureTimingChartData;
   }
 

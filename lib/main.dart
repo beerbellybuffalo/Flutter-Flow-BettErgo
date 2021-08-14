@@ -156,7 +156,7 @@ class _NavBarPageState extends State<NavBarPage> {
     //LOG TABLE 3 DATA
     for (int i=0;i<table3.length;i++) {
       getVisualisationData(i).then((visualisationData) {
-        table3Data += ("RINGS" + visualisationData!.rings.toString() + "  APPLE" + visualisationData.appleGraph.toString() + "  POSTUREGRAPH" + visualisationData.postureGraph.toString() + "\n");
+        table3Data += ("RINGS -> totalSittingTime: " + visualisationData!.rings.totalSittingTime.toString() + " goodSittingTime: " + visualisationData.rings.goodSittingTime.toString() + " posChangeFrequency: " + visualisationData.rings.postureChangeFrequency.toString() + "\nAPPLEGRAPH -> " + "backCentered: " + visualisationData.appleGraph.backCenter.toString() + "\nbackSupported: " + visualisationData.appleGraph.backSupp.toString() + "\nlegSupported: " + visualisationData.appleGraph.legSupp.toString() + "\nPOSTUREGRAPH -> " + "top3Pos: " + visualisationData.postureGraph.topThreePositions.toString());
       });
     }
   }
@@ -290,8 +290,8 @@ class _NavBarPageState extends State<NavBarPage> {
     predictAndStore(currentDatetime,sensorData);
   }
 
+  //connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.firstWhere((c) => c.uuid.toString()=="4cee02fe-dc6f-4a6a-b8fa-789d79058177").read().then((sensorDataBytes) {
   Future<void> logAndWriteSensorData(List<BluetoothDevice> connectedDevicesList) async {
-    //connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.firstWhere((c) => c.uuid.toString()=="4cee02fe-dc6f-4a6a-b8fa-789d79058177").read().then((sensorDataBytes) {
     connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.last.read().then((sensorDataBytes) {
       List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
       //Show incoming data in Run Log

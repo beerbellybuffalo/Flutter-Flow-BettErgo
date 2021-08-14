@@ -17,12 +17,12 @@ import 'package:sklite/utils/io.dart';
 import 'package:sklite/tree/tree.dart';
 import 'boxes.dart';
 
-Future<Model> futureModel = Model.create();
+// Future<Model> futureModel = Model.create();
 
 //Read data from json, inplace of bluetooth, can take away
 Future<Map> getData(context) async {
   String data =
-      await DefaultAssetBundle.of(context).loadString("assets/yixuan.json");
+  await DefaultAssetBundle.of(context).loadString("assets/yixuan.json");
   // final jsonResult = await json.decode(data);
   // return jsonResult;
   return json.decode(data);
@@ -100,9 +100,11 @@ Future<int> predict(List<double> sensor_vals) async{
     return 0;
   }else {
     String response = await rootBundle.loadString('assets/model/ml_algo.json');
-    // Model model = await Model.create();
+    DecisionTreeClassifier model = await getModel();
+    stderr.writeln("Model loaded: "+model.toString());
     // final model = DecisionTreeClassifier.fromJson(response);
     final data = sensor_vals.getRange(0, 9).toList()+sensor_vals.getRange(11, 13).toList();
+    log(data.toString());
     // final df = DataFrame(data, headerExists: false);
     // int position = model
     //     .predict(df)
@@ -110,26 +112,28 @@ Future<int> predict(List<double> sensor_vals) async{
     //     .first
     //     .first
     //     .toInt();
-    Model model = await futureModel;
+    // Model model = await futureModel;
+
     int position = model.predict(data);
 
-      if (sensor_vals[9] ==0 && sensor_vals[10]== 0) {
-        if (position == 2) {
-          position = 1;
-        } else if (position == 5) {
-          position = 4;
-        }
-      } else{
-        if (position ==1){
-          position =2;
-        }else if (position ==4){
-          position =5;
-        }
+    if (sensor_vals[9] ==0 && sensor_vals[10]== 0) {
+      if (position == 2) {
+        position = 1;
+      } else if (position == 5) {
+        position = 4;
       }
+    } else{
+      if (position ==1){
+        position =2;
+      }else if (position ==4){
+        position =5;
+      }
+    }
 
 
     var left = (sensor_vals[0] + sensor_vals[3] + sensor_vals[6]) / 3;
     var right = (sensor_vals[2] + sensor_vals[5] + sensor_vals[8]) / 3;
+
 
     if ((left - right).abs() < 50) {
       return position + 6;
@@ -148,28 +152,43 @@ Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async{
   addRawData(dateTime, position);
 }
 
-class Model{
-  late DecisionTreeClassifier model;
+// static Future<Model> create() async {
+//   Model model = Model();
+//   await model._getModel();
+//   return model;
+// }
 
-  // Private constructor, use create() to get an instance
-  Model._();
-
-  // Future that completes when the new Model is ready to use
-  static Future<Model> create() async {
-    Model model = Model._();
-    await model._getModel();
-    return model;
-  }
-
-  // Constructs model from weights in postureprediction.json
-  Future<void> _getModel() async {
-    String x = await loadModel("assets/model/postureprediction.json");
-    this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
-    log("Model loaded: "+this.model.toString());
-  }
-
-  //predicts given a list of values
-  int predict(List<double >input) {
-    return this.model.predict(input);
-  }
+// Constructs model from weights in postureprediction.json
+Future<DecisionTreeClassifier> getModel() async {
+  String x = await loadModel("assets/model/postureprediction_tree.json");
+  // log("some string" +x);
+  DecisionTreeClassifier model =  DecisionTreeClassifier.fromMap(json.decode(x));
+  log("Model loaded: "+model.toString());
+  return model;
 }
+
+// class Model{
+//   // DecisionTreeClassifier model;
+//
+//   // Private constructor, use create() to get an instance
+//   // Model._();
+//
+//   // Future that completes when the new Model is ready to use
+//   static Future<Model> create() async {
+//     Model model = Model();
+//     await model._getModel();
+//     return model;
+//   }
+//
+//   // Constructs model from weights in postureprediction.json
+//   Future<void> _getModel() async {
+//     String x = await loadModel("assets/model/postureprediction.json");
+//     this.model =  DecisionTreeClassifier.fromMap(json.decode(x));
+//     log("Model loaded: "+this.model.toString());
+//   }
+//
+//   //predicts given a list of values
+//   int predict(List<double >input) {
+//     return this.model.predict(input);
+//   }
+// }

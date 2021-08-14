@@ -158,10 +158,12 @@ class _HiveViewingState extends State<HiveViewingApp> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             FloatingActionButton(
+              heroTag: "addBtn" ,
               onPressed:addRandomData,
               child: const Icon(Icons.add),
             ),
             FloatingActionButton(
+              heroTag: "deleteBtn",
               onPressed:clearTable,
               child: Icon(Icons.delete),
             )
