@@ -1,19 +1,22 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:better_sitt/first_page/first_page_widget.dart';
+import 'package:better_sitt/flutter_flow/flutter_flow_calendar.dart';
 import 'package:better_sitt/model/raw_data.dart';
+import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
+import 'hive_viewing.dart';
 import 'model/processed_data.dart';
 // import 'package:better_sitt/login_v1/models/user.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +41,8 @@ Future main() async{
   await Hive.openBox<RawData>('rawdata');
   Hive.registerAdapter(ProcessedDataAdapter());
   await Hive.openBox<ProcessedData>('processeddata');
+  Hive.registerAdapter(VisualisationDataAdapter());
+  await Hive.openBox<VisualisationData>('visualisationdata');
 
   await Firebase.initializeApp();
 
@@ -51,7 +56,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BetterSitt',
       //theme: ThemeData(primarySwatch: Colors.blue),
-      home: FirstPageWidget(), //hereiam change back to FirstPageWidget()
+      home: HiveViewingApp(title:"Check da hive"),
       debugShowCheckedModeBanner: false,
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
@@ -101,8 +106,7 @@ class _NavBarPageState extends State<NavBarPage> {
     _currentPage = widget.initialPage ?? _currentPage;
 <<<<<<< HEAD
     sumMinuteTimer = new Timer.periodic(Duration(minutes: 1), (timer){updateProcessedData();
-      //TODO check if necessary to send reminders, then send
-      //   if(setCategoryAndRemind()==true){sendReminder();}
+    //TODO check if necessary to send reminders, then send
     });
 =======
     sumMinuteTimer = new Timer.periodic(Duration(minutes: 1), (timer){findModalPosition();});
@@ -112,6 +116,16 @@ class _NavBarPageState extends State<NavBarPage> {
       print(table1Data);
       print(table2Data);
     });
+    //TODO check if Table 3 has an entry for today, if don't have then addVisualisationData
+    var table3 = Boxes.getVisualisationDataBox();
+    //if the latest entry in table 3 is not from today, then create new entry
+    if (table3.length==0){
+      putVisualisationData(new Rings(), new AppleGraph(), new PostureGraph());
+      return;
+    }
+    if (isSameDay(DateTime.parse(table3.getAt(table3.length-1)!.key), DateTime.now())==false){
+      putVisualisationData(new Rings(), new AppleGraph(), new PostureGraph());
+    }
   }
 
   Future<void> checkHiveTables() async {
@@ -122,17 +136,17 @@ class _NavBarPageState extends State<NavBarPage> {
     //print(table2.values);
     //LOG TABLE 1 DATA
     for (int i=0;i<table1.length;i++) {
-      getRawData(i).then((rawData) {
-        table1Data +=
-        ("DATETIME " + rawData!.dateTime.toString() + "  POS " + rawData.position.toString() + "\n");
-      });
+    getRawData(i).then((rawData) {
+      table1Data +=
+      ("DATETIME " + rawData!.dateTime.toString() + "  POS " + rawData.position.toString() + "\n");
+    });
     }
 
     //LOG TABLE 2 DATA
     for (int i=0;i<table2.length;i++) {
-      getProcessedData(i).then((processedData) {
-        table2Data += ("DATETIME" + processedData!.dateTime.toString() + "  POS" + processedData.position.toString() + "  CATEGORY" + processedData.category.toString() + "\n");
-      });
+    getProcessedData(i).then((processedData) {
+      table2Data += ("DATETIME" + processedData!.dateTime.toString() + "  POS" + processedData.position.toString() + "  CATEGORY" + processedData.category.toString() + "\n");
+    });
     }
   }
 
@@ -156,6 +170,7 @@ class _NavBarPageState extends State<NavBarPage> {
       var box = Boxes.getRawDataBox();
       var box2 = Boxes.getProcessedDataBox();
       //Check if >= 1minute has elapsed
+<<<<<<< HEAD
 
       if (box.getAt(box.length-1)!.dateTime.minute>box.getAt(0)!.dateTime.minute){
         log('FINDING MODAL POSITION');
@@ -180,8 +195,94 @@ class _NavBarPageState extends State<NavBarPage> {
         box.clear();
       }
 >>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
+=======
+      if (box.isNotEmpty){
+        if (box.getAt(box.length-1)!.dateTime.minute>box.getAt(0)!.dateTime.minute){
+          //1. Find Modal POSITION
+          log('FINDING MODAL POSITION');
+          for (int i=0;i<box.length;i++) {
+            positionLs[box.getAt(i)!.position]++;
+          }
+          int modalPos = 0;
+          for (int i=1;i<positionLs.length;i++){
+            if (positionLs[i]>positionLs[i-1]) {
+              modalPos = i;
+            }
+          }
+          //2. Find Position CATEGORY G/Y/R/A/B
+          //decide if 'A or 'B'
+          String addCat;
+          if (checkPostureCategory(modalPos)=='AWAY') {
+            if (isBreak()){
+              addCat = 'B';
+            }
+            else {
+              addCat = 'A';
+            }
+          }
+          else{
+            //get list containing [String newCat, bool needReminder]
+            List<dynamic> catBoolList = setCategoryAndRemind(modalPos);
+            addCat = catBoolList[0];
+            //Send Reminder if necessary
+            if(catBoolList[1]==true){
+              sendReminder();
+            }
+          }
+          //add entry to Table2
+          addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, addCat);
+          //TODO UPDATE Table 3 latest entry
+          var box3 = Boxes.getVisualisationDataBox();
+          if (box3.isNotEmpty){
+            getVisualisationData(box3.length-1).then((data) {
+              //Set RINGS
+              Rings todayRings = data!.rings;
+              todayRings.setTotalSitting(calcTotalTime());
+              todayRings.setGoodSitting(calcGoodTime());
+              todayRings.setPosChange(calcPostureChangeFreq(todayRings));
+              double inner = todayRings.calcInner();
+              double outer = todayRings.calcOuter();
+              todayRings.setInner(inner);
+              todayRings.setOuter(outer);
+
+              //Set AppleGraph
+              AppleGraph myAppleGraph = data.appleGraph;
+              myAppleGraph.fillAppleOneShot();
+
+              //Set PostureGraph
+              PostureGraph myPostureGraph = data.postureGraph;
+              myPostureGraph.calculateTotalSittingPerHour();
+              myPostureGraph.fillInPositionTimeLs();
+              myPostureGraph.setTopThreePositions();
+              data.save();
+              log("TABLE 3 UPDATED");
+            });
+
+          }
+          //updateApple();
+          //TODO Clear Table 1?
+          box.clear();
+        }
+
+      }
+>>>>>>> parent of 3cd275a (Presentation Version)
     }});
   }
+
+  Future<void> sendReminder() async{
+    FlutterBlue.instance.connectedDevices.then((connectedDevicesList) async {if(connectedDevicesList.isNotEmpty){
+      final prefs = await SharedPreferences.getInstance();
+      String pulseDecision = prefs.getString('Haptics')??"1";
+      List<BluetoothCharacteristic> cList;
+      connectedDevicesList.single.discoverServices().then((services) {
+        cList = services[2].characteristics;
+        log(cList.toString());
+        //SEND HAPTIC FEEDBACK
+        cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
+      });
+    }});
+  }
+
 
   Future<void> writeContent(List<double> sensorData) async {//sensorData is in bytes
 
@@ -191,7 +292,8 @@ class _NavBarPageState extends State<NavBarPage> {
   }
 
   Future<void> logAndWriteSensorData(List<BluetoothDevice> connectedDevicesList) async {
-    connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.last.read().then((sensorDataBytes) {
+    //        cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
+    connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.firstWhere((c) => c.uuid.toString()=="4cee02fe-dc6f-4a6a-b8fa-789d79058177").read().then((sensorDataBytes) {
       List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
       //Show incoming data in Run Log
       log(sensorData.toString());

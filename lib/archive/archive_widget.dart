@@ -1,8 +1,6 @@
 import 'dart:math';
 
 import 'package:better_sitt/today/today_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -29,12 +27,8 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
 
   late DateTimeRange calendarSelectedDay;
   late String DayDate;
+  // = DateFormat('MMM d').format(DateTime.now()).toString();
 
-  // Format to retrieve from Firebase
-  late String DataDayDate = DateFormat('yy-MM-dd').format(calendarSelectedDay.start).toString();
-
-  // information data
-  late String positionchangefrequency;
 
   //Graph2 Stuff
   late List<PostureTimingData> PostureTimingChartData;
@@ -52,6 +46,8 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
   bool pressAttention3 = false;
 
 
+
+
   @override
   void initState() {
     super.initState();
@@ -59,46 +55,6 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
       start: DateTime.now().startOfDay,
       end: DateTime.now().endOfDay,
     );
-    _getGoodSittingTime().then((value){ setState(() {
-      goodSittingTime = value;
-    });});
-    _getTotalSittingTime().then((value){ setState(() {
-      totalSittingTime = value;
-    });});
-    _getPositionChangeFrequency().then((value){ setState(() {
-      positionchangefrequency = value;
-    });});
-
-  }
-
-  Future<String> _getGoodSittingTime() async{
-
-    final firebaseUser = await FirebaseAuth.instance.currentUser!;
-
-    await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).collection('Information Data').doc('$DataDayDate').get().then((value){
-      goodSittingTime = value['good_sitting_time'];
-    });
-    return goodSittingTime;
-  }
-
-  Future<String> _getTotalSittingTime() async{
-
-    final firebaseUser = await FirebaseAuth.instance.currentUser!;
-
-    await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).collection('Information Data').doc('$DataDayDate').get().then((value){
-      totalSittingTime = value['total_sitting_time'];
-    });
-    return totalSittingTime;
-  }
-
-  Future<String> _getPositionChangeFrequency() async{
-
-    final firebaseUser = await FirebaseAuth.instance.currentUser!;
-
-    await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).collection('Information Data').doc('$DataDayDate').get().then((value){
-      positionchangefrequency = value['position_change_frequency'];
-    });
-    return positionchangefrequency;
   }
 
   Future<void> _showMyDialog() async {
@@ -110,10 +66,8 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
         return AlertDialog(
           title: Text( '$DayDate',
                         style: TextStyle(
-                          color: Colors.white,
-                              fontSize: 24,
-                        )
-          ),
+                          color: Colors.white
+          )),
           backgroundColor: FlutterFlowTheme.primaryColor,
           insetPadding: EdgeInsets.all(10),
           content: SingleChildScrollView(
@@ -123,7 +77,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.primaryColor,
+                    color: Colors.redAccent,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
@@ -137,15 +91,24 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.30,
                         decoration: BoxDecoration(),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            Text(
+                              'Today\'s Score:',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            // ),
                             Container(
                               height: MediaQuery.of(context).size.width * 0.3,
-                              width: MediaQuery.of(context).size.width * 0.50,
+                              width: MediaQuery.of(context).size.width * 0.3,
                               child: SfCircularChart(
                                 series: <CircularSeries>[
                                   RadialBarSeries<SittData, String>(
@@ -180,7 +143,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 ),
                               ),
                               Text(
-                                '$totalSittingTime',
+                                '5hr 23min',
                                 style: FlutterFlowTheme.title1.override(
                                   fontFamily: 'Poppins',
                                   color: FlutterFlowTheme.tertiaryColor,
@@ -199,7 +162,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 ),
                               ),
                               Text(
-                                '$goodSittingTime',
+                                '6hr 25min',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
                                   color: FlutterFlowTheme.secondaryColor,
@@ -219,7 +182,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 ),
                               ),
                               Text(
-                                '$positionchangefrequency',
+                                '48m',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
                                   fontSize: 22,
@@ -628,36 +591,18 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                 // ),
 
 
-                // Container( // hereiam backup
-                //   width: double.infinity,
-                //   height: 150,
-                //   decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(15),
-                //       color: FlutterFlowTheme.secondaryColor ),
-                //   padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                //   child: Text("You can make cool stuff!",
-                //       style: TextStyle(fontSize: 24),
-                //       textAlign: TextAlign.center
-                //   ),
-                // ),
-
-
-                // Container( // hereiam backup
-                //   width: double.infinity,
-                //   height: 150,
-                //   decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(15),
-                //       color: FlutterFlowTheme.secondaryColor ),
-                //   padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                //   child: Text("You can make cool stuff!",
-                //       style: TextStyle(fontSize: 24),
-                //       textAlign: TextAlign.center
-                //   ),
-                // ),
-
-
-
-
+                Container( // hereiam
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: FlutterFlowTheme.secondaryColor ),
+                      padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                      child: Text("You can make cool stuff!",
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center
+                      ),
+                    ),
               ],
             ),
 
@@ -694,8 +639,9 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
           actions: <Widget>[
             TextButton(
               child: const Text('Close',
-                  style: TextStyle(
-                    color: FlutterFlowTheme.secondaryColor)
+                                  style: TextStyle(
+                                    color: FlutterFlowTheme.secondaryColor,
+                                  )
               ),
               onPressed: () {
                 Navigator.of(context).pop();

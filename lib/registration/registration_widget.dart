@@ -1,8 +1,7 @@
 import 'package:better_sitt/login_v1/login_v1_widget.dart';
-import 'package:better_sitt/utils/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -28,9 +27,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
   final auth = FirebaseAuth.instance;
   late List<TextEditingController> controllerLs;
   late String alertDialogText;
-  late String _email,_password;
-
-  // final AuthService _auth = AuthService();
 
   @override
   void initState() {
@@ -262,11 +258,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             child: TextFormField(
                               controller: passwordController2,
                               obscureText: false,
-                              onChanged: (value) {
-                                setState(() {
-                                  _password = value.trim();
-                                });
-                              },
                               decoration: InputDecoration(
                                 hintText: 'confirm password',
                                 hintStyle: FlutterFlowTheme.bodyText1.override(
@@ -327,11 +318,6 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             child: TextFormField(
                               controller: emailController,
                               obscureText: false,
-                              onChanged: (value) {
-                                setState(() {
-                                  _email = value.trim();
-                                });
-                              },
                               decoration: InputDecoration(
                                 hintText: 'email',
                                 hintStyle: FlutterFlowTheme.bodyText1.override(
@@ -524,18 +510,24 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                             alignment: Alignment(0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
+                                auth.createUserWithEmailAndPassword(email: emailController.toString(), password: passwordController2.toString());
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginV1Widget(),
+                                  ),
+                                );
 
-                                // dynamic result = await _auth.registerWithEmailAndPassword(_email,_password);
 
-                                _signup(_email, _password);
+                                //TODO create account in Firebase with inputs, but for now just store in shareprefs
+                                // registerNewUser().then((isRegistered) {
+                                //   if(isRegistered){
+                                //     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginV1Widget(),),);
+                                //   }
+                                // });
 
-                                // await Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => LoginV1Widget(),
-                                //   ),
-                                // );
-
+                                // print('Button pressed ...');
                               },
                               text: 'Register',
                               options: FFButtonOptions(
@@ -584,6 +576,35 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                       ),
                                     ),
                                   ),
+                                  // Align(
+                                  //   alignment: Alignment(0, 0),
+                                  //   child: FFButtonWidget(
+                                  //     onPressed: () {
+                                  //       print('Facebook pressed ...');
+                                  //     },
+                                  //     text: '',
+                                  //     icon: Icon(
+                                  //       Icons.add,
+                                  //       color: Colors.transparent,
+                                  //       size: 15,
+                                  //     ),
+                                  //     options: FFButtonOptions(
+                                  //       width: 30,
+                                  //       height: 30,
+                                  //       color: Colors.transparent,
+                                  //       textStyle: GoogleFonts.getFont(
+                                  //         'Open Sans',
+                                  //         color: Color(0xFF616161),
+                                  //         fontSize: 14,
+                                  //       ),
+                                  //       borderSide: BorderSide(
+                                  //         color: FlutterFlowTheme.darkGrey,
+                                  //         width: 0.5,
+                                  //       ),
+                                  //       borderRadius: 15,
+                                  //     ),
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             Padding(
@@ -605,6 +626,35 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                         ),
                                       ),
                                     ),
+                                    // Align(
+                                    //   alignment: Alignment(0, 0),
+                                    //   child: FFButtonWidget(
+                                    //     onPressed: () {
+                                    //       print('Google pressed ...');
+                                    //     },
+                                    //     text: '',
+                                    //     icon: Icon(
+                                    //       Icons.add,
+                                    //       color: Colors.transparent,
+                                    //       size: 15,
+                                    //     ),
+                                    //     options: FFButtonOptions(
+                                    //       width: 30,
+                                    //       height: 30,
+                                    //       color: Colors.transparent,
+                                    //       textStyle: GoogleFonts.getFont(
+                                    //         'Open Sans',
+                                    //         color: Color(0xFF616161),
+                                    //         fontSize: 14,
+                                    //       ),
+                                    //       borderSide: BorderSide(
+                                    //         color: FlutterFlowTheme.darkGrey,
+                                    //         width: 0.5,
+                                    //       ),
+                                    //       borderRadius: 15,
+                                    //     ),
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                             )
@@ -621,26 +671,4 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
       ),
     );
   }
-  _signup(String _email, String _password) async {
-    try {
-      //Create Get Firebase Auth User
-      UserCredential result = await auth.createUserWithEmailAndPassword(email: _email, password : _password);
-      User? user = result.user;
-
-
-      //Success
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginV1Widget()));
-
-
-      // create a new document for the user with uid
-      await DatabaseService(uid: user!.uid).updateUserData(usernameController.text, int.parse(heightController.text), int.parse(weightController.text));
-
-    } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(msg: error.message.toString(),gravity: ToastGravity.TOP,);
-    }
-
-  }
-
-
-
 }

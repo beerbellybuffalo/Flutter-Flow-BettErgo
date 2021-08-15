@@ -1,6 +1,6 @@
 import 'package:better_sitt/first_page/first_page_widget.dart';
+// import 'package:better_sitt/login_v1/services/auth.dart';
 import 'package:better_sitt/main.dart';
-import 'package:better_sitt/today/today_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,21 +24,18 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late String _email, _password;
+  final auth = FirebaseAuth.instance;
   late bool passwordVisibility;
   late String alertDialogText;
   late List<TextEditingController> controllerLs;
 
-  // Firebase Auth login
-  late String _email, _password;
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
-
-
+  // Authenticate
+  //final AuthService _auth = AuthService();
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.signOut();
     passwordVisibility = false;
     controllerLs = [emailTextController,passwordTextController];
   }
@@ -150,7 +147,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           mainAxisSize: MainAxisSize.max,
@@ -167,9 +164,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                 child: Padding(
                                                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                                   child: TextFormField(
-                                                    // controller: emailTextController,
-                                                    validator: (value) => value!.isEmpty ? 'Enter an email' : null,
-                                                    keyboardType: TextInputType.emailAddress,
+                                                    controller: emailTextController,
                                                     obscureText: false,
                                                     onChanged: (value){
                                                       setState(() {
@@ -179,9 +174,9 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                     decoration: InputDecoration(
                                                       hintText: 'Email',
                                                       hintStyle: GoogleFonts.getFont(
-                                                          'Open Sans',
-                                                          color: FlutterFlowTheme.mediumTurquoise,
-                                                          fontWeight: FontWeight.normal),
+                                                            'Open Sans',
+                                                            color: FlutterFlowTheme.mediumTurquoise,
+                                                            fontWeight: FontWeight.normal),
                                                       enabledBorder: UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                           color:Color(0x00000000),
@@ -194,12 +189,12 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       ),
                                                       focusedBorder: UnderlineInputBorder(
                                                         borderSide: BorderSide(
-                                                            color:Color(0x00000000),
-                                                            width: 1
+                                                          color:Color(0x00000000),
+                                                          width: 1
                                                         ),
                                                         borderRadius: const BorderRadius.only(
-                                                            topLeft: Radius.circular(4.0),
-                                                            topRight: Radius.circular(4.0)
+                                                          topLeft: Radius.circular(4.0),
+                                                          topRight: Radius.circular(4.0)
                                                         ),
                                                       ),
                                                     ),
@@ -224,51 +219,50 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                 child: Padding(
                                                   padding: EdgeInsets.fromLTRB(20, 2, 20, 2),
                                                   child: TextFormField(
-                                                    //controller: passwordTextController,
-                                                    //validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                                                    controller: passwordTextController,
                                                     obscureText: !passwordVisibility,
                                                     onChanged: (value){
                                                       setState(() {
-                                                        _password = value.trim();
+                                                        _email = value.trim();
                                                       });
                                                     },
                                                     decoration: InputDecoration(
                                                       hintText: 'Password',
                                                       hintStyle:
-                                                      GoogleFonts.getFont(
-                                                        'Open Sans',
-                                                        color: FlutterFlowTheme.mediumTurquoise,
-                                                        fontWeight: FontWeight.normal,
+                                                          GoogleFonts.getFont(
+                                                            'Open Sans',
+                                                            color: FlutterFlowTheme.mediumTurquoise,
+                                                            fontWeight: FontWeight.normal,
                                                       ),
                                                       enabledBorder:
-                                                      UnderlineInputBorder(
+                                                          UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                           color: Color(0x00000000),
                                                           width: 1,
                                                         ),
                                                         borderRadius:
-                                                        const BorderRadius.only(
+                                                            const BorderRadius.only(
                                                           topLeft: Radius.circular(4.0),
                                                           topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
                                                       focusedBorder:
-                                                      UnderlineInputBorder(
+                                                          UnderlineInputBorder(
                                                         borderSide: BorderSide(
                                                           color: Color(0x00000000),
                                                           width: 1,
                                                         ),
                                                         borderRadius:
-                                                        const BorderRadius.only(
+                                                            const BorderRadius.only(
                                                           topLeft: Radius.circular(4.0),
                                                           topRight: Radius.circular(4.0),
                                                         ),
                                                       ),
                                                       contentPadding:
-                                                      EdgeInsets.fromLTRB(1, 12, 0, 0),
+                                                          EdgeInsets.fromLTRB(1, 12, 0, 0),
                                                       suffixIcon: InkWell(
                                                         onTap: () => setState(
-                                                              () => passwordVisibility = !passwordVisibility,
+                                                          () => passwordVisibility = !passwordVisibility,
                                                         ),
                                                         child: Icon(
                                                           passwordVisibility ? Icons.visibility_outlined
@@ -280,8 +274,10 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                     ),
                                                     style: GoogleFonts.getFont(
                                                       'Open Sans',
-                                                      color: FlutterFlowTheme.mediumTurquoise,
-                                                      fontWeight: FontWeight.normal,
+                                                      color: FlutterFlowTheme
+                                                          .mediumTurquoise,
+                                                      fontWeight:
+                                                          FontWeight.normal,
                                                     ),
                                                   ),
                                                 ),
@@ -291,7 +287,6 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                               padding: EdgeInsets.fromLTRB(
                                                   0, 0, 0, 20),
                                               child: FFButtonWidget(
-
                                                 // onPressed: () async {
                                                 //   loginUser().then((isRegistered) {
                                                 //     if(isRegistered){
@@ -299,21 +294,37 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                 //     }
                                                 //   });
                                                 //   // print('Button pressed ...');
-
-                                                onPressed: () => _signin(_email, _password), // { // hereiam
-                                                  // await Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) => NavBarPage(),
-                                                  //   ),
-                                                  // );
-                                                //},
+                                                onPressed: () async { // hereiam
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => NavBarPage(),
+                                                    ),
+                                                  );
+                                                  // try {
+                                                  //   auth.signInWithEmailAndPassword(email: _email, password: _password);
+                                                  //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => NavBarPage()));
+                                                  // } catch (e){
+                                                  //  print('Error Logging In');
+                                                  //  Fluttertoast.showToast(
+                                                  //      msg: "Email/Password Not Found",
+                                                  //      toastLength: Toast.LENGTH_SHORT,
+                                                  //      gravity: ToastGravity.CENTER,
+                                                  //      // timeInSecForIosWeb: 1,
+                                                  //      // backgroundColor: Colors.red,
+                                                  //      // textColor: Colors.white,
+                                                  //      fontSize: 16.0
+                                                  //  );
+                                                  // } // End of Try-Catch Block
+                                                },
                                                 text: 'Log In',
                                                 options: FFButtonOptions(
                                                   width: 300,
                                                   height: 50,
-                                                  color: FlutterFlowTheme.secondaryColor,
-                                                  textStyle: FlutterFlowTheme.subtitle2
+                                                  color: FlutterFlowTheme
+                                                      .secondaryColor,
+                                                  textStyle: FlutterFlowTheme
+                                                      .subtitle2
                                                       .override(
                                                     fontFamily: 'Poppins',
                                                     fontWeight: FontWeight.w600,
@@ -344,7 +355,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Container(
                                                     width: 38,
@@ -353,30 +364,70 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                       children: [
                                                         Align(
                                                           alignment:
-                                                          Alignment(0, 0),
+                                                              Alignment(0, 0),
                                                           child: Container(
                                                             width: 30,
                                                             height: 30,
                                                             clipBehavior:
-                                                            Clip.antiAlias,
+                                                                Clip.antiAlias,
                                                             decoration:
-                                                            BoxDecoration(
+                                                                BoxDecoration(
                                                               shape: BoxShape
                                                                   .circle,
                                                             ),
                                                             child:
-                                                            Image.network(
+                                                                Image.network(
                                                               'https://facebookbrand.com/wp-content/uploads/2019/04/f_logo_RGB-Hex-Blue_512.png?w=512&h=512',
                                                             ),
                                                           ),
                                                         ),
+                                                        // Align(
+                                                        //   alignment:
+                                                        //       Alignment(0, 0),
+                                                        //   child: FFButtonWidget(
+                                                        //     onPressed: () {
+                                                        //       print(
+                                                        //           'Button pressed ...');
+                                                        //     },
+                                                        //     text: '',
+                                                        //     icon: Icon(
+                                                        //       Icons.add,
+                                                        //       color: Colors
+                                                        //           .transparent,
+                                                        //       size: 15,
+                                                        //     ),
+                                                        //     options:
+                                                        //         FFButtonOptions(
+                                                        //       width: 30,
+                                                        //       height: 30,
+                                                        //       color: Colors
+                                                        //           .transparent,
+                                                        //       textStyle:
+                                                        //           GoogleFonts
+                                                        //               .getFont(
+                                                        //         'Open Sans',
+                                                        //         color: Color(
+                                                        //             0xFF616161),
+                                                        //         fontSize: 14,
+                                                        //       ),
+                                                        //       borderSide:
+                                                        //           BorderSide(
+                                                        //         color:
+                                                        //             FlutterFlowTheme
+                                                        //                 .darkGrey,
+                                                        //         width: 0.5,
+                                                        //       ),
+                                                        //       borderRadius: 15,
+                                                        //     ),
+                                                        //   ),
+                                                        // )
                                                       ],
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding:
-                                                    EdgeInsets.fromLTRB(
-                                                        20, 0, 0, 0),
+                                                        EdgeInsets.fromLTRB(
+                                                            20, 0, 0, 0),
                                                     child: Container(
                                                       width: 38,
                                                       height: 38,
@@ -384,22 +435,65 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                         children: [
                                                           Align(
                                                             alignment:
-                                                            Alignment(0, 0),
+                                                                Alignment(0, 0),
                                                             child: Container(
                                                               width: 30,
                                                               height: 30,
-                                                              clipBehavior: Clip.antiAlias,
+                                                              clipBehavior: Clip
+                                                                  .antiAlias,
                                                               decoration:
-                                                              BoxDecoration(
-                                                                shape: BoxShape.circle,
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
                                                               ),
                                                               child:
-                                                              Image.network(
+                                                                  Image.network(
                                                                 'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
-                                                                fit: BoxFit.contain,
+                                                                fit: BoxFit
+                                                                    .contain,
                                                               ),
                                                             ),
                                                           ),
+                                                          // Align(
+                                                          //   alignment:
+                                                          //       Alignment(0, 0),
+                                                          //   child: FFButtonWidget(
+                                                          //     onPressed: () {
+                                                          //       print(
+                                                          //           'Button pressed ...');
+                                                          //     },
+                                                          //     text: '',
+                                                          //     icon: Icon(
+                                                          //       Icons.add,
+                                                          //       color: Colors
+                                                          //           .transparent,
+                                                          //       size: 15,
+                                                          //     ),
+                                                          //     options:
+                                                          //         FFButtonOptions(
+                                                          //       width: 30,
+                                                          //       height: 30,
+                                                          //       color: Colors
+                                                          //           .transparent,
+                                                          //       textStyle:
+                                                          //           GoogleFonts
+                                                          //               .getFont(
+                                                          //         'Open Sans',
+                                                          //         color: Color(
+                                                          //             0xFF616161),
+                                                          //         fontSize: 14,
+                                                          //       ),
+                                                          //       borderSide:
+                                                          //           BorderSide(
+                                                          //         color:
+                                                          //             FlutterFlowTheme
+                                                          //                 .darkGrey,
+                                                          //         width: 0.5,
+                                                          //       ),
+                                                          //       borderRadius: 15,
+                                                          //     ),
+                                                          //   ),
+                                                          // )
                                                         ],
                                                       ),
                                                     ),
@@ -432,10 +526,10 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                                         type: PageTransitionType.topToBottom,
                                                         duration: Duration(milliseconds: 300),
                                                         reverseDuration: Duration(
-                                                            milliseconds: 300
-                                                        ),
+                                                                milliseconds: 300
+                                                            ),
                                                         child:
-                                                        RegistrationWidget(),
+                                                            RegistrationWidget(),
                                                       ),
                                                     );
                                                   },
@@ -457,7 +551,7 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
                                           alignment: Alignment(0, -0.65),
                                           child: Padding(
                                             padding:
-                                            EdgeInsets.fromLTRB(0, 4, 0, 0),
+                                                EdgeInsets.fromLTRB(0, 4, 0, 0),
                                             child: Image.asset(
                                               'assets/images/Logo2.png',
                                               width: 50,
@@ -485,26 +579,4 @@ class _LoginV1WidgetState extends State<LoginV1Widget> {
       ),
     );
   }
-
-  _signin(String _email, String _password) async {
-    try {
-      //Create Get Firebase Auth User
-      await auth.signInWithEmailAndPassword(email: _email, password : _password);
-
-      User user = auth.currentUser!;
-      print('HELLO YI XUAN, '+ user.toString() +'LOGGED IN');
-
-      //Success
-
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => TodayWidget()));
-
-    } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(msg: error.message.toString(),gravity: ToastGravity.TOP);
-    }
-
-
-  }
-
-
 }
