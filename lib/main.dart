@@ -99,10 +99,14 @@ class _NavBarPageState extends State<NavBarPage> {
   void initState() {
     super.initState();
     _currentPage = widget.initialPage ?? _currentPage;
+<<<<<<< HEAD
     sumMinuteTimer = new Timer.periodic(Duration(minutes: 1), (timer){updateProcessedData();
       //TODO check if necessary to send reminders, then send
       //   if(setCategoryAndRemind()==true){sendReminder();}
     });
+=======
+    sumMinuteTimer = new Timer.periodic(Duration(minutes: 1), (timer){findModalPosition();});
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
     oneSecTimer = new Timer.periodic(Duration(seconds: 1), (timer){updateRawData();});
     checkHiveTables().then((value) {
       print(table1Data);
@@ -140,9 +144,8 @@ class _NavBarPageState extends State<NavBarPage> {
     oneSecTimer.cancel();
   }
 
-  //1. Find Modal POSITION 2. Find Position CATEGORY G/Y/R/A/B 3. Update Table 2
-  void updateProcessedData() {
-    log("Checking for if need to update Processed Data...");
+  void findModalPosition() {
+    log("Checking if need to find Modal Position...");
     log(DateFormat.Hm().format(DateTime.now()));
     FlutterBlue.instance.connectedDevices.then((connectedDevicesList) {if(connectedDevicesList.isNotEmpty){
       //TODO summarise the rawdata and write to hive
@@ -153,39 +156,30 @@ class _NavBarPageState extends State<NavBarPage> {
       var box = Boxes.getRawDataBox();
       var box2 = Boxes.getProcessedDataBox();
       //Check if >= 1minute has elapsed
-      // if (box.getAt(box.length-1)!.dateTime.minute>box.getAt(0)!.dateTime.minute){
-      //   //1. Find Modal POSITION
-      //   log('FINDING MODAL POSITION');
-      //   for (int i=0;i<box.length;i++) {
-      //     positionLs[box.getAt(i)!.position]++;
-      //   }
-      //   int modalPos = 0;
-      //   for (int i=1;i<positionLs.length;i++){
-      //     if (positionLs[i]>positionLs[i-1]) {
-      //       modalPos = i;
-      //     }
-      //   }
-      //   //2. Find Position CATEGORY G/Y/R/A/B
-      //   //decide if 'A or 'B'
-      //   String addCat;
-      //   if (checkPostureCategory(modalPos)=='AWAY') {
-      //     if (isBreak()){
-      //       addCat = 'B';
-      //     }
-      //     else {
-      //       addCat = 'A';
-      //     }
-      //   }
-      //   else{addCat = checkPostureCategory(modalPos);}
-      //   //add entry to Table2
-      //   addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, addCat);
-      //   //TODO add entry to Table3
-      //   //var box3 = Boxes.getVisualisationDataBox();
-      //   //get the entry
-      //   //updateApple();
-      //   //TODO Clear Table 1?
-      //   box.clear();
-      // }
+
+      if (box.getAt(box.length-1)!.dateTime.minute>box.getAt(0)!.dateTime.minute){
+        log('FINDING MODAL POSITION');
+        for (int i=0;i<box.length;i++) {
+          positionLs[box.getAt(i)!.position]++;
+        }
+        int modalPos = 0;
+        for (int i=1;i<positionLs.length;i++){
+          if (positionLs[i]>positionLs[i-1]) {
+            modalPos = i;
+          }
+        }
+        //decide whether to input 'A' or 'B' into the box
+        String addCat;
+        if (checkPostureCategory(modalPos)=='A' && isBreak()) {
+          addCat = 'B';
+        }
+        else{addCat = checkPostureCategory(modalPos);}
+        //add entry to Hive
+        addProcessedData(box.getAt(box.length-2)!.dateTime, modalPos, addCat);
+        //TODO Clear Table 1?
+        box.clear();
+      }
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
     }});
   }
 

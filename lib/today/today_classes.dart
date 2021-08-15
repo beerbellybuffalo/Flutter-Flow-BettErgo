@@ -8,12 +8,16 @@
 //
 
 import 'dart:core';
+<<<<<<< HEAD
 import 'package:better_sitt/model/processed_data.dart';
 import 'package:hive/hive.dart';
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 import 'package:intl/intl.dart';
 import '../utils/positions_processing.dart';
 import '../utils/boxes.dart';
 
+<<<<<<< HEAD
 
 
 
@@ -114,6 +118,88 @@ import '../utils/boxes.dart';
 //
 // }
 
+=======
+class Rings {
+  int totalSittingTime = 0;
+  int goodSittingTime = 0;
+  int postureChangeFrequency = 0;
+  //Constructor
+  Rings(this.totalSittingTime,this.goodSittingTime,this.postureChangeFrequency);
+
+  //Setters
+  set setTotalSitting(int t){
+    totalSittingTime = t;
+  }
+  set setGoodSitting(int t){
+    goodSittingTime = t;
+  }
+  set posChange(int t){
+    postureChangeFrequency = t;
+  }
+  //Methods
+}
+
+int calcTotalTime(){
+  int totalTime = 0;
+  var table2 = Boxes.getProcessedDataBox();
+  for (int i=0;i<table2.length;i++) {
+    getProcessedData(i).then((processedData) {
+      if (processedData!.category!='A'||processedData.category!='B') { //not away or break
+        totalTime++; //add to count if sitting
+      }
+    });
+  }
+  return totalTime;
+}
+
+int calcGoodTime(){
+  int goodTime = 0;
+  var table2 = Boxes.getProcessedDataBox();
+  for (int i=0;i<table2.length;i++) {
+    getProcessedData(i).then((processedData) {
+      if (processedData!.category=='G') {
+        goodTime++; //add to count if G for good
+      }
+    });
+  }
+  return goodTime;
+}
+
+// int calcPostureChangeFreq(){
+//
+// }
+
+
+// For Total Sitting Time:
+class TotalSittingTime {
+  int _totalSittingTime = 0;
+  int startingPoint = 0;
+  //var inComingData = new List();
+  var ls = []; //cannot initialise variable to List here because null safe?
+  var posNum = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  //Constructor
+  TotalSittingTime(List<int?> tempLs) {
+    this.ls = tempLs;
+  }
+  int getTotalSittingTime() {
+    for (int i = startingPoint; i < ls.length; i++) {
+      if (posNum.contains(ls[i])) {
+        _totalSittingTime++; // assuming called every minute
+      }
+
+    }
+    startingPoint = startingPoint + ls.length;
+
+    return _totalSittingTime;
+  }
+
+  int getTotalSittingTimeText() {
+    return _totalSittingTime;
+  }
+}
+
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 //TODO update the unit tests to have 19 positions
 class GoodSittingTime{
   int nullCounter = 0;
@@ -138,6 +224,24 @@ class GoodSittingTime{
   }
 }
 
+<<<<<<< HEAD
+=======
+bool isBreak() {
+  int awayCount = 0;
+  var box2 = Boxes.getProcessedDataBox();
+  for (int i=box2.length-5;i<box2.length;i++){
+    getProcessedData(i).then((data) {
+      if(data!.category=='B') {return true;}
+      else if (data.category=='A') {
+        awayCount++;
+      }
+    });
+  }
+  if (awayCount==5) {return true;}
+  return false;
+}
+
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 String checkPostureCategory(int thisPosture) {
   int away = 0;
   List<int> goodPos = [11];

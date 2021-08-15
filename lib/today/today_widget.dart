@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'dart:convert';
 import 'dart:developer';
 
@@ -6,8 +7,9 @@ import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:better_sitt/utils/database.dart';
@@ -20,9 +22,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:better_sitt/today/today_classes.dart';
 import 'package:better_sitt/bluetooth/bluetooth_widget.dart';
+<<<<<<< HEAD
 import 'package:better_sitt/utils/boxes.dart';
 import 'package:better_sitt/utils/database.dart';
 import 'package:provider/provider.dart';
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/rendering.dart';
@@ -61,7 +66,10 @@ class _TodayWidgetState extends State<TodayWidget> {
   bool pressAttention1 = true;
   bool pressAttention2 = false;
   bool pressAttention3 = false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
   @override
   void initState() {
     appleChartData = getAppleChartData();
@@ -70,11 +78,14 @@ class _TodayWidgetState extends State<TodayWidget> {
     }); });
     super.initState();
   }
+<<<<<<< HEAD
 
 
   // Future getUsername() async {
   //   return _fetch();
   // }
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 
   Future<String> getUsername() async{
     String _username = '';
@@ -87,7 +98,10 @@ class _TodayWidgetState extends State<TodayWidget> {
     return _username;
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
   late Timer timer;
   @override
   void dispose(){
@@ -722,6 +736,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                             )
                           ],
                         ),
+<<<<<<< HEAD
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -743,6 +758,130 @@ class _TodayWidgetState extends State<TodayWidget> {
                         )
                       ],
                     ),
+=======
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                                child: Image.asset(
+                                  'assets/images/posture-yyy.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                                child: Image.asset(
+                                  'assets/images/posture-nny.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Container(
+                                width: 90,
+                                height: 90,
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                                child: Image.asset(
+                                  'assets/images/posture-nyn.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: FlutterFlowTheme.darkGrey,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            'Congrats!',
+                            textAlign: TextAlign.start,
+                            style: FlutterFlowTheme.title3.override(
+                              fontFamily: 'Poppins',
+                              fontSize: 22,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    'Your Sitting Habits have improved',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                  Text(
+                                    '12%',
+                                    style: FlutterFlowTheme.bodyText2.override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 22,
+                                    ),
+                                  ),
+
+                                  Text(
+                                    'since Yesterday',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.tertiaryColor,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Learn more about good sitting habits',
+                            style: FlutterFlowTheme.bodyText1.override(
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          Text(
+                            ' here',
+                            style: FlutterFlowTheme.bodyText1.override(
+                              fontFamily: 'Poppins',
+                              color: FlutterFlowTheme.secondaryColor,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
                   ),
                 )
               ],

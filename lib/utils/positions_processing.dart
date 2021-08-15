@@ -53,6 +53,7 @@ Future<ProcessedData?> getProcessedData(int index) async{
   return box.getAt(index);
 }
 
+<<<<<<< HEAD
 // Predicts and stores the value in hive
 Future<void> predictAndStore(DateTime dateTime, List<double> sensor_vals) async {
   final model = await Model.create();
@@ -65,6 +66,8 @@ class Model {
 
   // Private constructor, use create() to get an instance
   Model._();
+=======
+>>>>>>> parent of 821f272 (Merge pull request #6 from beerbellybuffalo/daniel)
 
   // Future that completes when the new Model is ready to use
   static Future<Model> create() async {
