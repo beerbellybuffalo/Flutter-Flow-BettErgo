@@ -66,11 +66,13 @@ class _MyDataWidgetState extends State<MyDataWidget> {
     //Clears Table2 Data
     var box1 = Boxes.getRawDataBox();
     var box2 = Boxes.getProcessedDataBox();
+    var box3 = Boxes.getVisualisationDataBox();
     // for (int i=0;i<box.length;i++) {
     //   box.delete(i);
     // }
     box1.clear();
     box2.clear();
+    box3.clear();
   }
 
   Future<void> _confirmClearDialog() async {

@@ -77,7 +77,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   decoration: BoxDecoration(
-                    color: Colors.redAccent,
+                    color: FlutterFlowTheme.primaryColor,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
@@ -91,7 +91,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.30,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         decoration: BoxDecoration(),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -245,7 +245,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-yyy.png',
+                                  'assets/images/posture-2.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -254,7 +254,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-nny.png',
+                                  'assets/images/posture-5.png',
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -263,7 +263,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  'assets/images/posture-nyn.png',
+                                  'assets/images/posture-8.png',
                                   fit: BoxFit.contain,
                                 ),
                               )
@@ -591,18 +591,18 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
                 // ),
 
 
-                Container( // hereiam
-                      width: double.infinity,
-                      height: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: FlutterFlowTheme.secondaryColor ),
-                      padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
-                      child: Text("You can make cool stuff!",
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.center
-                      ),
-                    ),
+                // Container( // hereiam
+                //       width: double.infinity,
+                //       height: 150,
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(15),
+                //           color: FlutterFlowTheme.secondaryColor ),
+                //       padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+                //       child: Text("",
+                //           style: TextStyle(fontSize: 24),
+                //           textAlign: TextAlign.center
+                //       ),
+                //     ),
               ],
             ),
 
@@ -658,7 +658,6 @@ class _ArchiveWidgetState extends State<ArchiveWidget> {
   Widget build(BuildContext context) {
     infoData = getChartData();
     PostureTimingChartData = getPostureTimingChartData();
-
 
     return Scaffold(
       key: scaffoldKey,

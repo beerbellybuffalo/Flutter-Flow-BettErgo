@@ -8,6 +8,7 @@
 //
 
 import 'dart:core';
+import 'package:better_sitt/model/rings.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -16,6 +17,7 @@ import '../utils/boxes.dart';
 import '../model/raw_data.dart';
 import '../model/processed_data.dart';
 import '../model/visualisation_data.dart';
+import 'today_widget.dart';
 //var inComingData = new List();
 
 
@@ -28,37 +30,35 @@ class Rings {
   //Constructor
   //Rings(this.totalSittingTime,this.goodSittingTime,this.postureChangeFrequency,this.innerRing,this.outerRing);
 
-  //Setters TODO these are just methods now instead of actual setters cos idk how to use set
-  void setTotalSitting(int t){
-    totalSittingTime = t;
-  }
-  void setGoodSitting(int t){
-    goodSittingTime = t;
-  }
-  void setPosChange(int t){
-    postureChangeFrequency = t;
-  }
-  void setInner(double d){
-    innerRing = d;
-  }
-  void setOuter(double d){
-    outerRing = d;
-  }
-
-  //Methods
-  double calcInner(){
-    double inner = this.totalSittingTime/60; //in hours
-    return inner;
-  }
-  double calcOuter(){
-    double outer = (this.goodSittingTime/this.totalSittingTime)*100; //percentage
-    var table2 = Boxes.getProcessedDataBox();
-    return outer;
-  }
-//end of Rings class
+  // //Setters TODO these are just methods now instead of actual setters cos idk how to use set
+  // void setTotalSitting(int t){
+  //   totalSittingTime = t;
+  // }
+  // void setGoodSitting(int t){
+  //   goodSittingTime = t;
+  // }
+  // void setPosChange(int t){
+  //   postureChangeFrequency = t;
+  // }
+  // void setInner(double d){
+  //   innerRing = d;
+  // }
+  // void setOuter(double d){
+  //   outerRing = d;
+  // }
+  // //end of Rings class
 }
 
-
+//Methods
+double calcInner(HiveRings _rings){
+  double inner = _rings.totalSittingTime/60; //in hours
+  return inner;
+}
+double calcOuter(HiveRings _rings){
+  double outer = (_rings.goodSittingTime/_rings.totalSittingTime)*100; //percentage
+  var table2 = Boxes.getProcessedDataBox();
+  return outer;
+}
 
 int calcTotalTime(){
   int totalTime = 0;
@@ -87,7 +87,7 @@ int calcGoodTime(){
   return goodTime;
 }
 
-int calcPostureChangeFreq(Rings ringsInstance){
+int calcPostureChangeFreq(HiveRings hRings){
   int freq = 0;
   int prevPos = 0;
   var table2 = Boxes.getProcessedDataBox();
@@ -100,7 +100,7 @@ int calcPostureChangeFreq(Rings ringsInstance){
       }
     });
   }
-  return (ringsInstance.totalSittingTime/freq).round(); //3.5 to 4, -3.5 to -4
+  return (hRings.totalSittingTime/freq).round(); //3.5 to 4, -3.5 to -4
 }
 
 class AppleGraph {
@@ -109,10 +109,10 @@ class AppleGraph {
   List<int> backCenterPostures = [7,8,9,10,11,12];
   List<int> legSuppPostures = [4,5,6,10,11,12,16,17,18];
 
-  var backSupp = List<int>.filled(24, 0, growable: false);
-  var backCenter = List<int>.filled(24, 0, growable: false);
-  var legSupp = List<int>.filled(24, 0, growable: false);
-  var totalTime = List<int>.filled(24, 0, growable: false);
+  var backSupp = List<int>.filled(25, 0, growable: false);
+  var backCenter = List<int>.filled(25, 0, growable: false);
+  var legSupp = List<int>.filled(25, 0, growable: false);
+  var totalTime = List<int>.filled(25, 0, growable: false);
 
   //CONSTRUCTOR
   //AppleGraph(this.totalTime,this.backCenter,this.backSupp,this.legSupp);
@@ -139,7 +139,7 @@ class AppleGraph {
     }
   }
   //2. Incremental version called every minute
-  void updateApple(RawData data) {
+  void updateAppleData(RawData data) {
     int hour = data.dateTime.hour;
     if (backSuppPostures.contains(data.position)) {
       backSupp[hour]++;
@@ -174,14 +174,7 @@ class PostureGraph{
   // // To continue where you left off
   // int lastInd = 0;
 
-  void calculateTotalSittingPerHour(){
-    for (int i = 0; i<greenPositionTime.length; i++){
-      totalSittingPerHour[i] += greenPositionTime[i];
-      totalSittingPerHour[i] += yellowPositionTime[i];
-      totalSittingPerHour[i] += redPositionTime[i];
-    }
-  }
-
+  //MUST CALL THIS FIRST
   //Add in time spent in each part of the list (see Alternative)
   void fillInPositionTimeLs(){
     // read whole list for 'G' an add to [11] of greenPositionTime
@@ -202,20 +195,28 @@ class PostureGraph{
   // Alternative:
   //  everytime a reading is stored in table 2, a fn automatically updates
   //  the lists
-  void updatePositionTimeLs(){
-    // points to Table2.length
-    getProcessedData(box.length-1).then((processedData){
-      if (processedData!.category == 'G'){
-        greenPositionTime[processedData.position]++;
-      } else if (processedData.category == 'Y'){
-        yellowPositionTime[processedData.position]++;
-      } else if (processedData.category == 'R'){
-        redPositionTime[processedData.position]++;
-      }
-    });
+  // void updatePositionTimeLs(){
+  //   // points to Table2.length
+  //   getProcessedData(box.length-1).then((processedData){
+  //     if (processedData!.category == 'G'){
+  //       greenPositionTime[processedData.position]++;
+  //     } else if (processedData.category == 'Y'){
+  //       yellowPositionTime[processedData.position]++;
+  //     } else if (processedData.category == 'R'){
+  //       redPositionTime[processedData.position]++;
+  //     }
+  //   });
+  // }
+  //CALL THIS SECOND
+  void calculateTotalSittingPerHour(){
+    for (int i = 0; i<greenPositionTime.length; i++){
+      totalSittingPerHour[i] += greenPositionTime[i];
+      totalSittingPerHour[i] += yellowPositionTime[i];
+      totalSittingPerHour[i] += redPositionTime[i];
+    }
   }
-
-  // returns list of Top 3 sitting position, i.e. [top,seconf,third]
+  //CALL THIS THIRD
+  // returns list of Top 3 sitting position, i.e. [top,second,third]
   void setTopThreePositions (){
     int largestNum = 0;
     int secondNum = 0;
@@ -394,29 +395,6 @@ String checkPostureCategory(int thisPosture) {
   else if (thisPosture == away)
     return "AWAY"; //3 for when not sitting, can't use null
   else return "INVALID"; //invalid position
-}
-
-
-void setHiveAppleGraph(DateTime dateTime, int position){ //CALL THIS EVERY MINUTE
-  //Check isBack isSide isLeg for position
-  //for (int i,,i++ );
-  // ++ to the entry in Hive Table, access the entry that corresponds to dateTime input
-}
-void plotAppleGraph(){ //CALL THIS WHEN REFRESH TODAY PAGE
-  //set a variable to store the previous entry's hour, int prevIndex
-  //create 4 lists with 24 variables each corresponding to the 24 hours in a day.
-  // List<double> TotalLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isBackLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isSideLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isLegLs = List<double>.filled(24, 0, growable: false);
-
-  // for row in hive table,
-  //    get timestamp    //example: String formattedTime = DateFormat.Hm().format(dateTime); // this format -> 17:08
-  //    take the HOUR from formattedTime
-  //    if HOUR == prevIndex > add to List[HOUR] for each of the 4 lists //HOUR is ith index
-  //    else add to List[HOUR+1], prevIndex = HOUR
-
-  //  pass these variables into syncfusion AppleGraph
 }
 
 

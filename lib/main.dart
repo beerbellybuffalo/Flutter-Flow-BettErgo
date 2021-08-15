@@ -6,6 +6,7 @@ import 'package:better_sitt/flutter_flow/flutter_flow_calendar.dart';
 import 'package:better_sitt/model/raw_data.dart';
 import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
+import 'package:better_sitt/today/today_widget_filled.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
@@ -14,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'archive/archive_widget.dart';
 import 'hive_viewing.dart';
+import 'model/apple_graph.dart';
+import 'model/posture_graph.dart';
 import 'model/processed_data.dart';
 // import 'package:better_sitt/login_v1/models/user.dart';
 // import 'package:better_sitt/login_v1/services/auth.dart';
@@ -22,6 +25,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'login_v1/authentication_services.dart';
 import 'login_v1/login_v1_widget.dart';
+import 'model/rings.dart';
 import 'settings/settings_widget.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,12 +40,14 @@ import 'today/today_classes.dart';
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-
   Hive.registerAdapter(RawDataAdapter());
-  await Hive.openBox<RawData>('rawdata');
   Hive.registerAdapter(ProcessedDataAdapter());
-  await Hive.openBox<ProcessedData>('processeddata');
   Hive.registerAdapter(VisualisationDataAdapter());
+  Hive.registerAdapter(HiveRingsAdapter());
+  Hive.registerAdapter(HivePostureGraphAdapter());
+  Hive.registerAdapter(HiveAppleGraphAdapter());
+  await Hive.openBox<RawData>('rawdata');
+  await Hive.openBox<ProcessedData>('processeddata');
   await Hive.openBox<VisualisationData>('visualisationdata');
 
   await Firebase.initializeApp();
@@ -56,13 +62,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BetterSitt',
       //theme: ThemeData(primarySwatch: Colors.blue),
-      home: HiveViewingApp(title:"Check da hive"),
+      home: FirstPageWidget(),
       debugShowCheckedModeBanner: false,
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/first': (context) => FirstPageWidget(),
 
-        '/today': (context) => TodayWidget(),
+        '/today': (context) => TodayWidgetFilled(), // change to TodayWidget() for non-demo use
       },
     );
   }
@@ -99,6 +105,7 @@ class _NavBarPageState extends State<NavBarPage> {
   late Timer oneSecTimer;
   String table1Data = "table1Data: ";
   String table2Data = "table2Data: ";
+  String table3Data = "table3Data: ";
 
   @override
   void initState() {
@@ -111,16 +118,17 @@ class _NavBarPageState extends State<NavBarPage> {
     checkHiveTables().then((value) {
       print(table1Data);
       print(table2Data);
+      print(table3Data);
     });
     //TODO check if Table 3 has an entry for today, if don't have then addVisualisationData
     var table3 = Boxes.getVisualisationDataBox();
     //if the latest entry in table 3 is not from today, then create new entry
     if (table3.length==0){
-      putVisualisationData(new Rings(), new AppleGraph(), new PostureGraph());
+      putVisualisationData(new HiveRings(), new HiveAppleGraph(), new HivePostureGraph());
       return;
     }
     if (isSameDay(DateTime.parse(table3.getAt(table3.length-1)!.key), DateTime.now())==false){
-      putVisualisationData(new Rings(), new AppleGraph(), new PostureGraph());
+      putVisualisationData(new HiveRings(), new HiveAppleGraph(), new HivePostureGraph());
     }
   }
 
@@ -128,6 +136,7 @@ class _NavBarPageState extends State<NavBarPage> {
 
     var table1 = Boxes.getRawDataBox();
     var table2 = Boxes.getProcessedDataBox();
+    var table3 = Boxes.getVisualisationDataBox();
     //print(table1.values);
     //print(table2.values);
     //LOG TABLE 1 DATA
@@ -143,6 +152,13 @@ class _NavBarPageState extends State<NavBarPage> {
     getProcessedData(i).then((processedData) {
       table2Data += ("DATETIME" + processedData!.dateTime.toString() + "  POS" + processedData.position.toString() + "  CATEGORY" + processedData.category.toString() + "\n");
     });
+    }
+
+    //LOG TABLE 3 DATA
+    for (int i=0;i<table3.length;i++) {
+      getVisualisationData(i).then((visualisationData) {
+        table3Data += ("RINGS -> totalSittingTime: " + visualisationData!.rings.totalSittingTime.toString() + " goodSittingTime: " + visualisationData.rings.goodSittingTime.toString() + " posChangeFrequency: " + visualisationData.rings.postureChangeFrequency.toString() + "\nAPPLEGRAPH -> " + "backCentered: " + visualisationData.appleGraph.backCenter.toString() + "\nbackSupported: " + visualisationData.appleGraph.backSupp.toString() + "\nlegSupported: " + visualisationData.appleGraph.legSupp.toString() + "\nPOSTUREGRAPH -> " + "top3Pos: " + visualisationData.postureGraph.topThreePositions.toString());
+      });
     }
   }
 
@@ -206,31 +222,45 @@ class _NavBarPageState extends State<NavBarPage> {
           var box3 = Boxes.getVisualisationDataBox();
           if (box3.isNotEmpty){
             getVisualisationData(box3.length-1).then((data) {
-              //Set RINGS
-              Rings todayRings = data!.rings;
-              todayRings.setTotalSitting(calcTotalTime());
-              todayRings.setGoodSitting(calcGoodTime());
-              todayRings.setPosChange(calcPostureChangeFreq(todayRings));
-              double inner = todayRings.calcInner();
-              double outer = todayRings.calcOuter();
-              todayRings.setInner(inner);
-              todayRings.setOuter(outer);
+              //Set HiveRings
+              HiveRings todayRings = data!.rings;
+              todayRings.totalSittingTime = calcTotalTime();
+              todayRings.goodSittingTime = calcGoodTime();
+              todayRings.postureChangeFrequency = calcPostureChangeFreq(todayRings);
+              todayRings.innerRing = calcInner(todayRings);
+              todayRings.outerRing = calcOuter(todayRings);
 
-              //Set AppleGraph
-              AppleGraph myAppleGraph = data.appleGraph;
-              myAppleGraph.fillAppleOneShot();
+              //Set HiveAppleGraph
+              //first make use of appleGraph methods
+              AppleGraph appleGraph = new AppleGraph();
+              appleGraph.fillAppleOneShot();
+              //copy over to HiveAppleGraph
+              HiveAppleGraph hAppleGraph = data.appleGraph;
+              hAppleGraph.backSupp = appleGraph.backSupp;
+              hAppleGraph.legSupp = appleGraph.legSupp;
+              hAppleGraph.backCenter = appleGraph.backCenter;
+              hAppleGraph.totalTime = appleGraph.totalTime;
 
-              //Set PostureGraph
-              PostureGraph myPostureGraph = data.postureGraph;
-              myPostureGraph.calculateTotalSittingPerHour();
-              myPostureGraph.fillInPositionTimeLs();
-              myPostureGraph.setTopThreePositions();
+              //Set HivePostureGraph
+              //first make use of postureGraph methods
+              PostureGraph postureGraph = new PostureGraph();
+              postureGraph.fillInPositionTimeLs();
+              postureGraph.calculateTotalSittingPerHour();
+              postureGraph.setTopThreePositions();
+              //copy over to HivePostureGraph
+              HivePostureGraph hPostureGraph = data.postureGraph;
+              hPostureGraph.topThreePositions = postureGraph.topThreePositions;
+              hPostureGraph.totalSittingPerHour = postureGraph.totalSittingPerHour;
+              hPostureGraph.greenPositionTime = postureGraph.greenPositionTime;
+              hPostureGraph.yellowPositionTime = postureGraph.yellowPositionTime;
+              hPostureGraph.redPositionTime = postureGraph.redPositionTime;
+
               data.save();
               log("TABLE 3 UPDATED");
             });
 
           }
-          //updateApple();
+          //updateAppleData();
           //TODO Clear Table 1?
           box.clear();
         }
@@ -261,14 +291,16 @@ class _NavBarPageState extends State<NavBarPage> {
     predictAndStore(currentDatetime,sensorData);
   }
 
+  //connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.firstWhere((c) => c.uuid.toString()=="4cee02fe-dc6f-4a6a-b8fa-789d79058177").read().then((sensorDataBytes) {
   Future<void> logAndWriteSensorData(List<BluetoothDevice> connectedDevicesList) async {
-    //        cList.firstWhere((c) => c.uuid.toString()=="c53e7632-9a2b-4272-b1a8-d2f4d658752a").write(utf8.encode(pulseDecision));
-    connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.firstWhere((c) => c.uuid.toString()=="4cee02fe-dc6f-4a6a-b8fa-789d79058177").read().then((sensorDataBytes) {
+    connectedDevicesList.single.discoverServices().then((services) => services[2].characteristics.last.read().then((sensorDataBytes) {
       List<double> sensorData = (String.fromCharCodes(sensorDataBytes)).split(",").map(double.parse).toList();
       //Show incoming data in Run Log
       log(sensorData.toString());
       //Write to Hive
       try{
+        sensorData.add(170); //height
+        sensorData.add(63); //weight
         writeContent(sensorData);
       } catch(e){
         log(e.toString());
@@ -306,11 +338,12 @@ class _NavBarPageState extends State<NavBarPage> {
     }});
   }
 
+
   @override
   Widget build(BuildContext context) {
     final tabs = {
       'Archive': ArchiveWidget(),
-      'Today': TodayWidget(),
+      'Today': TodayWidgetFilled(), //TodayWidget(), for the actual
       'Settings': SettingsWidget(),
     };
     return Scaffold(

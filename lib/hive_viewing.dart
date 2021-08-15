@@ -8,48 +8,49 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:sklite/tree/tree.dart';
 import 'package:sklite/utils/io.dart';
-
+import 'package:better_sitt/main.dart';
 import 'model/processed_data.dart';
+import 'model/visualisation_data.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+// Future main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Hive.initFlutter();
+//
+//   Hive.registerAdapter(RawDataAdapter());
+//   await Hive.openBox<RawData>('rawdata');
+//   Hive.registerAdapter(ProcessedDataAdapter());
+//   await Hive.openBox<ProcessedData>('processeddata');
+//
+//   runApp(HiveViewing());
+// }
 
-  Hive.registerAdapter(RawDataAdapter());
-  await Hive.openBox<RawData>('rawdata');
-  Hive.registerAdapter(ProcessedDataAdapter());
-  await Hive.openBox<ProcessedData>('processeddata');
-
-  runApp(HiveViewing());
-}
-
-class HiveViewing extends StatelessWidget {
+// class HiveViewing extends StatelessWidget {
   // This widget is the root of your application.
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: HiveViewingApp(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         // This is the theme of your application.
+//         //
+//         // Try running your application with "flutter run". You'll see the
+//         // application has a blue toolbar. Then, without quitting the app, try
+//         // changing the primarySwatch below to Colors.green and then invoke
+//         // "hot reload" (press "r" in the console where you ran "flutter run",
+//         // or simply save your changes to "hot reload" in a Flutter IDE).
+//         // Notice that the counter didn't reset back to zero; the application
+//         // is not restarted.
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: HiveViewingApp(title: 'Flutter Demo Home Page'),
+//     );
+//   }
+// }
 
 class HiveViewingApp extends StatefulWidget {
-  HiveViewingApp({Key? key, required this.title}) : super(key: key);
+  HiveViewingApp({Key? key}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -60,8 +61,6 @@ class HiveViewingApp extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
-
   @override
   _HiveViewingState createState() => _HiveViewingState();
 }
@@ -69,8 +68,14 @@ class HiveViewingApp extends StatefulWidget {
 class _HiveViewingState extends State<HiveViewingApp> {
   var rawBox = Boxes.getRawDataBox();
   var processedBox = Boxes.getProcessedDataBox();
+  var visualisationBox = Boxes.getVisualisationDataBox();
   var _currentState = "raw";
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void addRandomData(){
     switch (_currentState) {
@@ -98,6 +103,9 @@ class _HiveViewingState extends State<HiveViewingApp> {
       case "processed":
         clearProcessedTable();
         break;
+      case "visualisation":
+        clearVisualisationTable();
+        break;
     }
   }
 
@@ -108,26 +116,30 @@ class _HiveViewingState extends State<HiveViewingApp> {
         return ValueListenableBuilder<Box<RawData>>(
             valueListenable: rawBox.listenable(),
             builder: (context, box, _) {
-              final positions = box.values.toList().cast<RawData>();
-              return buildRawContent(positions);
+              final data = box.values.toList().cast<RawData>();
+              return buildRawContent(data);
             });
-        break;
       case "processed":
         return ValueListenableBuilder<Box<ProcessedData>>(
             valueListenable: processedBox.listenable(),
             builder: (context, box, _) {
-              final positions = box.values.toList().cast<ProcessedData>();
-              return buildProcessedContent(positions);
+              final data = box.values.toList().cast<ProcessedData>();
+              return buildProcessedContent(data);
             });
-        break;
+      case "visualisation":
+        return ValueListenableBuilder<Box<VisualisationData>>(
+            valueListenable: visualisationBox.listenable(),
+            builder: (context, box, _) {
+              final data = box.values.toList().cast<VisualisationData>();
+              return buildVisualisationContent(data);
+            });
       default:
         return ValueListenableBuilder<Box<RawData>>(
             valueListenable: rawBox.listenable(),
             builder: (context, box, _) {
-              final positions = box.values.toList().cast<RawData>();
-              return buildRawContent(positions);
+              final data = box.values.toList().cast<RawData>();
+              return buildRawContent(data);
             });
-        break;
     }
   }
 
@@ -146,10 +158,12 @@ class _HiveViewingState extends State<HiveViewingApp> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             FloatingActionButton(
+              heroTag: "addBtn" ,
               onPressed:addRandomData,
               child: const Icon(Icons.add),
             ),
             FloatingActionButton(
+              heroTag: "deleteBtn",
               onPressed:clearTable,
               child: Icon(Icons.delete),
             )
@@ -177,8 +191,11 @@ class _HiveViewingState extends State<HiveViewingApp> {
               child: const Text('Processed Data'),
             ),
             ElevatedButton(
-              onPressed: (){_closeDrawer();},
-              child: const Text('Visualisation Data (not yet)'),
+              onPressed: (){setState(() {
+                _currentState = "visualisation";
+              });
+              _closeDrawer();},
+              child: const Text('Visualisation Data'),
             ),
           ],
         ),
@@ -208,21 +225,41 @@ class _HiveViewingState extends State<HiveViewingApp> {
       );
     }
   }
-  Widget buildProcessedContent(List<ProcessedData> positions) {
-    if (positions.isEmpty) {
+  Widget buildProcessedContent(List<ProcessedData> dataList) {
+    if (dataList.isEmpty) {
       return Center(
         child: Text(
-          'No positions yet!',
+          'No data yet!',
           style: TextStyle(fontSize: 24),
         ),
       );
     } else {
       return ListView.builder(
-        itemCount: positions.length,
+        itemCount: dataList.length,
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(
-                'Position: ${positions[index].position}, Time: ${positions[index].dateTime}'),
+                'Time: ${dataList[index].dateTime}, Pos: ${dataList[index].position}, Cat: ${dataList[index].category}'),
+          );
+        },
+      );
+    }
+  }
+  Widget buildVisualisationContent(List<VisualisationData> dataList) {
+    if (dataList.isEmpty) {
+      return Center(
+        child: Text(
+          'No data yet!',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: dataList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+                'PosGraph: ${dataList[index].postureGraph}, AppleGraph: ${dataList[index].appleGraph}'),
           );
         },
       );

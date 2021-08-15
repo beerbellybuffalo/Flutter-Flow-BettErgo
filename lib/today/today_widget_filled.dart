@@ -24,32 +24,28 @@ import 'package:flutter/rendering.dart';
 import 'dart:async';
 import 'dart:math';
 
-class TodayWidget extends StatefulWidget {
-  TodayWidget({Key? key}) : super(key: key);
+//TODO navigate here from login, for demo purpose only
+class TodayWidgetFilled extends StatefulWidget {
+  TodayWidgetFilled({Key? key}) : super(key: key);
 
   @override
-  _TodayWidgetState createState() => _TodayWidgetState();
+  _TodayWidgetFilledState createState() => _TodayWidgetFilledState();
 }
 
-class _TodayWidgetState extends State<TodayWidget> {
-  
-  //DECLARING GLOBAL VARIABLES
+class _TodayWidgetFilledState extends State<TodayWidgetFilled> {
   final pageViewController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String DayDate = DateFormat('MMM d').format(DateTime.now()).toString();
+
   //var to store Username from sharedprefs
   String? username;
-  var table3 = Boxes.getVisualisationDataBox();
 
   //PostureGraph Stuff
-  List<PostureTimingData> PostureTimingChartData = [];
-  List<SittData> ringsData = [];
-  //int timer_count =0;
-  String totalSittingTime = "";
-  String goodSittingTime = "";
-  String postureChangeFrequency = "";
-  double innerRing = 0;
-  double outerRing = 0;
+  late List<PostureTimingData> PostureTimingChartData;
+  late List<SittData> ringsData;
+  int timer_count =0;
+  late String totalSittingTime;
+  late String goodSittingTime;
 
   //For top 3 positions
   //late List<String> postureImages;
@@ -81,8 +77,8 @@ class _TodayWidgetState extends State<TodayWidget> {
 
   //TODO remove this after finish implementing apple
   //Apple Graph Stuff
-  // final Random random = Random();
-  // int count_2 = 0;
+  final Random random = Random();
+  int count_2 = 0;
   List<AppleGraphData> appleChartData = [];
   bool pressAttention1 = true;
   bool pressAttention2 = false;
@@ -100,51 +96,33 @@ class _TodayWidgetState extends State<TodayWidget> {
   void initState() {
     //_initPostureImages();
     //set rings and graphs
-
-    setState(() {
-      getVisualisationData(table3.length-1).then((latestData) async {
-        appleChartData = getAppleChartData(latestData!);
-        ringsData = getRingsData(latestData!);
-        PostureTimingChartData = getPostureTimingChartData(latestData!);
-      });
-    });
-
-    // timer = Timer(const Duration(seconds: 3), () {
-    //   if (mounted)
-    //     setState(() {
-    //       ringsData = getRingsData();
-    //       PostureTimingChartData = getPostureTimingChartData();
-    //       // text file update text to another time
-    //       //updateString();
-    //     });
-    // });
-
-
+    appleChartData = getAppleChartData();
     //set username
     getUsername().then((value) { setState(() {
       username = value;
     }); });
     //set today's posture graph information
+    Box<VisualisationData> visBox = Boxes.getVisualisationDataBox();
     setState(() {
-      if (table3.length>2){
+      if (visBox.length>2){
         // try {
-          top1PosImg = imageDirectoriesMap[table3
-              .getAt(table3.length - 1)!
+          top1PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
               .postureGraph
               .topThreePositions[0]] ?? 'assets/images/posture-0.png';
-          top2PosImg = imageDirectoriesMap[table3
-              .getAt(table3.length - 1)!
+          top2PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
               .postureGraph
               .topThreePositions[1]] ?? 'assets/images/posture-0.png';
-          top3PosImg = imageDirectoriesMap[table3
-              .getAt(table3.length - 1)!
+          top3PosImg = imageDirectoriesMap[visBox
+              .getAt(visBox.length - 1)!
               .postureGraph
               .topThreePositions[2]] ?? 'assets/images/posture-0.png';
-          todayRings = table3.getAt(table3.length - 1)!.rings;
-          yestRings = table3.getAt(table3.length - 2)!.rings;
+          todayRings = visBox.getAt(visBox.length - 1)!.rings;
+          yestRings = visBox.getAt(visBox.length - 2)!.rings;
       //   }catch(e){
       //     print(e);
-      //     log(table3.length - 1);
+      //     log(visBox.length - 1);
       //     log(getAt)
       //
       // }
@@ -214,17 +192,30 @@ class _TodayWidgetState extends State<TodayWidget> {
     return (todayRings.goodSittingTime-yestRings.goodSittingTime)*100;
   }
 
-  // late Timer timer;
+  late Timer timer;
   @override
   void dispose(){
     //TODO check if this solves the ring behaving weirdly
-    //timer.cancel();
+    timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    
+
+    ringsData = getChartData();
+    PostureTimingChartData = getPostureTimingChartData();
+
+    timer = Timer(const Duration(seconds: 3), () {
+      if (mounted)
+        setState(() {
+          ringsData = getChartData();
+          PostureTimingChartData = getPostureTimingChartData();
+          // text file update text to another time
+          //updateString();
+        });
+    });
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.primaryColor,
@@ -503,16 +494,14 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                       color: pressAttention1 ? Colors.white : Colors.white54
                                                     ),
                                                   ),
-                                                  onPressed: () async {
+                                                  onPressed: () {
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = true;
                                                       pressAttention2 = false;
                                                       pressAttention3 = false;
                                                     }); // Set state
-                                                    appleChartData.clear();
-                                                    getVisualisationData(table3.length-1).then((latestData) async {
-                                                      appleChartData = getAppleChartData(latestData!);
-                                                    });
                                                   },
                                                 ),
                                               ),
@@ -534,14 +523,12 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = true;
                                                       pressAttention3 = false;
-                                                    });
-                                                    appleChartData.clear();
-                                                    getVisualisationData(table3.length-1).then((latestData) async {
-                                                      appleChartData = getAppleChartData(latestData!);
                                                     });
                                                   },
                                                 ),
@@ -564,14 +551,12 @@ class _TodayWidgetState extends State<TodayWidget> {
                                                     ),
                                                   ),
                                                   onPressed: () {
+                                                    appleChartData.clear();
+                                                    appleChartData = getAppleChartData();
                                                     setState(() {
                                                       pressAttention1 = false;
                                                       pressAttention2 = false;
                                                       pressAttention3 = true;
-                                                    });
-                                                    appleChartData.clear();
-                                                    getVisualisationData(table3.length-1).then((latestData) async {
-                                                      appleChartData = getAppleChartData(latestData!);
                                                     });
                                                   },
                                                 ),
@@ -748,7 +733,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top1PosImg', //$top1PosImg
+                                  'assets/images/posture-2.png', //$top1PosImg
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -757,7 +742,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top2PosImg', //$top2PosImg
+                                  'assets/images/posture-5.png', //$top2PosImg
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -766,7 +751,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                 height: 90,
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
                                 child: Image.asset(
-                                  '$top3PosImg', //$top3PosImg
+                                  'assets/images/posture-8.png', //$top3PosImg
                                   fit: BoxFit.contain,
                                 ),
                               )
@@ -819,7 +804,7 @@ class _TodayWidgetState extends State<TodayWidget> {
                                     ),
                                   ),
                                   Text(
-                                    '$percentageChange%', //$percentageChange
+                                    '12%', //$percentageChange
                                     style: FlutterFlowTheme.bodyText2.override(
                                       fontFamily: 'Poppins',
                                       fontSize: 22,
@@ -869,176 +854,206 @@ class _TodayWidgetState extends State<TodayWidget> {
     );
   }
 
-  // String updateString(){
-  //   if (timer_count == 0){
-  //     totalSittingTime = '6hr 45min';
-  //     goodSittingTime = '3hr 25min';
-  //   } else if (timer_count == 1){
-  //     totalSittingTime = '7hr 03min';
-  //     goodSittingTime = '3hr 43min';
-  //   } else if (timer_count == 2){
-  //     totalSittingTime = '7hr 15min';
-  //     goodSittingTime = '3hr 55min';
-  //   // } else if (timer_count == 3){
-  //   //   totalSittingTime = '5hr 44min';
-  //   //   goodSittingTime = '3hr 28min';
-  //   }
-  //   return totalSittingTime;
-  // }
+  String updateString(){
+    if (timer_count == 0){
+      totalSittingTime = '6hr 45min';
+      goodSittingTime = '3hr 25min';
+    } else if (timer_count == 1){
+      totalSittingTime = '7hr 03min';
+      goodSittingTime = '3hr 43min';
+    } else if (timer_count == 2){
+      totalSittingTime = '7hr 15min';
+      goodSittingTime = '3hr 55min';
+    // } else if (timer_count == 3){
+    //   totalSittingTime = '5hr 44min';
+    //   goodSittingTime = '3hr 28min';
+    }
+    return totalSittingTime;
+  }
 
-  List<SittData> getRingsData(VisualisationData latestData) {
-    totalSittingTime = latestData.rings.totalSittingTime.toString();
-    goodSittingTime = latestData.rings.goodSittingTime.toString();
-    postureChangeFrequency = latestData.rings.postureChangeFrequency.toString();
-    innerRing = latestData.rings.innerRing;
-    outerRing = latestData.rings.outerRing;
-    ringsData = <SittData>[
-        SittData('Total Time', innerRing, FlutterFlowTheme.naplesYellow),
-        SittData('Good Time', outerRing, Color(0xFF00DBA3)), //FlutterFlowTheme.secondaryColor
+  List<SittData> getChartData() {
+    if (timer_count == 0) {
+      ringsData = <SittData>[
+        SittData('Total Time', 35, FlutterFlowTheme.naplesYellow),
+        SittData('Good Time', 40, Color(0xFF00DBA3)), //FlutterFlowTheme.secondaryColor
       ];
-      // totalSittingTime = '6hr 41min';
-      // goodSittingTime = '3hr 25min';
+      totalSittingTime = '6hr 41min';
+      goodSittingTime = '3hr 25min';}
+    //   timer_count++;
+    //  } else if (timer_count == 1) {
+    //   ringsData = <SittData>[
+    //     SittData('Total Time', 37, FlutterFlowTheme.naplesYellow),
+    //     SittData('Good Time', 45, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '6hr 45min';
+    //   goodSittingTime = '3hr 29min';
+    //   timer_count++;
+    // } else if (timer_count == 2) {
+    //   ringsData = <SittData>[
+    //     SittData('Total Time', 40, FlutterFlowTheme.naplesYellow),
+    //     SittData('Good Time', 50, Color(0xFF00DBA3)),
+    //   ];//2413
+    //   totalSittingTime = '6hr 50min';
+    //   goodSittingTime = '3hr 32min';
+    //   timer_count++;
+    // } else if (timer_count == 3) {
+    //   ringsData = <SittData>[
+    //     SittData('Total Time', 45, FlutterFlowTheme.bittersweetRed),
+    //     SittData('Good Time', 55, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '7hr 05min';
+    //   goodSittingTime = '3hr 44min';
+    //   timer_count++;
+    // }
+    //  else if (timer_count == 4) {
+    //   ringsData = <SittData>[
+    //     SittData('Total Time', 50, Color(0xFFFF6B6B)),
+    //     SittData('Good Time', 60, Color(0xFF00DBA3)),
+    //   ];
+    //   totalSittingTime = '7hr 20min';
+    //   goodSittingTime = '3hr 53min';
+    //   timer_count = 0;
+    // }
     return ringsData;
   }
 
-  List<PostureTimingData> getPostureTimingChartData(VisualisationData latestData) {
-    List<int> GreenLs = latestData.postureGraph.greenPositionTime;
-    List<int> YellowLs = latestData.postureGraph.yellowPositionTime;
-    List<int> RedLs = latestData.postureGraph.redPositionTime;
-    PostureTimingChartData = <PostureTimingData>[
-        PostureTimingData('P1', GreenLs[0], YellowLs[0], RedLs[0]), // POS G Y R
-        PostureTimingData('P2', GreenLs[1], YellowLs[1], RedLs[1]),
-        PostureTimingData('P3', GreenLs[2], YellowLs[2], RedLs[2]),
-        PostureTimingData('P4', GreenLs[3], YellowLs[3], RedLs[3]),
-        PostureTimingData('P5', GreenLs[4], YellowLs[4], RedLs[4]),
-        PostureTimingData('P6', GreenLs[5], YellowLs[5], RedLs[5]),
-        PostureTimingData('P7', GreenLs[6], YellowLs[6], RedLs[6]),
-        PostureTimingData('P8', GreenLs[7], YellowLs[7], RedLs[7]),
-        PostureTimingData('P8', GreenLs[8], YellowLs[8], RedLs[8]),
-        PostureTimingData('P9', GreenLs[9], YellowLs[9], RedLs[9]),
-        PostureTimingData('P10', GreenLs[10], YellowLs[10], RedLs[10]),
-        PostureTimingData('P11', GreenLs[11], YellowLs[11], RedLs[11]),
-        PostureTimingData('P12', GreenLs[12], YellowLs[12], RedLs[12]),
-        PostureTimingData('P13', GreenLs[13], YellowLs[13], RedLs[13]),
-        PostureTimingData('P14', GreenLs[14], YellowLs[14], RedLs[14]),
-        PostureTimingData('P15', GreenLs[15], YellowLs[15], RedLs[15]),
-        PostureTimingData('P16', GreenLs[16], YellowLs[16], RedLs[16]),
-        PostureTimingData('P17', GreenLs[17], YellowLs[17], RedLs[17]),
-        PostureTimingData('P18', GreenLs[18], YellowLs[18], RedLs[18]),
-      ];
+  List<PostureTimingData> getPostureTimingChartData() {
+    if (timer_count == 0) {
+      PostureTimingChartData = <PostureTimingData>[
+        PostureTimingData('P1', 15, 0, 13),
+        PostureTimingData('P2', 3, 0, 4),
+        PostureTimingData('P3', 0, 0, 0),
+        PostureTimingData('P4', 0, 0, 0),
+        PostureTimingData('P5', 13, 2, 0),
+        PostureTimingData('P6', 0, 0, 0),
+        PostureTimingData('P7', 0, 5, 0),
+        PostureTimingData('P8', 0, 1, 0),
+        PostureTimingData('P8', 0, 0, 0),
+        PostureTimingData('P9', 12, 3, 8),
+        PostureTimingData('P10', 0, 10, 4),
+        PostureTimingData('P11', 0, 0, 0),
+        PostureTimingData('P12', 0, 0, 0),
+        PostureTimingData('P13', 13, 2, 0),
+        PostureTimingData('P14', 0, 0, 0),
+        PostureTimingData('P15', 0, 3, 0),
+        PostureTimingData('P16', 0, 5, 0),
+        PostureTimingData('P17', 0, 0, 0),
+        PostureTimingData('P18', 0, 0, 0),
+      ];}
+    //   timer_count++;
+    // } else if (timer_count == 1) {
+    //   PostureTimingChartData = <PostureTimingData>[
+    //     PostureTimingData('P1', 15, 4, 6),
+    //     PostureTimingData('P2', 3, 0, 4),
+    //     PostureTimingData('P3', 0, 0, 0),
+    //     PostureTimingData('P4', 0, 0, 0),
+    //     PostureTimingData('P5', 13, 2, 5),
+    //     PostureTimingData('P6', 0, 0, 0),
+    //     PostureTimingData('P7', 0, 8, 0),
+    //     PostureTimingData('P8', 0, 5, 0),
+    //     PostureTimingData('P9', 16, 8, 8),
+    //     PostureTimingData('P10', 0, 13, 6),
+    //     PostureTimingData('P11', 0, 0, 0),
+    //     PostureTimingData('P12', 0, 0, 0),
+    //     PostureTimingData('P13', 15, 8, 0),
+    //     PostureTimingData('P14', 0, 0, 0),
+    //     PostureTimingData('P15', 0, 7, 0),
+    //     PostureTimingData('P16', 0, 12, 0),
+    //     PostureTimingData('P17', 0, 0, 0),
+    //     PostureTimingData('P18', 0, 0, 0),
+    //   ];
+    //   timer_count++;
+    // } else if (timer_count == 2) {
+    //   PostureTimingChartData = <PostureTimingData>[
+    //     PostureTimingData('P1', 21, 4, 6),
+    //     PostureTimingData('P2', 3, 0, 4),
+    //     PostureTimingData('P3', 2, 0, 0),
+    //     PostureTimingData('P4', 0, 0, 0),
+    //     PostureTimingData('P5', 13, 10, 5),
+    //     PostureTimingData('P6', 0, 0, 0),
+    //     PostureTimingData('P7', 0, 12, 0),
+    //     PostureTimingData('P8', 0, 5, 3),
+    //     PostureTimingData('P9', 16, 14, 18),
+    //     PostureTimingData('P10', 5, 24, 13),
+    //     PostureTimingData('P11', 0, 0, 0),
+    //     PostureTimingData('P12', 0, 0, 0),
+    //     PostureTimingData('P13', 16, 9, 2),
+    //     PostureTimingData('P14', 0, 0, 0),
+    //     PostureTimingData('P15', 0, 9, 3),
+    //     PostureTimingData('P16', 0, 16, 2),
+    //     PostureTimingData('P17', 0, 0, 0),
+    //     PostureTimingData('P18', 0, 0, 0),
+    //   ];
+    //   timer_count = 0;
+    // }
     return PostureTimingChartData;
   }
 
-  // double _getRandomValue(int min, int max) {
-  //   return min + random.nextInt(max - min).toDouble();
-  // }
+  double _getRandomValue(int min, int max) {
+    return min + random.nextInt(max - min).toDouble();
+  }
 
-  List<AppleGraphData> getAppleChartData(VisualisationData latestData) {
-    List<int> FactorLs = List<int>.filled(24, 0, growable: false);
-    List<int> TotalLs = latestData.appleGraph.totalTime;
-    if (pressAttention1){
-      FactorLs = latestData.appleGraph.backSupp;
-    }
-    else if (pressAttention2){
-      FactorLs = latestData.appleGraph.backCenter;
-    }
-    else if (pressAttention3){
-      FactorLs = latestData.appleGraph.legSupp;
-    }
+  List<AppleGraphData> getAppleChartData() {
     appleChartData.add(AppleGraphData(
-        x: '1', y: FactorLs[0], y2: TotalLs[0]));
+        x: '1', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '2', y: FactorLs[1], y2: TotalLs[1]));
+        x: '2', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '3', y: FactorLs[2], y2: TotalLs[2]));
+        x: '3', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '4', y: FactorLs[3], y2: TotalLs[3]));
+        x: '4', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '5', y: FactorLs[4], y2: TotalLs[4]));
+        x: '5', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '6', y: FactorLs[5], y2: TotalLs[5]));
+        x: '6', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '7', y: FactorLs[6], y2: TotalLs[6]));
+        x: '7', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '8', y: FactorLs[7], y2: TotalLs[7]));
+        x: '8', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '9', y: FactorLs[8], y2: TotalLs[8]));
+        x: '9', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '10', y: FactorLs[9], y2: TotalLs[9]));
+        x: '10', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '11', y: FactorLs[10], y2: TotalLs[10]));
+        x: '11', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '12', y: FactorLs[11], y2: TotalLs[11]));
+        x: '12', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '13', y: FactorLs[12], y2: TotalLs[12]));
+        x: '13', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '14', y: FactorLs[13], y2: TotalLs[13]));
+        x: '14', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '15', y: FactorLs[14], y2: TotalLs[14]));
+        x: '15', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '16', y: FactorLs[15], y2: TotalLs[15]));
+        x: '16', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '17', y: FactorLs[16], y2: TotalLs[16]));
+        x: '17', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '18', y: FactorLs[17], y2: TotalLs[17]));
+        x: '18', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '19', y: FactorLs[18], y2: TotalLs[18]));
+        x: '19', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '20', y: FactorLs[19], y2: TotalLs[19]));
+        x: '20', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '21', y: FactorLs[20], y2: TotalLs[20]));
+        x: '21', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '22', y: FactorLs[21], y2: TotalLs[21]));
+        x: '22', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '23', y: FactorLs[22], y2: TotalLs[22]));
+        x: '23', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
     appleChartData.add(AppleGraphData(
-        x: '24', y: FactorLs[23], y2: TotalLs[23]));
+        x: '24', y: _getRandomValue(0, 30), y2: _getRandomValue(2, 15)));
 
     return appleChartData;
   }
 
 }
 
-// FOR UPDATING VISUALISATION IN MAIN PAGE, rmb to use SETSTATE()
-Future<void> updateVisualisation() async {
-  var table3 = Boxes.getVisualisationDataBox();
-  getVisualisationData(table3.length-1).then((latestData) async {
-    updateRings(latestData!);
-    await updateAppleGraph(latestData);
-    await updatePostureGraph(latestData);
-  });
-}
-
-void updateRings(VisualisationData latestData) { //CALL THIS WHEN REFRESH TODAY PAGE
-
-}
-
-Future<void> updateAppleGraph(VisualisationData latestData) async { //CALL THIS WHEN REFRESH TODAY PAGE
-  //set a variable to store the previous entry's hour, int prevIndex
-  //create 4 lists with 24 variables each corresponding to the 24 hours in a day.
-  // List<double> TotalLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isBackLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isSideLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isLegLs = List<double>.filled(24, 0, growable: false);
-
-  // for row in hive table,
-  //    get timestamp    //example: String formattedTime = DateFormat.Hm().format(dateTime); // this format -> 17:08
-  //    take the HOUR from formattedTime
-  //    if HOUR == prevIndex > add to List[HOUR] for each of the 4 lists //HOUR is ith index
-  //    else add to List[HOUR+1], prevIndex = HOUR
-
-  //  pass these variables into syncfusion AppleGraph
-}
-
-Future<void> updatePostureGraph(VisualisationData latestData) async { //CALL THIS WHEN REFRESH TODAY PAGE
-
-}
 
 
 class SittData {
   SittData(this.name, this.data,this.pointColour);
   final String name;
-  final double data;
+  final int data;
   final Color pointColour;
 }
 
@@ -1053,6 +1068,6 @@ class PostureTimingData {
 class AppleGraphData {
   AppleGraphData({this.x, this.y, this.y2});
   final String? x;
-  final int? y;
-  final int? y2;
+  final double? y;
+  final double? y2;
 }

@@ -1,5 +1,8 @@
+import 'package:better_sitt/model/apple_graph.dart';
+import 'package:better_sitt/model/posture_graph.dart';
 import 'package:better_sitt/model/processed_data.dart';
 import 'package:better_sitt/model/raw_data.dart';
+import 'package:better_sitt/model/rings.dart';
 import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:hive/hive.dart';
 
