@@ -17,6 +17,7 @@ import '../utils/boxes.dart';
 import '../model/raw_data.dart';
 import '../model/processed_data.dart';
 import '../model/visualisation_data.dart';
+import 'today_widget.dart';
 //var inComingData = new List();
 
 
@@ -108,10 +109,10 @@ class AppleGraph {
   List<int> backCenterPostures = [7,8,9,10,11,12];
   List<int> legSuppPostures = [4,5,6,10,11,12,16,17,18];
 
-  var backSupp = List<int>.filled(24, 0, growable: false);
-  var backCenter = List<int>.filled(24, 0, growable: false);
-  var legSupp = List<int>.filled(24, 0, growable: false);
-  var totalTime = List<int>.filled(24, 0, growable: false);
+  var backSupp = List<int>.filled(25, 0, growable: false);
+  var backCenter = List<int>.filled(25, 0, growable: false);
+  var legSupp = List<int>.filled(25, 0, growable: false);
+  var totalTime = List<int>.filled(25, 0, growable: false);
 
   //CONSTRUCTOR
   //AppleGraph(this.totalTime,this.backCenter,this.backSupp,this.legSupp);
@@ -138,7 +139,7 @@ class AppleGraph {
     }
   }
   //2. Incremental version called every minute
-  void updateApple(RawData data) {
+  void updateAppleData(RawData data) {
     int hour = data.dateTime.hour;
     if (backSuppPostures.contains(data.position)) {
       backSupp[hour]++;
@@ -394,29 +395,6 @@ String checkPostureCategory(int thisPosture) {
   else if (thisPosture == away)
     return "AWAY"; //3 for when not sitting, can't use null
   else return "INVALID"; //invalid position
-}
-
-
-void setHiveAppleGraph(DateTime dateTime, int position){ //CALL THIS EVERY MINUTE
-  //Check isBack isSide isLeg for position
-  //for (int i,,i++ );
-  // ++ to the entry in Hive Table, access the entry that corresponds to dateTime input
-}
-void plotAppleGraph(){ //CALL THIS WHEN REFRESH TODAY PAGE
-  //set a variable to store the previous entry's hour, int prevIndex
-  //create 4 lists with 24 variables each corresponding to the 24 hours in a day.
-  // List<double> TotalLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isBackLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isSideLs = List<double>.filled(24, 0, growable: false);
-  // List<double> isLegLs = List<double>.filled(24, 0, growable: false);
-
-  // for row in hive table,
-  //    get timestamp    //example: String formattedTime = DateFormat.Hm().format(dateTime); // this format -> 17:08
-  //    take the HOUR from formattedTime
-  //    if HOUR == prevIndex > add to List[HOUR] for each of the 4 lists //HOUR is ith index
-  //    else add to List[HOUR+1], prevIndex = HOUR
-
-  //  pass these variables into syncfusion AppleGraph
 }
 
 

@@ -6,6 +6,7 @@ import 'package:better_sitt/flutter_flow/flutter_flow_calendar.dart';
 import 'package:better_sitt/model/raw_data.dart';
 import 'package:better_sitt/model/visualisation_data.dart';
 import 'package:better_sitt/registration/registration_widget.dart';
+import 'package:better_sitt/today/today_widget_filled.dart';
 import 'package:better_sitt/utils/positions_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:better_sitt/today/today_widget.dart';
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/first': (context) => FirstPageWidget(),
 
-        '/today': (context) => TodayWidget(),
+        '/today': (context) => TodayWidgetFilled(), // change to TodayWidget() for non-demo use
       },
     );
   }
@@ -259,7 +260,7 @@ class _NavBarPageState extends State<NavBarPage> {
             });
 
           }
-          //updateApple();
+          //updateAppleData();
           //TODO Clear Table 1?
           box.clear();
         }
@@ -337,11 +338,12 @@ class _NavBarPageState extends State<NavBarPage> {
     }});
   }
 
+
   @override
   Widget build(BuildContext context) {
     final tabs = {
       'Archive': ArchiveWidget(),
-      'Today': TodayWidget(),
+      'Today': TodayWidgetFilled(), //TodayWidget(), for the actual
       'Settings': SettingsWidget(),
     };
     return Scaffold(
