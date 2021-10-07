@@ -1,12 +1,22 @@
-# better_sitt
+# BetterSitt
+Team members
+Kwang Kai Jie (ASD), See Tow Jo Wee (ASD), Emil Goh Pei Peng (EPD), Daniel Tang Ju Qian (EPD), Timothy Stuart Ng Wei Wen (EPD), Wong Yi Xuan (EPD), Yeoh Jia Er (ISTD)
 
-A new Flutter project.
 
-## Getting Started
+## Problem and Objective
+Physiotherapy is the default, and often only available option for back pains that do not require surgical intervention. However, visits can be few and far between when clinics are occupied with treating more injuries, or in the case where patients perceive treatment to be unnecessary or too expensive. Regarding the recovery process, it takes two hands to clap and apart from seeking professional help, building good lifestyle habits is a personal responsibility and indispensable part of upkeeping back health.
 
-FlutterFlow projects are built to run on the Flutter _stable_ release.
+Our project aims to make the process of back injury recovery more efficient, as well as encourage lifestyle habits that prevent reoccurrence.
 
-### IMPORTANT:
+
+## About the BetterSitt
+A personal IoT device for monitoring sitting posture and training, comprising of a hardware (portable seat add-on) and software (Flutter app) component.
+
+This app was built using FlutterFlow and Flutter v2.2, latest release for Android API 30
+For more details -> https://capstone2021.sutd.edu.sg/projects/bettersitt
+
+
+### IMPORTANT regarding Firestore:
 
 For projects with Firestore integration, you must first run the following commands to ensure the project compiles:
 
@@ -16,16 +26,3 @@ flutter packages pub run build_runner build --delete-conflicting-outputs
 ```
 
 This command creates the generated files that parse each Record from Firestore into a schema object.
-
-### Getting started continued:
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
