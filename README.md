@@ -1,5 +1,5 @@
 # BetterSitt
-Team members
+Team members  
 Kwang Kai Jie (ASD), See Tow Jo Wee (ASD), Emil Goh Pei Peng (EPD), Daniel Tang Ju Qian (EPD), Timothy Stuart Ng Wei Wen (EPD), Wong Yi Xuan (EPD), Yeoh Jia Er (ISTD)
 
 
